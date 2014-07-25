@@ -12,6 +12,10 @@
 		1F86E7B91977270A005ED0DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F86E7B71977270A005ED0DD /* Main.storyboard */; };
 		1F86E7BB1977270A005ED0DD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F86E7BA1977270A005ED0DD /* Images.xcassets */; };
 		1F86E7C71977270A005ED0DD /* AViSSSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F86E7C61977270A005ED0DD /* AViSSSTests.swift */; };
+		1FCF20E1197EB64800A2AB99 /* ScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */; };
+		1FCF20E3197EB67500A2AB99 /* ScenarioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E2197EB67500A2AB99 /* ScenarioManager.swift */; };
+		1FCF20E5197EB8C900A2AB99 /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E4197EB8C900A2AB99 /* StartScene.swift */; };
+		1FCF20E7197EC2D300A2AB99 /* GUIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,10 @@
 		1F86E7C01977270A005ED0DD /* AViSSSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AViSSSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F86E7C51977270A005ED0DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F86E7C61977270A005ED0DD /* AViSSSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AViSSSTests.swift; sourceTree = "<group>"; };
+		1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptManager.swift; sourceTree = "<group>"; };
+		1FCF20E2197EB67500A2AB99 /* ScenarioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioManager.swift; sourceTree = "<group>"; };
+		1FCF20E4197EB8C900A2AB99 /* StartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
+		1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +88,10 @@
 				1F86E7B71977270A005ED0DD /* Main.storyboard */,
 				1F86E7BA1977270A005ED0DD /* Images.xcassets */,
 				1F86E7B11977270A005ED0DD /* Supporting Files */,
+				1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */,
+				1FCF20E2197EB67500A2AB99 /* ScenarioManager.swift */,
+				1FCF20E4197EB8C900A2AB99 /* StartScene.swift */,
+				1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */,
 			);
 			path = AViSSS;
 			sourceTree = "<group>";
@@ -210,6 +222,10 @@
 			files = (
 				1F86E7B61977270A005ED0DD /* GameViewController.swift in Sources */,
 				1F86E7B41977270A005ED0DD /* AppDelegate.swift in Sources */,
+				1FCF20E1197EB64800A2AB99 /* ScriptManager.swift in Sources */,
+				1FCF20E7197EC2D300A2AB99 /* GUIManager.swift in Sources */,
+				1FCF20E5197EB8C900A2AB99 /* StartScene.swift in Sources */,
+				1FCF20E3197EB67500A2AB99 /* ScenarioManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +415,7 @@
 				1F86E7CC1977270A005ED0DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1F86E7CD1977270A005ED0DD /* Build configuration list for PBXNativeTarget "AViSSSTests" */ = {
 			isa = XCConfigurationList;
@@ -407,6 +424,7 @@
 				1F86E7CF1977270A005ED0DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
