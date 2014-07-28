@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F60696619833093001F5081 /* boy2_run.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F60696519833093001F5081 /* boy2_run.dae */; };
+		1F606968198330D4001F5081 /* idle.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F606967198330D4001F5081 /* idle.dae */; };
 		1F86E7B41977270A005ED0DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F86E7B31977270A005ED0DD /* AppDelegate.swift */; };
 		1F86E7B61977270A005ED0DD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F86E7B51977270A005ED0DD /* GameViewController.swift */; };
 		1F86E7B91977270A005ED0DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F86E7B71977270A005ED0DD /* Main.storyboard */; };
@@ -16,6 +18,7 @@
 		1FCF20E3197EB67500A2AB99 /* ScenarioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E2197EB67500A2AB99 /* ScenarioManager.swift */; };
 		1FCF20E5197EB8C900A2AB99 /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E4197EB8C900A2AB99 /* StartScene.swift */; };
 		1FCF20E7197EC2D300A2AB99 /* GUIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */; };
+		1FCF20EE19832DB300A2AB99 /* boy2_smile.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1FCF20ED19832DB300A2AB99 /* boy2_smile.dae */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F60696519833093001F5081 /* boy2_run.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; name = boy2_run.dae; path = ../../../Dropbox/boy2/boy2_run.dae; sourceTree = "<group>"; };
+		1F606967198330D4001F5081 /* idle.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; name = idle.dae; path = ../../../Dropbox/SceneKitAnimations/SceneKitAnimations/Resources/idle.dae; sourceTree = "<group>"; };
 		1F86E7AE1977270A005ED0DD /* AViSSS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AViSSS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F86E7B21977270A005ED0DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F86E7B31977270A005ED0DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +47,7 @@
 		1FCF20E2197EB67500A2AB99 /* ScenarioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioManager.swift; sourceTree = "<group>"; };
 		1FCF20E4197EB8C900A2AB99 /* StartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
 		1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIManager.swift; sourceTree = "<group>"; };
+		1FCF20ED19832DB300A2AB99 /* boy2_smile.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; name = boy2_smile.dae; path = ../../../Dropbox/boy2/boy2_smile.dae; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				1F86E7B31977270A005ED0DD /* AppDelegate.swift */,
+				1FCF20E819832CB400A2AB99 /* Resources */,
 				1F86E7B51977270A005ED0DD /* GameViewController.swift */,
 				1F86E7B71977270A005ED0DD /* Main.storyboard */,
 				1F86E7BA1977270A005ED0DD /* Images.xcassets */,
@@ -119,6 +126,32 @@
 				1F86E7C51977270A005ED0DD /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1FCF20E819832CB400A2AB99 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FCF20E919832CC500A2AB99 /* Models */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1FCF20E919832CC500A2AB99 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1F606967198330D4001F5081 /* idle.dae */,
+				1FCF20EA19832CD100A2AB99 /* Boy2 */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		1FCF20EA19832CD100A2AB99 /* Boy2 */ = {
+			isa = PBXGroup;
+			children = (
+				1F60696519833093001F5081 /* boy2_run.dae */,
+				1FCF20ED19832DB300A2AB99 /* boy2_smile.dae */,
+			);
+			name = Boy2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,8 +234,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F60696619833093001F5081 /* boy2_run.dae in Resources */,
 				1F86E7B91977270A005ED0DD /* Main.storyboard in Resources */,
 				1F86E7BB1977270A005ED0DD /* Images.xcassets in Resources */,
+				1FCF20EE19832DB300A2AB99 /* boy2_smile.dae in Resources */,
+				1F606968198330D4001F5081 /* idle.dae in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

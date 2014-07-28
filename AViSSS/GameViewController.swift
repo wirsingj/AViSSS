@@ -4,7 +4,7 @@
 //
 //  Created by Jeff Wirsing on 7/16/14.
 //  Copyright (c) 2014 wirsing.app. All rights reserved.
-//
+//  GitHub Test
 
 import UIKit
 import QuartzCore
@@ -40,26 +40,6 @@ class GameViewController: UIViewController {
         ambientLightNode.light.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
         
-        // create and add a 3d box to the scene
-        let boxNode = SCNNode()
-        boxNode.geometry = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.02)
-        scene.rootNode.addChildNode(boxNode)
-        
-        // create and configure a material
-        let material = SCNMaterial()
-        material.diffuse.contents = UIImage(named: "texture")
-        material.specular.contents = UIColor.grayColor()
-        material.locksAmbientWithDiffuse = true
-        
-        // set the material to the 3d object geometry
-        boxNode.geometry.firstMaterial = material
-        
-        // animate the 3d object
-        let animation: CABasicAnimation = CABasicAnimation(keyPath: "rotation")
-        animation.toValue = NSValue(SCNVector4: SCNVector4(x: 1, y: 1, z: 0, w: Float(M_PI)*2))
-        animation.duration = 5
-        animation.repeatCount = MAXFLOAT //repeat forever
-        boxNode.addAnimation(animation, forKey: nil)
         
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -83,7 +63,24 @@ class GameViewController: UIViewController {
         gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers)
         scnView.gestureRecognizers = gestureRecognizers
     }
+  /*  - (void)loadAnimation:(ASCAnimation)animation inSceneNamed:(NSString *)sceneName withIdentifier:(NSString *)animationIdentifier {
+    NSURL          *sceneURL        = [[NSBundle mainBundle] URLForResource:sceneName withExtension:@"dae"];
+    SCNSceneSource *sceneSource     = [SCNSceneSource sceneSourceWithURL:sceneURL options:nil];
+    CAAnimation    *animationObject = [sceneSource entryWithIdentifier:animationIdentifier withClass:[CAAnimation class]];
     
+    // Store the animation for later use
+    [_animations addObject:animationObject];
+    
+    // Whether or not the animation should loop
+    if (animation == ASCAnimationIdle || animation == ASCAnimationRun || animation == ASCAnimationWalk)
+    animationObject.repeatCount = MAXFLOAT;
+    }
+  */
+    func loadAnimation(sceneName:NSString, animationIdentifier:NSString)-> CAAnimation{
+        var sceneURL = NSBundle.mainBundle().URLForResource(sceneName, withExtension: "dae")
+        var sceneSource = SCNSceneSource(URL: sceneURL, options: nil)
+        return sceneSource.entryWithIdentifier(animationIdentifier, withClass: CAAnimation.self) as CAAnimation
+    }
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
         let scnView = self.view as SCNView
