@@ -4,14 +4,15 @@
 //
 //  Created by Jeff Wirsing on 7/16/14.
 //  Copyright (c) 2014 wirsing.app. All rights reserved.
-//  GitHub Test
+//  GitHub Test 2
 
 import UIKit
 import QuartzCore
 import SceneKit
+import Foundation
 
 class GameViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,7 +25,8 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 3)
+        cameraNode.position = SCNVector3(x: -3, y: 4, z: 7)
+        cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -41,14 +43,84 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
-        // retrieve the SCNView
+        var floor = SCNFloor()
+        floor.reflectionFalloffEnd = 100.0;                                                    // Set a falloff end value for the reflection
+        floor.firstMaterial.diffuse.contents = UIImage(named: "floor.jpg")// Set a diffuse texture, here a pavement image
+        floor.firstMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(0.2, 0.2, 1)
+      //  floor.firstMaterial.diffuse.con = SCNMatrix4(0.4, 0.4, 0.4) // Scale the diffuse texture
+        floor.firstMaterial.diffuse.mipFilter = SCNFilterMode.Linear;
+        // Create a node to attach the floor to, and add it to the scene
+        var floorNode = SCNNode()
+        floorNode.geometry = floor
+        floorNode.name = "floor"
+        floorNode.scale = SCNVector3Make(0.02, 0.02, 0.020)
+        
+        
+        
+        scene.rootNode.addChildNode(floorNode)
+        
+        
+        
+        //Get Running boy
+      //  var sceneURL = NSBundle.mainBundle().URLForResource("boy2_run", withExtension: "dae")
+        var sceneURL = NSBundle.mainBundle().URLForResource("boy2_run_SA", withExtension: "dae")
+        var sceneSource = SCNSceneSource(URL: sceneURL, options: nil)
+        let armature = sceneSource.entryWithIdentifier("Arnnmature", withClass: SCNNode.self) as SCNNode
+        NSLog("\(armature.description)")
+        NSLog("\(armature.childNodes)")
+        let boy = sceneSource.entryWithIdentifier("boy2", withClass: SCNNode.self) as SCNNode
+      //  boy.scale = SCNVector3Make(10, 4, 4)
+    //    let runAnimation = loadAnimation("boy2_run_SA", animationIdentifier: "BoyRun")
+        boy.geometry.firstMaterial.diffuse.contents = UIImage(named: "CBoy0002.tif")
+        
+        scene.rootNode.addChildNode(boy)
+        scene.rootNode.addChildNode(armature)
+      //  scene.rootNode.addAnimation(runAnimation, forKey: "boy2_run-1")
+        
+        
+      //  let boyScene = SCNScene(named: "boy2_run.dae")
+      //  boyScene.rootNode.addChildNode(ambientLightNode)
+      //  boyScene.rootNode.addChildNode(floorNode)
+      //  var boy = boyScene.rootNode.childNodeWithName("boy2", recursively: false)
+       // var armature = boyScene.rootNode.childNodeWithName("Arnnmature", recursively: false)
+
+       // var arnmature = boyScene.rootNode.childNodeWithName("Arnnmature", recursively: true)
+      //  boy.geometry.firstMaterial.diffuse.contents = UIImage(named: "CBoy0002.tif")
+        //NSLog("\(boyScene.rootNode.childNodes.description)")
+      // NSLog("\(boy.description)")
+      // NSLog("\(armature.description)")
+        //armature.addAnimation(runAnimation, forKey: "Run")
+        
+     //   boy.addChildNode(armature)
+     //   boy.rotation = SCNVector4Make(1, 0, 0, 0)
+      //  NSLog("\(boy.description)")
+      //  scene.rootNode.addChildNode(boy)
+        
+//        for node in boyScene.rootNode.childNodes{
+//          scene.rootNode.addChildNode(node as SCNNode)
+//        }
+        
+        //ShapeKey/Morphing Tests
+   //     var sceneURL = NSBundle.mainBundle().URLForResource("boxTest", withExtension: "dae")
+   //     var sceneSource = SCNSceneSource(URL: sceneURL, options: nil)
+//        var list = sceneSource.identifiersOfEntriesWithClass(SCNMorpher.self)
+//        NSLog("\(list.description)")
+//        let box: SCNNode = sceneSource.entryWithIdentifier("Cube", withClass: SCNNode.self) as SCNNode
+//        let morpher : SCNNode = sceneSource.entryWithIdentifier("Cube-morph", withClass: SCNNode.self) as SCNNode
+//        box.position = SCNVector3Make(0, 0, -10)
+ //       box.scale = SCNVector3Make(0.5, 1.8, 1)
+ //       box.rotation = SCNVector4Make(1, 0, 0, CFloat(-M_PI_2))
+        //morpher.setWeight(1, forTargetAtIndex: 0)
+     //   boxMorpher.targets[0] = morphedBox.geometry
+        //let targetArray:NSMutableArray = boxMorpher.targets //.append(morphedBox.geometry)
+     //  targetArray.addObject(morphedBox.geometry)
+ //       scene.rootNode.addChildNode(box)
         let scnView = self.view as SCNView
-        
         // set the scene to the view
+       // scnView.scene = boyScene
         scnView.scene = scene
-        
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
+        scnView.allowsCameraControl = false
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
@@ -63,19 +135,7 @@ class GameViewController: UIViewController {
         gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers)
         scnView.gestureRecognizers = gestureRecognizers
     }
-  /*  - (void)loadAnimation:(ASCAnimation)animation inSceneNamed:(NSString *)sceneName withIdentifier:(NSString *)animationIdentifier {
-    NSURL          *sceneURL        = [[NSBundle mainBundle] URLForResource:sceneName withExtension:@"dae"];
-    SCNSceneSource *sceneSource     = [SCNSceneSource sceneSourceWithURL:sceneURL options:nil];
-    CAAnimation    *animationObject = [sceneSource entryWithIdentifier:animationIdentifier withClass:[CAAnimation class]];
     
-    // Store the animation for later use
-    [_animations addObject:animationObject];
-    
-    // Whether or not the animation should loop
-    if (animation == ASCAnimationIdle || animation == ASCAnimationRun || animation == ASCAnimationWalk)
-    animationObject.repeatCount = MAXFLOAT;
-    }
-  */
     func loadAnimation(sceneName:NSString, animationIdentifier:NSString)-> CAAnimation{
         var sceneURL = NSBundle.mainBundle().URLForResource(sceneName, withExtension: "dae")
         var sceneSource = SCNSceneSource(URL: sceneURL, options: nil)
@@ -133,5 +193,7 @@ class GameViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
-
+    func degToRad(deg: Float)->Float{
+        return (deg / 180 * Float(M_PI))
+    }
 }
