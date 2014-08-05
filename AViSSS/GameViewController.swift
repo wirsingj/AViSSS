@@ -12,12 +12,11 @@ import SceneKit
 import Foundation
 
 class GameViewController: UIViewController {
-    
+    let scene = SCNScene()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // create a new scene
-        let scene = SCNScene()
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
@@ -42,22 +41,8 @@ class GameViewController: UIViewController {
         ambientLightNode.light.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
         
+        buildRoom()
         
-        var floor = SCNFloor()
-        floor.reflectionFalloffEnd = 100.0;                                                    // Set a falloff end value for the reflection
-        floor.firstMaterial.diffuse.contents = UIImage(named: "floor.jpg")// Set a diffuse texture, here a pavement image
-        floor.firstMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(0.2, 0.2, 1)
-      //  floor.firstMaterial.diffuse.con = SCNMatrix4(0.4, 0.4, 0.4) // Scale the diffuse texture
-        floor.firstMaterial.diffuse.mipFilter = SCNFilterMode.Linear;
-        // Create a node to attach the floor to, and add it to the scene
-        var floorNode = SCNNode()
-        floorNode.geometry = floor
-        floorNode.name = "floor"
-        floorNode.scale = SCNVector3Make(0.02, 0.02, 0.020)
-        
-        
-        
-        scene.rootNode.addChildNode(floorNode)
         
         
         
@@ -120,7 +105,7 @@ class GameViewController: UIViewController {
        // scnView.scene = boyScene
         scnView.scene = scene
         // allows the user to manipulate the camera
-        scnView.allowsCameraControl = false
+        scnView.allowsCameraControl = true
         
         // show statistics such as fps and timing information
         scnView.showsStatistics = true
@@ -135,7 +120,57 @@ class GameViewController: UIViewController {
         gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers)
         scnView.gestureRecognizers = gestureRecognizers
     }
-    
+    func buildRoom(){
+        
+        
+        
+        var floor = SCNFloor()
+        floor.reflectionFalloffEnd = 100.0;                                                    // Set a falloff end value for the reflection
+        floor.firstMaterial.diffuse.contents = UIImage(named: "floor.jpg")// Set a diffuse texture, here a pavement image
+        floor.firstMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(0.2, 0.2, 1)
+        //  floor.firstMaterial.diffuse.con = SCNMatrix4(0.4, 0.4, 0.4) // Scale the diffuse texture
+        floor.firstMaterial.diffuse.mipFilter = SCNFilterMode.Linear;
+        // Create a node to attach the floor to, and add it to the scene
+        var floorNode = SCNNode()
+        floorNode.geometry = floor
+        floorNode.name = "floor"
+        floorNode.scale = SCNVector3Make(0.02, 0.02, 0.020)
+        
+        
+        
+        scene.rootNode.addChildNode(floorNode)
+
+        
+        let wallGeometry = SCNPlane(width: 6, height: 4)
+        wallGeometry.firstMaterial.diffuse.contents = "lockerwall.png"
+       // wallGeometry.firstMaterial.diffuse.contentsTransform = SCNMatrix4Mult(SCNMatrix4MakeScale(1.0, 1.0, 1.0), SCNMatrix4MakeRotation(CFloat(M_PI_4), 0.0, 0.0, 1.0))
+        wallGeometry.firstMaterial.diffuse.wrapS = SCNWrapMode.Repeat
+        wallGeometry.firstMaterial.diffuse.wrapT = SCNWrapMode.Repeat
+        wallGeometry.firstMaterial.doubleSided = false
+        wallGeometry.firstMaterial.locksAmbientWithDiffuse = true
+        
+         let wallGeometry2 = SCNPlane(width: 6, height: 4)
+        wallGeometry2.firstMaterial.diffuse.contents = "lockerwall.png"
+        // wallGeometry.firstMaterial.diffuse.contentsTransform = SCNMatrix4Mult(SCNMatrix4MakeScale(1.0, 1.0, 1.0), SCNMatrix4MakeRotation(CFloat(M_PI_4), 0.0, 0.0, 1.0))
+        wallGeometry2.firstMaterial.diffuse.wrapS = SCNWrapMode.Repeat
+        wallGeometry2.firstMaterial.diffuse.wrapT = SCNWrapMode.Repeat
+        wallGeometry2.firstMaterial.doubleSided = false
+        wallGeometry2.firstMaterial.locksAmbientWithDiffuse = true
+        
+        let wall1 = SCNNode(geometry: wallGeometry)
+        wall1.position = SCNVector3Make(4, 2, 0)
+        wall1.rotation = SCNVector4Make(0, 1, 0, degToRad(-90))
+        wall1.castsShadow = false
+        
+        let wall2 = SCNNode(geometry: wallGeometry2)
+        wall2.position = SCNVector3Make(-4, 2, 0)
+        wall2.rotation = SCNVector4Make(0, 1, 0, degToRad(90))
+        wall2.castsShadow = false
+       
+        
+        scene.rootNode.addChildNode(wall1)
+        scene.rootNode.addChildNode(wall2)
+    }
     func loadAnimation(sceneName:NSString, animationIdentifier:NSString)-> CAAnimation{
         var sceneURL = NSBundle.mainBundle().URLForResource(sceneName, withExtension: "dae")
         var sceneSource = SCNSceneSource(URL: sceneURL, options: nil)
