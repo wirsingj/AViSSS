@@ -12,8 +12,9 @@ import SceneKit
 import Foundation
 
 class GameViewController: UIViewController {
-    let scene = SCNScene()
+    var scene = SCNScene()
     let cameraNode = SCNNode()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,8 +26,8 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: -3, y: 4, z: 7)
-        cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
+        cameraNode.position = SCNVector3(x: 0, y: 1, z: 4)
+       // cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
         cameraNode.camera.automaticallyAdjustsZRange = true
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -42,13 +43,14 @@ class GameViewController: UIViewController {
         ambientLightNode.light.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
         
-        //buildRoom()
-        morpherTesting()
-        //runningBoy()
         
+        //scene.rootNode.addChildNode(SCNNode(geometry: SCNBox(width: 1, height: 2, length: 1, chamferRadius: 0.4)))
+        //buildRoom()
+        addCharacter()
         
         //Get view
         let scnView = self.view as SCNView
+        
         // set the scene to the view
         scnView.scene = scene
         // allows the user to manipulate the camera
@@ -61,77 +63,157 @@ class GameViewController: UIViewController {
         scnView.backgroundColor = UIColor.blackColor()
         
         // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-        let gestureRecognizers = NSMutableArray()
-        gestureRecognizers.addObject(tapGesture)
-        gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers)
-        scnView.gestureRecognizers = gestureRecognizers
+       // let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+      //  let gestureRecognizers = NSMutableArray()
+       // gestureRecognizers.addObject(tapGesture)
+        //gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers)
+        //scnView.gestureRecognizers = gestureRecognizers
     }
-    func runningBoy(){
-        var sceneURL = NSBundle.mainBundle().URLForResource("boy2_run_SA", withExtension: "dae")
+    
+    
+    
+    func addCharacter(){
+        let sceneName = "boy2_kneel"
+        
+        let characterName = "CBoy0002"
+        let textureName = "CBoy0002.tif"
+        let armatureName = "Arnnmature"
+        let animationName = "\(sceneName)-1"
+        
+        var sceneURL = NSBundle.mainBundle().URLForResource(sceneName, withExtension: "dae")
         var sceneSource = SCNSceneSource(URL: sceneURL, options: nil)
-        let armature = sceneSource.entryWithIdentifier("Arnnmature", withClass: SCNNode.self) as SCNNode
-        NSLog("\(armature.description)")
-        NSLog("\(armature.childNodes)")
-        let boy = sceneSource.entryWithIdentifier("boy2", withClass: SCNNode.self) as SCNNode
-        //  boy.scale = SCNVector3Make(10, 4, 4)
-        //    let runAnimation = loadAnimation("boy2_run_SA", animationIdentifier: "BoyRun")
-        boy.geometry.firstMaterial.diffuse.contents = UIImage(named: "CBoy0002.tif")
         
-        scene.rootNode.addChildNode(boy)
-        scene.rootNode.addChildNode(armature)
+        NSLog("\(sceneSource.identifiersOfEntriesWithClass(SCNNode.self).description)")
+        let armature = sceneSource.entryWithIdentifier(armatureName, withClass: SCNNode.self) as SCNNode
+        //Assign CharacterName
         
+        //Get Node containing information about the character mesh
+        let character = sceneSource.entryWithIdentifier(characterName, withClass: SCNNode.self) as SCNNode
+        //add the Character's armature
+        character.addChildNode(armature)
+        //Add the characters skin
+        
+        character.geometry.firstMaterial.diffuse.contents = UIImage(named: textureName)
+        
+        //Rotation tests
+        let xAngle = SCNMatrix4MakeRotation(degToRad(-90), 1, 0, 0)
+        let yAngle = SCNMatrix4MakeRotation(degToRad(180), 0, 1, 0)
+        let zAngle = SCNMatrix4MakeRotation(0, 0, 0, 1)
+        var result = SCNMatrix4Mult(SCNMatrix4Mult(xAngle, yAngle), zAngle)
+        
+        character.transform = result
+        //character.rotation = SCNVector4Make(1, 0, 0, degToRad(-90))
+        //character.scale = SCNVector3Make(2, 2, 2)
+        
+        //Get the animation associated with the armature from the scene
+        var animation = sceneSource.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
+        //animation.duration = 10
+        animation.repeatCount = Float.infinity
+        
+        //This is how the facial morphers are used as an animation
+        let animation2 = CABasicAnimation(keyPath: "morpher.weights[6]")
+        animation2.fromValue = 0.0;
+        animation2.toValue = 1.0;
+        animation2.autoreverses = true;
+        animation2.repeatCount = Float.infinity;
+        animation2.duration = 2;
+        
+        //Adding animations to character
+        character.addAnimation(animation, forKey: "run")
+        character.addAnimation(animation2, forKey: "smile")
+        
+        scene.rootNode.addChildNode(character)
     }
+    
     func morpherTesting(){
         
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 100)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         cameraNode.eulerAngles = SCNVector3Make(0, 0, 0)
         
         var boxURL = NSBundle.mainBundle().URLForResource("boxTest", withExtension: "dae")
-        var boxSource = SCNSceneSource(URL: boxURL, options: nil)
         var mapURL = NSBundle.mainBundle().URLForResource("foldingMap", withExtension: "dae")
-        var mapSource =  SCNSceneSource(URL: mapURL, options: nil)
         var exampleURL = NSBundle.mainBundle().URLForResource("morphExample", withExtension: "dae")
-        var exampleSource =  SCNSceneSource(URL: exampleURL, options: nil)
+        var boyURL = NSBundle.mainBundle().URLForResource("boy3_Talk", withExtension: "dae")
+        var walkURL = NSBundle.mainBundle().URLForResource("walk", withExtension: "dae")
+        var attackURL = NSBundle.mainBundle().URLForResource("attack", withExtension: "dae")
         
+        var boxSource = SCNSceneSource(URL: boxURL, options: nil)
+        var mapSource =  SCNSceneSource(URL: mapURL, options: nil)
+        var exampleSource =  SCNSceneSource(URL: exampleURL, options: nil)
+        var boySource =  SCNSceneSource(URL: boyURL, options: nil)
+        var walkSource =  SCNSceneSource(URL: walkURL, options: nil)
+        var attackSource =  SCNSceneSource(URL: attackURL, options: nil)
         
         var boxlist = boxSource.identifiersOfEntriesWithClass(SCNNode.self)
         var maplist = mapSource.identifiersOfEntriesWithClass(SCNNode.self)
         var examplelist = exampleSource.identifiersOfEntriesWithClass(SCNNode.self)
+        var boyList = boySource.identifiersOfEntriesWithClass(SCNNode.self)
+        var walkList :[String] = walkSource.identifiersOfEntriesWithClass(SCNNode.self) as [String]
         
-        NSLog("Box- \(boxlist.description)")
- 
-        NSLog("Map- \(maplist.description)")
-        NSLog("Example- \(examplelist.description)")
         
-        let box: SCNNode = boxSource.entryWithIdentifier("Cube", withClass: SCNNode.self) as SCNNode
+       // NSLog("BoxScene- \(boxlist.description)")
+       // NSLog("MapScene- \(maplist.description)")
+       // NSLog("ExampleScene- \(examplelist.description)")
+      //  NSLog("BoyScene- \(boyList.description)")
+      //  NSLog("walkScene- \(walkList.description)")
         
-        let map: SCNNode = mapSource.entryWithIdentifier("node-Map", withClass: SCNNode.self) as SCNNode
         
-        let cylinder: SCNNode = exampleSource.entryWithIdentifier("pCylinder1", withClass: SCNNode.self) as SCNNode
-        cylinder.morpher.setWeight(1, forTargetAtIndex: 0)
-       // box.morpher.setWeight(1.0, forTargetAtIndex: 0)
-       // let morpher : SCNNode = sceneSource.entryWithIdentifier("Cube-morph", withClass: SCNNode.self) as SCNNode
-     //   box.position = SCNVector3Make(0, 0, -10)
-       // box.scale = SCNVector3Make(0.2, 0.2, 0.2)
-     //   box.rotation = SCNVector4Make(1, 0, 0, CFloat(-M_PI_2))
-     //   morpher.setWe(1, forTargetAtIndex: 0)
-     //   boxMorpher.targets[0] = morphedBox.geometry
-     //   let targetArray:NSMutableArray = boxMorpher.targets //.append(morphedBox.geometry)
-      //  targetArray.addObject(morphedBox.geometry)
+        // var box: SCNNode = boxSource.entryWithIdentifier("Cube", withClass: SCNNode.self) as SCNNode
+        // var map: SCNNode = mapSource.entryWithIdentifier("node-Map", withClass: SCNNode.self) as SCNNode
+        //   var cylinder: SCNNode = exampleSource.entryWithIdentifier("pCylinder1", withClass: SCNNode.self) as SCNNode
+        var boy: SCNNode = boySource.entryWithIdentifier("boy3", withClass: SCNNode.self) as SCNNode
+        //var walk: SCNNode = walkSource.entryWithIdentifier("node-Box01", withClass: SCNNode.self) as SCNNode
+        var attackScene = SCNScene(named: "attack")
+        var walkScene = SCNScene(named: "walk")
+        var walk = SCNNode()
+       // addChildrenToNodeFromScene(walkScene, node: scene.rootNode)
+        ///////////////// //Get Scene directly////////////////////////
+        let boyScene = SCNScene(named: "boy3_Talk.dae")
+        //  var boy = boyScene.rootNode.childNodeWithName("boy3", recursively: true)
         
-      //  var morphScene =  SCNScene(named: "foldingMap.dae")
-      //  var morphBox = morphScene.rootNode.childNodeWithName("Map", recursively: true)
-       //var morphScene =  SCNScene(named: "boxTest.dae")
-       // var morphBox = morphScene.rootNode.childNodeWithName("Cube", recursively: true)
-     //   NSLog("\(morphScene.rootNode.childNodes.description)")
-      //  NSLog("\(morphBox.description )")
+        //NSLog("boy deets- \(boy)")
+        
+        
+        
+        //boy.rotation = SCNVector4Make(0, 1, 0, degToRad(90))
+        // face.transform = SCNMatrix4MakeRotation(degToRad(190), 1, 0, 0)
+        //  face.transform = SCNMatrix4MakeScale(5, 5, 5)
+        //  boy.position = SCNVector3Make(0, 4, -10)
+        
+        // boy.scale = SCNVector3Make(100, 100, 100)
+        //    boy.transform = SCNMatrix4MakeTranslation(0, 50, 0)
+        
+        // boy.geometry.firstMaterial.diffuse.contents = UIImage(named: "CBoy0002.tif")
+        // boy.geometry.firstMaterial.diffuse.contents = UIImage(named: "CBoy0003.tif.001.tif")
+        // boy.geometry.firstMaterial.lightingModelName = "litPerPixel"
+        
+        
+        
+        
+        //   NSLog("Box- \(box.description)")
+        //   NSLog("Cylinder- \(cylinder.description)")
+        //NSLog("boy- \(boy.description)")
+        
+        //  cylinder.morpher.setWeight(1, forTargetAtIndex: 0)
+        //  map.morpher.setWeight(1, forTargetAtIndex: 0)
+        //  face.morpher.setWeight(1, forTargetAtIndex: 0)
+        //  box.morpher.setWeight(0.4, forTargetAtIndex: 0)
+        //face.morpher.setWeight(1, forTargetAtIndex: 0)
+        // box.rotation = SCNVector4Make(1, 0, 0, degToRad(90))n
+        
+        
+        //   let animation = CABasicAnimation(keyPath: "morpher.weights[4]")
+        //let animation: CAAnimation = attackSource.entryWithIdentifier("attackID", withClass: CAAnimation.self) as CAAnimation
+        //animation.fromValue = 0.0;
+        // animation.toValue = 1.0;
+        //  animation.autoreverses = true;
+        //  animation.repeatCount = Float.infinity;
+        //  animation.duration = 2;
+        //scene.rootNode.addAnimation(animation, forKey: "smile")
+        
+        //walk.rotation = SCNVector4Make(0, 1, 0, degToRad(90))
+        scene.rootNode.addChildNode(walk)
 
-      //  morphBox.morpher.setWeight(0.5, forTargetAtIndex: 0)
-        
-        
-        
-        scene.rootNode.addChildNode(cylinder)
      
     }
     func buildRoom(){
@@ -245,4 +327,14 @@ class GameViewController: UIViewController {
     func degToRad(deg: Float)->Float{
         return (deg / 180 * Float(M_PI))
     }
+    //Add all children of scene to given node
+    func addChildrenToNodeFromScene(scene: SCNScene, node: SCNNode)->SCNNode{
+        
+        for child in scene.rootNode.childNodes{
+            node.addChildNode(child as SCNNode)
+        }
+        
+        return node
+    }
+
 }
