@@ -42,7 +42,7 @@ class GameViewController: UIViewController {
         
         
        //Comment out room building to have camera rotation focus on just character
-        buildRoom()
+       // buildRoom()
         addCharacter()
         
         //Get view
@@ -68,10 +68,13 @@ class GameViewController: UIViewController {
     }
     func addCharacter(){
         //Set name variables
-        let characterName = "CWom0016"
-        let sceneName = "woman16_Character"
-        let sceneAnimationSourceName = "woman16_Run"
-        let armatureName = "Armature"
+//        let characterName = "CWom0016"
+//        let sceneName = "woman16_Character"
+//        let sceneAnimationSourceName = "woman16_Run"
+        let characterName = "CBoy0001"
+        let sceneName = "boy1_Character"
+        let sceneAnimationSourceName = "boy1_Talk"
+       // let armatureName = "Armature"
         let animationName = "\(sceneAnimationSourceName)-1"
         
         /////Get the scene/////
@@ -94,8 +97,9 @@ class GameViewController: UIViewController {
         let character = sceneSource.entryWithIdentifier(characterName, withClass: SCNNode.self) as SCNNode
         //Get the armature from the scene source and add it to character
         //(may be able to set this in the .dae/blender in the future)
-        let armature = sceneSource.entryWithIdentifier(armatureName, withClass: SCNNode.self) as SCNNode
-        character.addChildNode(armature)
+        //Update-  Reordering the armature as a childnode of character in the .dea works
+        //let armature = sceneSource.entryWithIdentifier(armatureName, withClass: SCNNode.self) as SCNNode
+       // character.addChildNode(armature)
         
         //Build up final rotation transformation
         let xAngle = SCNMatrix4MakeRotation(degToRad(-90), 1, 0, 0)
@@ -110,7 +114,7 @@ class GameViewController: UIViewController {
         var animation = sceneAnimationSource.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
         
         //This is how the facial morphers are used as an animation
-        let animation2 = CABasicAnimation(keyPath: "morpher.weights[0]")
+        let animation2 = CABasicAnimation(keyPath: "morpher.weights[5]")
         animation2.fromValue = 0.0;
         animation2.toValue = 1.0;
         animation2.autoreverses = true;
@@ -118,7 +122,7 @@ class GameViewController: UIViewController {
         animation2.duration = 2;
         
         //Adding body animation to character's skinner skeleton object
-        character.skinner?.skeleton.addAnimation(animation, forKey: "run")
+        character.addAnimation(animation, forKey: "run")
         //Adding morpher (face) animation(s) to character
         character.addAnimation(animation2, forKey: "smile")
         
