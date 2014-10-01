@@ -11,7 +11,7 @@ import QuartzCore
 import SceneKit
 import Foundation
 
-class GameViewController: UIViewController {
+class ScenarioManagerBackup: UIViewController {
     var scene = SCNScene()
     let cameraNode = SCNNode()
     
@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 1, z: 2)
+        cameraNode.position = SCNVector3(x: 0, y: 5, z: 5)
         // cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
         cameraNode.camera?.automaticallyAdjustsZRange = true
         // create and add a light to the scene
@@ -41,8 +41,8 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         
-       //Comment out room building to have camera rotation focus on just character
-       // buildRoom()
+        //Comment out room building to have camera rotation focus on just character
+        buildRoom()
         addCharacter()
         
         //Get view
@@ -68,13 +68,23 @@ class GameViewController: UIViewController {
     }
     func addCharacter(){
         //Set name variables
-//        let characterName = "CWom0016"
-//        let sceneName = "woman16_Character"
-//        let sceneAnimationSourceName = "woman16_Run"
+        //        let characterName = "CWom0016"
+        //        let sceneName = "woman16_Character"
+        //        let sceneAnimationSourceName = "woman16_Run"
         let characterName = "CBoy0001"
         let sceneName = "boy1_Character"
         let sceneAnimationSourceName = "boy1_Talk"
-       // let armatureName = "Armature"
+        //        let characterName = "CBoy0002"
+        //        let sceneName = "boy2_Character"
+        ////        let sceneAnimationSourceName = "boy2_Grab"
+        //        let characterName = "CBoy0003"
+        //        let sceneName = "boy3_Character"
+        //        let sceneAnimationSourceName = "boy3_Run"
+        //        let characterName = "CBoy0004"
+        //        let sceneName = "boy4_Character"
+        //        let sceneAnimationSourceName = "boy3_Run"
+        
+        
         let animationName = "\(sceneAnimationSourceName)-1"
         
         /////Get the scene/////
@@ -82,39 +92,42 @@ class GameViewController: UIViewController {
         var sceneURL = NSBundle.mainBundle().URLForResource(sceneName, withExtension: "dae")
         var sceneSource = SCNSceneSource(URL: sceneURL!, options: nil)
         
-       //Get character (armature) animation scene
+        //Get character (armature) animation scene
         var sceneAnimationURL = NSBundle.mainBundle().URLForResource(sceneAnimationSourceName, withExtension: "dae")
         var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
         
         //Log nodes found in scene sources
-        NSLog("Character- \(sceneSource.identifiersOfEntriesWithClass(SCNNode.self)?.description)")
-        NSLog("Animation- \(sceneAnimationSource.identifiersOfEntriesWithClass(SCNNode.self)?.description)")
+        NSLog("Character- \(sceneSource?.identifiersOfEntriesWithClass(SCNNode.self))")
+        NSLog("Animation- \(sceneAnimationSource?.identifiersOfEntriesWithClass(SCNNode.self)?.description)")
         
         
-
+        
         
         //Get Node containing information about the character mesh
-        let character = sceneSource.entryWithIdentifier(characterName, withClass: SCNNode.self) as SCNNode
+        let character = sceneSource?.entryWithIdentifier(characterName, withClass: SCNNode.self) as SCNNode
         //Get the armature from the scene source and add it to character
         //(may be able to set this in the .dae/blender in the future)
         //Update-  Reordering the armature as a childnode of character in the .dea works
         //let armature = sceneSource.entryWithIdentifier(armatureName, withClass: SCNNode.self) as SCNNode
-       // character.addChildNode(armature)
+        // character.addChildNode(armature)
         
         //Build up final rotation transformation
         let xAngle = SCNMatrix4MakeRotation(degToRad(-90), 1, 0, 0)
-        let yAngle = SCNMatrix4MakeRotation(degToRad(130), 0, 1, 0)
+        let yAngle = SCNMatrix4MakeRotation(degToRad(180), 0, 1, 0)
         let zAngle = SCNMatrix4MakeRotation(0, 0, 0, 1)
         var result = SCNMatrix4Mult(SCNMatrix4Mult(xAngle, yAngle), zAngle)
         
         //Apply rotation transformation to character
         character.transform = SCNMatrix4Mult(result, character.transform)
         
+        NSLog("Morpher Stuff-\(character.morpher?.targets?)")
+        NSLog("SceneSource Morpher Targets- \(sceneSource?.identifiersOfEntriesWithClass(SCNGeometry.self))")
+        character.scale = SCNVector3Make(5, 5, 5)
         //Get the animation associated with the armature from the scene
-        var animation = sceneAnimationSource.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
+        var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
         
         //This is how the facial morphers are used as an animation
-        let animation2 = CABasicAnimation(keyPath: "morpher.weights[5]")
+        let animation2 = CABasicAnimation(keyPath: "morpher.weights[6]")
         animation2.fromValue = 0.0;
         animation2.toValue = 1.0;
         animation2.autoreverses = true;
@@ -122,11 +135,12 @@ class GameViewController: UIViewController {
         animation2.duration = 2;
         
         //Adding body animation to character's skinner skeleton object
-        character.addAnimation(animation, forKey: "run")
+        //character.addAnimation(animation, forKey: "run")
         //Adding morpher (face) animation(s) to character
         character.addAnimation(animation2, forKey: "smile")
         
-        
+        NSLog("animation keys- \(character.animationKeys())")
+        //character.removeAnimationForKey("run")
         //Add character to scene
         scene.rootNode.addChildNode(character)
     }
@@ -138,8 +152,7 @@ class GameViewController: UIViewController {
         floor.reflectionFalloffEnd = 100.0;
         // Set a diffuse texture, here a pavement image
         floor.firstMaterial?.diffuse.contents = UIImage(named: "floor.jpg")
-        floor.firstMaterial?.diffuse.mipFilter = SCNFilterMode.Linear;
-        
+        floor.firstMaterial?.diffuse.mipFilter = SCNFilterMode.Linear
         // Create a node to attach the floor to, and add it to the scene
         var floorNode = SCNNode()
         floorNode.geometry = floor
@@ -225,9 +238,9 @@ class GameViewController: UIViewController {
     
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.toRaw())
+            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
         } else {
-            return Int(UIInterfaceOrientationMask.All.toRaw())
+            return Int(UIInterfaceOrientationMask.All.rawValue)
         }
     }
     
