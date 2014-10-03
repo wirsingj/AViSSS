@@ -20,9 +20,55 @@ class ScenarioManager: UIViewController {
         
         //Get view
         let scnView = self.view as SCNView
-        let scriptManager = ScriptManager()
         
         
+        /////////////////////
+        //Will have section here for 'intro' scene to be used before scripting scenes
+        ////////////////////
+        
+        ////////////////////////////////////////
+        //Begin script reading process
+        /////////////////////////////////////
+        let scriptManager = ScriptManager(sm: self)
+        
+        //Set new working scene
+        //May have some loading screen/transition in future
+        scnView.scene = scene
+        
+        //Add lights and camera
+        addLights()
+        addCamera()
+        
+        //Will get scenario name from first scene/GUIManager
+        var scenarioName = "testScenario"
+        
+        //Ask sciptManager to begin running script
+        scriptManager.runScenario(scenarioName)
+        
+        //Old testing method
+        addCharacter()
+        
+        
+        
+        ////////////Other settings....///////////////////
+        
+        // show statistics such as fps and timing information
+        scnView.showsStatistics = true
+        // configure the view
+        scnView.backgroundColor = UIColor.blueColor()
+     
+        // add a tap gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+        let gestureRecognizers = NSMutableArray()
+        gestureRecognizers.addObject(tapGesture)
+        if let existingGestureRecognizers = scnView.gestureRecognizers {
+            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
+        }
+        scnView.gestureRecognizers = gestureRecognizers
+
+    }
+    
+    func addCamera(){
         // create and add a camera to the scene
         cameraNode.camera = SCNCamera()
         scene.rootNode.addChildNode(cameraNode)
@@ -30,6 +76,9 @@ class ScenarioManager: UIViewController {
         cameraNode.position = SCNVector3(x: 0, y: 5, z: 5)
         // cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
         cameraNode.camera?.automaticallyAdjustsZRange = true
+
+    }
+    func addLights(){
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
@@ -42,32 +91,21 @@ class ScenarioManager: UIViewController {
         ambientLightNode.light?.type = SCNLightTypeAmbient
         ambientLightNode.light?.color = UIColor.darkGrayColor()
         scene.rootNode.addChildNode(ambientLightNode)
-        
-        // set the scene to the view
-        scnView.scene = scene
-        // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
-        
-        // show statistics such as fps and timing information
-        scnView.showsStatistics = true
-        
-        // configure the view
-        scnView.backgroundColor = UIColor.blackColor()
-        
-        // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-        let gestureRecognizers = NSMutableArray()
-        gestureRecognizers.addObject(tapGesture)
-        gestureRecognizers.addObjectsFromArray(scnView.gestureRecognizers!)
-        scnView.gestureRecognizers = gestureRecognizers
+
     }
-    
-    
+    //Add prepared node to scene
     func addNode(node: SCNNode){
-        
-        
+        scene.rootNode.addChildNode(node)
     }
-    
+    //Add animation to a node-  This can be loc/rot/scale animations, or armature animations
+    func addAnimation(target: String, animation: CAAnimation, key: String){
+        scene.rootNode.childNodeWithName(target, recursively: true)?.addAnimation(animation, forKey: key)
+    }
+    //Add CABasicAnimation to a node-  This can be the Morphers (facial animation)
+    func addAnimation(target: String, animation: CABasicAnimation, key: String){
+        scene.rootNode.childNodeWithName(target, recursively: true)?.addAnimation(animation, forKey: key)
+    }
+
     
     func addCharacter(){
         //Set name variables
@@ -123,12 +161,11 @@ class ScenarioManager: UIViewController {
         //Apply rotation transformation to character
         character.transform = SCNMatrix4Mult(result, character.transform)
         
-        NSLog("Morpher Stuff-\(character.morpher?.targets?)")
-        NSLog("SceneSource Morpher Targets- \(sceneSource?.identifiersOfEntriesWithClass(SCNGeometry.self))")
+        //NSLog("Morpher Stuff-\(character.morpher?.targets?)")
+       // NSLog("SceneSource Morpher Targets- \(sceneSource?.identifiersOfEntriesWithClass(SCNGeometry.self))")
         character.scale = SCNVector3Make(5, 5, 5)
         //Get the animation associated with the armature from the scene
         var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
-        
         //This is how the facial morphers are used as an animation
         let animation2 = CABasicAnimation(keyPath: "morpher.weights[6]")
         animation2.fromValue = 0.0;
@@ -138,7 +175,7 @@ class ScenarioManager: UIViewController {
         animation2.duration = 2;
         
         //Adding body animation to character's skinner skeleton object
-        //character.addAnimation(animation, forKey: "run")
+        character.addAnimation(animation, forKey: "run")
         //Adding morpher (face) animation(s) to character
         character.addAnimation(animation2, forKey: "smile")
         
@@ -204,15 +241,14 @@ class ScenarioManager: UIViewController {
         
         // check what nodes are tapped
         let p = gestureRecognize.locationInView(scnView)
-        if let hitResults = scnView.hitTest(p, options: nil){
-            
+        if let hitResults = scnView.hitTest(p, options: nil) {
             // check that we clicked on at least one object
             if hitResults.count > 0 {
                 // retrieved the first clicked object
                 let result: AnyObject! = hitResults[0]
                 
                 // get its material
-                let material = result.node.geometry?.firstMaterial
+                let material = result.node!.geometry!.firstMaterial!
                 
                 // highlight it
                 SCNTransaction.begin()
@@ -223,12 +259,12 @@ class ScenarioManager: UIViewController {
                     SCNTransaction.begin()
                     SCNTransaction.setAnimationDuration(0.5)
                     
-                    material?.emission.contents = UIColor.blackColor()
+                    material.emission.contents = UIColor.blackColor()
                     
                     SCNTransaction.commit()
                 }
                 
-                material?.emission.contents = UIColor.redColor()
+                material.emission.contents = UIColor.redColor()
                 
                 SCNTransaction.commit()
             }
