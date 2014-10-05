@@ -12,11 +12,19 @@ import SceneKit
 //import Foundation
 
 class ScriptManager {
-    var currentState: Int = 0
+    var currentState = 0
+    var states : [GDataXMLElement] = []
     let scenarioManager = ScenarioManager()
+    let tom = ""
+    
+    
     init(sm: ScenarioManager){
         scenarioManager = sm
     }
+    
+    
+    
+    
     //Input: xml scenario file name to load as XML document
     //This function is the main parser of our scripts-
     //It first loads environment script if found
@@ -26,27 +34,62 @@ class ScriptManager {
         var scenarioScript = getXMLDocument(scenarioName)
         
         //Check for environment
-        if let environment: GDataXMLElement = scenarioScript.rootElement().elementsForName("environment").first as? GDataXMLElement{
+        if let environment = scenarioScript.rootElement().elementsForName("environment").first as? GDataXMLElement{
             parseEnvironment(getXMLDocument(environment.attributeForName("file").stringValue()))
         }
         
         //Get states
-        var states = scenarioScript.rootElement().elementsForName("state")
+        states = scenarioScript.rootElement().elementsForName("state") as [GDataXMLElement]
+        goToState(0)
+        
     }
+    //Process (switch to) given stateID
+    func goToState(stateID: Int){
+        
+        //If there is a state with that number, get it and continue..
+        if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
+            
+            //Actions
+            parseActions(state)
+            
+            //Menu Options
+            let menuChoices: [GDataXMLElement] = state.elementsForName("menu_option") as [GDataXMLElement]
+            buildMenuChoices(menuChoices)
+        }
+        
     
+    }
     //Build nodes and skybox for ScenarioManager
     func parseEnvironment(environment :GDataXMLDocument){
-        //Get the nodes to add
-        var nodes: [GDataXMLElement] = environment.rootElement().elementsForName("node") as [GDataXMLElement]
+        //Add Nodes
+        parseNodes(environment)
+        
+        //Actions
+        
+        //Skybox
+    }
+    
+    //Method for parsing and processing actions in a given GDataXMLElement
+    //These may be animations (armature, pos/rot/scale, morphers) which effect a target
+    //or they may be instructions for playing a sound
+    func parseActions(script: GDataXMLElement){
+        
+    }
+    
+    
+    
+    //Method for retrieving nodes (3d object description) from a document and get then processed
+    func parseNodes(script: GDataXMLDocument){
+        var nodes: [GDataXMLElement] = script.rootElement().elementsForName("node") as [GDataXMLElement]
         if nodes.count > 0 {
             for node in nodes{
                 buildSCNNode(node)
             }
             
         }
-        
+
     }
-    
+    //Method getting an xml document from string location
     func getXMLDocument(location: NSString)->GDataXMLDocument{
         let xmlLocation = NSBundle.mainBundle().pathForResource(location, ofType: ".xml")
         let xmlData = NSData(contentsOfFile: xmlLocation!)
@@ -71,10 +114,24 @@ class ScriptManager {
        
             //Get Node containing information about the character mesh
             scnNode = sceneSource?.entryWithIdentifier(nodeName, withClass: SCNNode.self) as SCNNode
-            scnNode.scale = SCNVector3Make(5, 5, 5)
-            NSLog("Test2 \(scnNode.description)")
+            
         }
+        //Get position data
+        let posNode = node.elementsForName("position").first as GDataXMLElement
+        let posX = ((posNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+        let posY = ((posNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+        let posZ = ((posNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+        scnNode.position = SCNVector3Make(posX, posY, posZ)
+       
+//        //Get rotation data
+//        let rotNode = node.elementsForName("rotation").first as GDataXMLElement
+//        let rotX = degToRad(((rotNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue)
+//        let rotY = ((rotNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+//        let rotZ = ((rotNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
         
+        //Get scale data
+        
+        scnNode.scale = SCNVector3Make(5, 5, 5)
         
         
         
@@ -86,7 +143,8 @@ class ScriptManager {
         
         //Apply rotation transformation to character
         scnNode.transform = SCNMatrix4Mult(result, scnNode.transform)
-        NSLog("Test")
+        
+        
         scenarioManager.addNode(scnNode)
     }
     

@@ -20,7 +20,8 @@ class ScenarioManager: UIViewController {
         
         //Get view
         let scnView = self.view as SCNView
-        
+        // allows the user to manipulate the camera
+        scnView.allowsCameraControl = true
         
         /////////////////////
         //Will have section here for 'intro' scene to be used before scripting scenes
@@ -46,7 +47,7 @@ class ScenarioManager: UIViewController {
         scriptManager.runScenario(scenarioName)
         
         //Old testing method
-        addCharacter()
+        //addCharacter()
         
         
         
