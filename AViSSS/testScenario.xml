@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Jeff Wirsing AViSSS XML -->
+<scenario>
+    <environment file="hallway">hallway</environment>
+	<state id = "0">
+		<action></action>
+		<menu_option id="0">
+		</menu_option>
+		<menu_option id="1">
+		</menu_option>
+	</state>
+	<state id = "1">
+	</state>
+</scenario>

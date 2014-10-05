@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Jeff Wirsing AViSSS XML -->
+<!--Hallway Environment -->
+<environment name="hallway">
+	<node name="CBoy0001" type="dae">
+		<file>boy1_Character</file>
+		<position>
+			<x>0</x>
+			<y>0</y>
+			<z>0</z>
+		</position>
+		<rotation>  
+			<x>-90</x>
+			<y>180</y>
+			<z>0</z>
+		</rotation>
+		<scale>
+			<x>10</x>
+			<y>10</y>
+			<z>10</z>
+		</scale>
+	</node>
+    <node name="CBoy0002" type="dae">
+        <file>boy2_Character</file>
+        <position>
+            <x>4</x>
+            <y>4</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>180</y>
+            <z>0</z>
+        </rotation>
+        <scale>
+            <x>10</x>
+            <y>10</y>
+            <z>10</z>
+        </scale>
+    </node>
+    <skybox></skybox>
+</environment>
