@@ -94,6 +94,9 @@ class ScenarioManager: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
 
     }
+    func buildSkybox(imageNames: [String]){
+        scene.background.contents = imageNames
+    }
     //Add prepared node to scene
     func addNode(node: SCNNode){
         scene.rootNode.addChildNode(node)

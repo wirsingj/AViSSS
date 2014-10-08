@@ -43,6 +43,12 @@
 		1FCF20E1197EB64800A2AB99 /* ScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */; };
 		1FCF20E5197EB8C900A2AB99 /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E4197EB8C900A2AB99 /* StartScene.swift */; };
 		1FCF20E7197EC2D300A2AB99 /* GUIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */; };
+		1FF9198119E5A5C600A1A6EF /* hexagon_back.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1FF9197B19E5A5C600A1A6EF /* hexagon_back.tif */; };
+		1FF9198219E5A5C600A1A6EF /* hexagon_front.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1FF9197C19E5A5C600A1A6EF /* hexagon_front.tif */; };
+		1FF9198319E5A5C600A1A6EF /* hexagon_left.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1FF9197D19E5A5C600A1A6EF /* hexagon_left.tif */; };
+		1FF9198419E5A5C600A1A6EF /* hexagon_right.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1FF9197E19E5A5C600A1A6EF /* hexagon_right.tif */; };
+		1FF9198519E5A5C600A1A6EF /* hexagon_top.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1FF9197F19E5A5C600A1A6EF /* hexagon_top.tif */; };
+		1FF9198619E5A5C600A1A6EF /* hexagon_bot.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1FF9198019E5A5C600A1A6EF /* hexagon_bot.tif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +104,12 @@
 		1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptManager.swift; sourceTree = "<group>"; };
 		1FCF20E4197EB8C900A2AB99 /* StartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
 		1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIManager.swift; sourceTree = "<group>"; };
+		1FF9197B19E5A5C600A1A6EF /* hexagon_back.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hexagon_back.tif; sourceTree = "<group>"; };
+		1FF9197C19E5A5C600A1A6EF /* hexagon_front.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hexagon_front.tif; sourceTree = "<group>"; };
+		1FF9197D19E5A5C600A1A6EF /* hexagon_left.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hexagon_left.tif; sourceTree = "<group>"; };
+		1FF9197E19E5A5C600A1A6EF /* hexagon_right.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hexagon_right.tif; sourceTree = "<group>"; };
+		1FF9197F19E5A5C600A1A6EF /* hexagon_top.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hexagon_top.tif; sourceTree = "<group>"; };
+		1FF9198019E5A5C600A1A6EF /* hexagon_bot.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = hexagon_bot.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +133,7 @@
 		1F78E4C919E0D50C007CE18A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1FF9197A19E5A5C600A1A6EF /* MountainLake */,
 				1F78E4CA19E0D50C007CE18A /* images-Hi */,
 			);
 			path = Images;
@@ -286,6 +299,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1FF9197A19E5A5C600A1A6EF /* MountainLake */ = {
+			isa = PBXGroup;
+			children = (
+				1FF9197B19E5A5C600A1A6EF /* hexagon_back.tif */,
+				1FF9197C19E5A5C600A1A6EF /* hexagon_front.tif */,
+				1FF9197D19E5A5C600A1A6EF /* hexagon_left.tif */,
+				1FF9197E19E5A5C600A1A6EF /* hexagon_right.tif */,
+				1FF9197F19E5A5C600A1A6EF /* hexagon_top.tif */,
+				1FF9198019E5A5C600A1A6EF /* hexagon_bot.tif */,
+			);
+			path = MountainLake;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -371,9 +397,12 @@
 				1F78E51F19E0D50C007CE18A /* CGirl0003.tif in Resources */,
 				1F78E51B19E0D50C007CE18A /* CBoy0004.tif in Resources */,
 				1F78E53819E0D50C007CE18A /* boy1_Character.dae in Resources */,
+				1FF9198319E5A5C600A1A6EF /* hexagon_left.tif in Resources */,
+				1FF9198519E5A5C600A1A6EF /* hexagon_top.tif in Resources */,
 				1F78E52119E0D50C007CE18A /* CWom0017.tif in Resources */,
 				1F78E54519E0D50C007CE18A /* woman16_Run.dae in Resources */,
 				1F78E52019E0D50C007CE18A /* CWom0016.tif in Resources */,
+				1FF9198419E5A5C600A1A6EF /* hexagon_right.tif in Resources */,
 				1F78E53B19E0D50C007CE18A /* boy2_Character.dae in Resources */,
 				1F86E7B91977270A005ED0DD /* Main.storyboard in Resources */,
 				1F86E7BB1977270A005ED0DD /* Images.xcassets in Resources */,
@@ -390,9 +419,12 @@
 				1F78E53A19E0D50C007CE18A /* boy1_Talk.dae-e in Resources */,
 				1F78E53D19E0D50C007CE18A /* boy2_Grab.dae-e in Resources */,
 				1F78E50C19E0D50C007CE18A /* ._.DS_Store in Resources */,
+				1FF9198119E5A5C600A1A6EF /* hexagon_back.tif in Resources */,
 				1F78E53F19E0D50C007CE18A /* boy3_Run.dae in Resources */,
+				1FF9198619E5A5C600A1A6EF /* hexagon_bot.tif in Resources */,
 				1F78E54419E0D50C007CE18A /* woman16_Character.dae in Resources */,
 				1F2C6D7819DE661300E7947D /* hallway.xml in Resources */,
+				1FF9198219E5A5C600A1A6EF /* hexagon_front.tif in Resources */,
 				1F78E53919E0D50C007CE18A /* boy1_Talk.dae in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

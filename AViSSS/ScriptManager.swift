@@ -12,19 +12,14 @@ import SceneKit
 //import Foundation
 
 class ScriptManager {
-    var currentState = 0
     var states : [GDataXMLElement] = []
     let scenarioManager = ScenarioManager()
-    let tom = ""
     
-    
+    //Initialize and get copy of manager
     init(sm: ScenarioManager){
         scenarioManager = sm
     }
-    
-    
-    
-    
+
     //Input: xml scenario file name to load as XML document
     //This function is the main parser of our scripts-
     //It first loads environment script if found
@@ -63,10 +58,12 @@ class ScriptManager {
     func parseEnvironment(environment :GDataXMLDocument){
         //Add Nodes
         parseNodes(environment)
-        scenarioManager.testStuff("")
+       // scenarioManager.testStuff("")
         //Actions
         
         //Skybox
+        //Right, Left, Top, Bottom, front, back   (last two reversed from apple suggested, at least with this example's labels)
+        scenarioManager.buildSkybox(["hexagon_right.tif","hexagon_left.tif","hexagon_top.tif","hexagon_bot.tif","hexagon_front.tif","hexagon_back.tif"])
     }
     
     //Method for parsing and processing actions in a given GDataXMLElement
@@ -101,9 +98,12 @@ class ScriptManager {
     //Build SCNNode that will be passed to ScenarioManager
     //A node may be either a .dae source node, or a primative SK shape (rectangle, sphere, etc)
     func buildSCNNode(node : GDataXMLElement){
-        var scnNode = SCNNode()
         
-        scnNode.name = node.attributeForName("name").stringValue()
+        //Declare and name scnNode
+        var scnNode = SCNNode()
+        //scnNode.name = node.attributeForName("name").stringValue()
+        
+        //Nodes can either be created from a .dae file/object, or they can be a primative shape.
         if node.attributeForName("type").stringValue() == "dae"{
             
             let objectName = (node.elementsForName("objectName").first as GDataXMLElement).stringValue()
@@ -116,6 +116,8 @@ class ScriptManager {
             //Get Node containing information about the character mesh
             scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as SCNNode
             
+        }else if node.attributeForName("type").stringValue() == "shape"{
+            
         }
         //Get position data
         let posNode = node.elementsForName("position").first as GDataXMLElement
@@ -124,27 +126,27 @@ class ScriptManager {
         let posZ = ((posNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
         scnNode.position = SCNVector3Make(posX, posY, posZ)
        
-//        //Get rotation data
-//        let rotNode = node.elementsForName("rotation").first as GDataXMLElement
-//        let rotX = degToRad(((rotNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue)
-//        let rotY = ((rotNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
-//        let rotZ = ((rotNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
-        
-        //Get scale data
-        
-        scnNode.scale = SCNVector3Make(5, 5, 5)
-        
-        
-        
+        //Get rotation data
+        let rotNode = node.elementsForName("rotation").first as GDataXMLElement
+        let rotX = ((rotNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+        let rotY = ((rotNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+        let rotZ = ((rotNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
         //Build up final rotation transformation
-        let xAngle = SCNMatrix4MakeRotation(degToRad(-90), 1, 0, 0)
-        let yAngle = SCNMatrix4MakeRotation(degToRad(180), 0, 1, 0)
-        let zAngle = SCNMatrix4MakeRotation(0, 0, 0, 1)
+        let xAngle = SCNMatrix4MakeRotation(degToRad(rotX), 1, 0, 0)
+        let yAngle = SCNMatrix4MakeRotation(degToRad(rotY), 0, 1, 0)
+        let zAngle = SCNMatrix4MakeRotation(degToRad(rotZ), 0, 0, 1)
         var result = SCNMatrix4Mult(SCNMatrix4Mult(xAngle, yAngle), zAngle)
-        
         //Apply rotation transformation to character
         scnNode.transform = SCNMatrix4Mult(result, scnNode.transform)
+
+        //Get scale data
+        let scaleNode = node.elementsForName("scale").first as GDataXMLElement
+        let scaleX = ((scaleNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+        let scaleY = ((scaleNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+        let scaleZ = ((scaleNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+        scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
         
+        //Add Node to scenario manager
         scenarioManager.addNode(scnNode)
     }
     
@@ -153,17 +155,23 @@ class ScriptManager {
     func buildAnimation(node : GDataXMLElement){
         
     }
+    //Make menu choices.  Menu choices will be converted to datastructure which is passed to GUIManager
     func buildMenuChoices(choices: [GDataXMLElement]){
         
     }
+    //Pull out sound and pass to SoundManager
     func buildSound(location:String){
         
     }
-    
-    func degToRad(deg: Float)->Float{
-        return (deg / 180 * Float(M_PI))
+    func menuChoice(){
+        
     }
     
     
+    
+    ////Utility Method
+    func degToRad(deg: Float)->Float{
+        return (deg / 180 * Float(M_PI))
+    }
     
 }
