@@ -101,7 +101,7 @@ class ScriptManager {
         
         //Declare and name scnNode
         var scnNode = SCNNode()
-        //scnNode.name = node.attributeForName("name").stringValue()
+        scnNode.name = node.attributeForName("name").stringValue()
         
         //Nodes can either be created from a .dae file/object, or they can be a primative shape.
         if node.attributeForName("type").stringValue() == "dae"{

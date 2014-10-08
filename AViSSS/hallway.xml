@@ -2,8 +2,9 @@
 <!--Jeff Wirsing AViSSS XML -->
 <!--Hallway Environment -->
 <environment name="hallway">
-	<node name="CBoy0001" type="dae">
+	<node name="boy1" type="dae">
 		<file>boy1_Character</file>
+        <objectName>CBoy0001</objectName>
 		<position>
 			<x>0</x>
 			<y>0</y>
@@ -20,8 +21,9 @@
 			<z>10</z>
 		</scale>
 	</node>
-    <node name="CBoy0002" type="dae">
+    <node name="boy2" type="dae">
         <file>boy2_Character</file>
+        <objectName>CBoy0002</objectName>
         <position>
             <x>4</x>
             <y>4</y>
