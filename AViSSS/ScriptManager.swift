@@ -63,7 +63,7 @@ class ScriptManager {
     func parseEnvironment(environment :GDataXMLDocument){
         //Add Nodes
         parseNodes(environment)
-        
+        scenarioManager.testStuff("")
         //Actions
         
         //Skybox
@@ -102,6 +102,7 @@ class ScriptManager {
     //A node may be either a .dae source node, or a primative SK shape (rectangle, sphere, etc)
     func buildSCNNode(node : GDataXMLElement){
         var scnNode = SCNNode()
+        
         
         if node.attributeForName("type").stringValue() == "dae"{
             
@@ -143,7 +144,6 @@ class ScriptManager {
         
         //Apply rotation transformation to character
         scnNode.transform = SCNMatrix4Mult(result, scnNode.transform)
-        
         
         scenarioManager.addNode(scnNode)
     }

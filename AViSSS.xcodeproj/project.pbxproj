@@ -11,16 +11,6 @@
 		1F2C6D7A19DE661E00E7947D /* testScenario.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1F2C6D7919DE661E00E7947D /* testScenario.xml */; };
 		1F78E50C19E0D50C007CE18A /* ._.DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4CB19E0D50C007CE18A /* ._.DS_Store */; };
 		1F78E50D19E0D50C007CE18A /* ._.svn in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4CC19E0D50C007CE18A /* ._.svn */; };
-		1F78E50E19E0D50C007CE18A /* ._CBoy0001.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4CD19E0D50C007CE18A /* ._CBoy0001.tif */; };
-		1F78E50F19E0D50C007CE18A /* ._CBoy0002.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4CE19E0D50C007CE18A /* ._CBoy0002.tif */; };
-		1F78E51019E0D50C007CE18A /* ._CBoy0003.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4CF19E0D50C007CE18A /* ._CBoy0003.tif */; };
-		1F78E51119E0D50C007CE18A /* ._CBoy0004.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D019E0D50C007CE18A /* ._CBoy0004.tif */; };
-		1F78E51219E0D50C007CE18A /* ._CBoy0005.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D119E0D50C007CE18A /* ._CBoy0005.tif */; };
-		1F78E51319E0D50C007CE18A /* ._CGirl0001.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D219E0D50C007CE18A /* ._CGirl0001.tif */; };
-		1F78E51419E0D50C007CE18A /* ._CGirl0002.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D319E0D50C007CE18A /* ._CGirl0002.tif */; };
-		1F78E51519E0D50C007CE18A /* ._CGirl0003.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D419E0D50C007CE18A /* ._CGirl0003.tif */; };
-		1F78E51619E0D50C007CE18A /* ._CWom0016.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D519E0D50C007CE18A /* ._CWom0016.tif */; };
-		1F78E51719E0D50C007CE18A /* ._CWom0017.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D619E0D50C007CE18A /* ._CWom0017.tif */; };
 		1F78E51819E0D50C007CE18A /* CBoy0001.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D719E0D50C007CE18A /* CBoy0001.tif */; };
 		1F78E51919E0D50C007CE18A /* CBoy0002.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D819E0D50C007CE18A /* CBoy0002.tif */; };
 		1F78E51A19E0D50C007CE18A /* CBoy0003.tif in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E4D919E0D50C007CE18A /* CBoy0003.tif */; };
@@ -44,7 +34,6 @@
 		1F78E54419E0D50C007CE18A /* woman16_Character.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E50A19E0D50C007CE18A /* woman16_Character.dae */; };
 		1F78E54519E0D50C007CE18A /* woman16_Run.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F78E50B19E0D50C007CE18A /* woman16_Run.dae */; };
 		1F82668119DB61C100995C95 /* ScenarioManagerBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F82668019DB61C100995C95 /* ScenarioManagerBackup.swift */; };
-		1F82669119DB952600995C95 /* test.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1F82669019DB952600995C95 /* test.xml */; };
 		1F82669F19DBA86C00995C95 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F82669E19DBA86C00995C95 /* GDataXMLNode.m */; };
 		1F86E7B41977270A005ED0DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F86E7B31977270A005ED0DD /* AppDelegate.swift */; };
 		1F86E7B61977270A005ED0DD /* ScenarioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F86E7B51977270A005ED0DD /* ScenarioManager.swift */; };
@@ -71,16 +60,6 @@
 		1F2C6D7919DE661E00E7947D /* testScenario.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = testScenario.xml; path = ../../../Dropbox/AViSSS/testScenario.xml; sourceTree = "<group>"; };
 		1F78E4CB19E0D50C007CE18A /* ._.DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = ._.DS_Store; sourceTree = "<group>"; };
 		1F78E4CC19E0D50C007CE18A /* ._.svn */ = {isa = PBXFileReference; lastKnownFileType = file; path = ._.svn; sourceTree = "<group>"; };
-		1F78E4CD19E0D50C007CE18A /* ._CBoy0001.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CBoy0001.tif; sourceTree = "<group>"; };
-		1F78E4CE19E0D50C007CE18A /* ._CBoy0002.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CBoy0002.tif; sourceTree = "<group>"; };
-		1F78E4CF19E0D50C007CE18A /* ._CBoy0003.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CBoy0003.tif; sourceTree = "<group>"; };
-		1F78E4D019E0D50C007CE18A /* ._CBoy0004.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CBoy0004.tif; sourceTree = "<group>"; };
-		1F78E4D119E0D50C007CE18A /* ._CBoy0005.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CBoy0005.tif; sourceTree = "<group>"; };
-		1F78E4D219E0D50C007CE18A /* ._CGirl0001.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CGirl0001.tif; sourceTree = "<group>"; };
-		1F78E4D319E0D50C007CE18A /* ._CGirl0002.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CGirl0002.tif; sourceTree = "<group>"; };
-		1F78E4D419E0D50C007CE18A /* ._CGirl0003.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CGirl0003.tif; sourceTree = "<group>"; };
-		1F78E4D519E0D50C007CE18A /* ._CWom0016.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CWom0016.tif; sourceTree = "<group>"; };
-		1F78E4D619E0D50C007CE18A /* ._CWom0017.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = ._CWom0017.tif; sourceTree = "<group>"; };
 		1F78E4D719E0D50C007CE18A /* CBoy0001.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CBoy0001.tif; sourceTree = "<group>"; };
 		1F78E4D819E0D50C007CE18A /* CBoy0002.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CBoy0002.tif; sourceTree = "<group>"; };
 		1F78E4D919E0D50C007CE18A /* CBoy0003.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = CBoy0003.tif; sourceTree = "<group>"; };
@@ -104,7 +83,6 @@
 		1F78E50A19E0D50C007CE18A /* woman16_Character.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = woman16_Character.dae; sourceTree = "<group>"; };
 		1F78E50B19E0D50C007CE18A /* woman16_Run.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = woman16_Run.dae; sourceTree = "<group>"; };
 		1F82668019DB61C100995C95 /* ScenarioManagerBackup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioManagerBackup.swift; sourceTree = "<group>"; };
-		1F82669019DB952600995C95 /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = test.xml; path = ../../../Dropbox/AViSSS/test.xml; sourceTree = "<group>"; };
 		1F82669D19DBA86B00995C95 /* AViSSS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AViSSS-Bridging-Header.h"; sourceTree = "<group>"; };
 		1F82669E19DBA86C00995C95 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
 		1F8266A019DBA87B00995C95 /* GDataXMLNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
@@ -153,16 +131,6 @@
 			children = (
 				1F78E4CB19E0D50C007CE18A /* ._.DS_Store */,
 				1F78E4CC19E0D50C007CE18A /* ._.svn */,
-				1F78E4CD19E0D50C007CE18A /* ._CBoy0001.tif */,
-				1F78E4CE19E0D50C007CE18A /* ._CBoy0002.tif */,
-				1F78E4CF19E0D50C007CE18A /* ._CBoy0003.tif */,
-				1F78E4D019E0D50C007CE18A /* ._CBoy0004.tif */,
-				1F78E4D119E0D50C007CE18A /* ._CBoy0005.tif */,
-				1F78E4D219E0D50C007CE18A /* ._CGirl0001.tif */,
-				1F78E4D319E0D50C007CE18A /* ._CGirl0002.tif */,
-				1F78E4D419E0D50C007CE18A /* ._CGirl0003.tif */,
-				1F78E4D519E0D50C007CE18A /* ._CWom0016.tif */,
-				1F78E4D619E0D50C007CE18A /* ._CWom0017.tif */,
 				1F78E4D719E0D50C007CE18A /* CBoy0001.tif */,
 				1F78E4D819E0D50C007CE18A /* CBoy0002.tif */,
 				1F78E4D919E0D50C007CE18A /* CBoy0003.tif */,
@@ -251,7 +219,6 @@
 			children = (
 				1F2C6D7919DE661E00E7947D /* testScenario.xml */,
 				1F2C6D7719DE661300E7947D /* hallway.xml */,
-				1F82669019DB952600995C95 /* test.xml */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -401,30 +368,20 @@
 			files = (
 				1F78E54219E0D50C007CE18A /* boy4_Character.dae in Resources */,
 				1F78E51919E0D50C007CE18A /* CBoy0002.tif in Resources */,
-				1F78E51719E0D50C007CE18A /* ._CWom0017.tif in Resources */,
-				1F78E51019E0D50C007CE18A /* ._CBoy0003.tif in Resources */,
 				1F78E51F19E0D50C007CE18A /* CGirl0003.tif in Resources */,
-				1F78E51119E0D50C007CE18A /* ._CBoy0004.tif in Resources */,
 				1F78E51B19E0D50C007CE18A /* CBoy0004.tif in Resources */,
 				1F78E53819E0D50C007CE18A /* boy1_Character.dae in Resources */,
 				1F78E52119E0D50C007CE18A /* CWom0017.tif in Resources */,
-				1F78E50F19E0D50C007CE18A /* ._CBoy0002.tif in Resources */,
 				1F78E54519E0D50C007CE18A /* woman16_Run.dae in Resources */,
-				1F78E51519E0D50C007CE18A /* ._CGirl0003.tif in Resources */,
 				1F78E52019E0D50C007CE18A /* CWom0016.tif in Resources */,
-				1F78E51319E0D50C007CE18A /* ._CGirl0001.tif in Resources */,
 				1F78E53B19E0D50C007CE18A /* boy2_Character.dae in Resources */,
 				1F86E7B91977270A005ED0DD /* Main.storyboard in Resources */,
 				1F86E7BB1977270A005ED0DD /* Images.xcassets in Resources */,
 				1F78E51A19E0D50C007CE18A /* CBoy0003.tif in Resources */,
-				1F78E51419E0D50C007CE18A /* ._CGirl0002.tif in Resources */,
 				1F78E51D19E0D50C007CE18A /* CGirl0001.tif in Resources */,
-				1F78E50E19E0D50C007CE18A /* ._CBoy0001.tif in Resources */,
 				1F78E53C19E0D50C007CE18A /* boy2_Grab.dae in Resources */,
 				1F78E51C19E0D50C007CE18A /* CBoy0005.tif in Resources */,
-				1F78E51619E0D50C007CE18A /* ._CWom0016.tif in Resources */,
 				1F78E53E19E0D50C007CE18A /* boy3_Character.dae in Resources */,
-				1F78E51219E0D50C007CE18A /* ._CBoy0005.tif in Resources */,
 				1F78E51E19E0D50C007CE18A /* CGirl0002.tif in Resources */,
 				1F78E54019E0D50C007CE18A /* boy3_Run.dae-e in Resources */,
 				1F78E50D19E0D50C007CE18A /* ._.svn in Resources */,
@@ -437,7 +394,6 @@
 				1F78E54419E0D50C007CE18A /* woman16_Character.dae in Resources */,
 				1F2C6D7819DE661300E7947D /* hallway.xml in Resources */,
 				1F78E53919E0D50C007CE18A /* boy1_Talk.dae in Resources */,
-				1F82669119DB952600995C95 /* test.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
