@@ -77,6 +77,7 @@ class ScenarioManager: UIViewController {
         cameraNode.position = SCNVector3(x: 0, y: 5, z: 5)
         // cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
         cameraNode.camera?.automaticallyAdjustsZRange = true
+        //cameraNode.camera?.focalBlurRadius = 2.0
 
     }
     func addLights(){
