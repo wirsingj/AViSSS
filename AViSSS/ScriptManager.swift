@@ -103,10 +103,10 @@ class ScriptManager {
     func buildSCNNode(node : GDataXMLElement){
         var scnNode = SCNNode()
         
-        
+        scnNode.name = node.attributeForName("name").stringValue()
         if node.attributeForName("type").stringValue() == "dae"{
             
-            let nodeName = node.attributeForName("name").stringValue()
+            let objectName = (node.elementsForName("objectName").first as GDataXMLElement).stringValue()
             let sceneName = (node.elementsForName("file").first as GDataXMLElement).stringValue()
             
             //Get Character model scene
@@ -114,7 +114,7 @@ class ScriptManager {
             var sceneSource = SCNSceneSource(URL: sceneURL!, options: nil)
        
             //Get Node containing information about the character mesh
-            scnNode = sceneSource?.entryWithIdentifier(nodeName, withClass: SCNNode.self) as SCNNode
+            scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as SCNNode
             
         }
         //Get position data
