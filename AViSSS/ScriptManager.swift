@@ -28,10 +28,12 @@ class ScriptManager {
     //It will then begin to run through the states
     func runScenario(scenarioName: String){
         var scenarioScript = getXMLDocument(scenarioName)
+        var scenarioScript2 = getXMLDocument(scenarioName)
         
+        var scenarioScript3 = getXMLDocument(scenarioName)
         //Check for environment
         if let environment = scenarioScript.rootElement().elementsForName("environment").first as? GDataXMLElement{
-            parseEnvironment(getXMLDocument(environment.attributeForName("file").stringValue()))
+            parseEnvironment(getXMLDocument(environment.stringValue()))
         }
         
         //Get states
@@ -45,7 +47,7 @@ class ScriptManager {
         //If there is a state with that number, get it and continue..
         if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
             
-            //Actions
+            //Handle actions.
             parseActions(state)
             
             //Menu Options
@@ -59,20 +61,47 @@ class ScriptManager {
     func parseEnvironment(environment :GDataXMLDocument){
         //Add Nodes
         parseNodes(environment)
-       // scenarioManager.testStuff("")
+        scenarioManager.testStuff("wall1")
         //Actions
         
         //Skybox
-        //Right, Left, Top, Bottom, front, back   (last two reversed from apple suggested, at least with this example's labels)
-        scenarioManager.buildSkybox(["hexagon_right.tif","hexagon_left.tif","hexagon_top.tif","hexagon_bot.tif","hexagon_front.tif","hexagon_back.tif"])
+        //Right, Left, Top, Bottom, front, back   (last two reversed from apple suggested for first skybox tried..)
+        var skyboxArray = [String]()
+        for file:GDataXMLElement in environment.rootElement().elementsForName("skybox").first?.elementsForName("file") as [GDataXMLElement] {
+            skyboxArray.append(file.stringValue())
+        }
+        scenarioManager.buildSkybox(skyboxArray)
     }
     
+    
+    ///////////////////ACTIONS////////////////////////////////////////////////////////////////////////////////////
     //Method for parsing and processing actions in a given GDataXMLElement
     //These may be animations (armature, pos/rot/scale, morphers) which effect a target
-    //or they may be instructions for playing a sound
-    func parseActions(script: GDataXMLElement){
+    //or they may be instructions for playing a sound and displaying text.   Actions are
+    func parseActions(actions: GDataXMLElement){
+        
+        //Go through targets, building up a sequence of actions (some actions can be simultaneously embedded in sequence) for each
+        //for target:GDataXMLElement in actions.elementsForName("target_name") as [GDataXMLElement] {
+            
+        //}
         
     }
+    func buildActionSequence(sequence: GDataXMLElement){
+        
+    }
+    
+    //Pull out sound and pass to SoundManager
+    func buildSound(location:String){
+        
+    }
+    //Build animation and send to ScenarioManager
+    //Will need to send target info (name) as well...
+    func buildAnimation(node : GDataXMLElement){
+        
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     
     
     
@@ -102,7 +131,6 @@ class ScriptManager {
         
         //Declare and name scnNode
         var scnNode = SCNNode()
-        scnNode.name = node.attributeForName("name").stringValue()
         
         //Nodes can either be created from a .dae file/object, or they can be a primative shape.
         if node.attributeForName("type").stringValue() == "dae"{
@@ -118,8 +146,28 @@ class ScriptManager {
             scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as SCNNode
             
         }else if node.attributeForName("type").stringValue() == "shape"{
+            //Get size information
+            let sizeNode = node.elementsForName("size").first as GDataXMLElement
+            let height = ((sizeNode.elementsForName("h").first as GDataXMLElement).stringValue() as NSString).floatValue
+            let width = ((sizeNode.elementsForName("w").first as GDataXMLElement).stringValue() as NSString).floatValue
             
+            //Create geometry
+            let geometry = SCNPlane(width: CGFloat(width), height: CGFloat(height))
+            //Get texture name
+            let textureName = (node.elementsForName("texture").first as GDataXMLElement).stringValue()
+            
+            geometry.firstMaterial?.diffuse.contents = textureName
+        
+            geometry.firstMaterial?.diffuse.wrapS = SCNWrapMode.ClampToBorder
+            geometry.firstMaterial?.diffuse.wrapT = SCNWrapMode.ClampToBorder
+            geometry.firstMaterial?.doubleSided = false
+            geometry.firstMaterial?.locksAmbientWithDiffuse = true
+            
+             scnNode = SCNNode(geometry: geometry)
+           
         }
+        //NSLog("nodeInfo-\(scnNode)")
+         scnNode.castsShadow = false
         //Get position data
         let posNode = node.elementsForName("position").first as GDataXMLElement
         let posX = ((posNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
@@ -141,30 +189,26 @@ class ScriptManager {
         scnNode.transform = SCNMatrix4Mult(result, scnNode.transform)
 
         //Get scale data
-        let scaleNode = node.elementsForName("scale").first as GDataXMLElement
-        let scaleX = ((scaleNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
-        let scaleY = ((scaleNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
-        let scaleZ = ((scaleNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
-        scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
-        
+        if let scaleNode:GDataXMLElement = (node.elementsForName("scale")?.first) as? GDataXMLElement{
+            let scaleX = ((scaleNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+            let scaleY = ((scaleNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+            let scaleZ = ((scaleNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+            scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
+        }
+        //Set name
+        scnNode.name = node.attributeForName("name").stringValue()
         //Add Node to scenario manager
         scenarioManager.addNode(scnNode)
     }
     
-    //Build animation and send to ScenarioManager
-    //Will need to send target info (name) as well...
-    func buildAnimation(node : GDataXMLElement){
-        
-    }
+    
     //Make menu choices.  Menu choices will be converted to datastructure which is passed to GUIManager
     func buildMenuChoices(choices: [GDataXMLElement]){
         
     }
-    //Pull out sound and pass to SoundManager
-    func buildSound(location:String){
-        
-    }
-    func menuChoice(){
+    
+    //Recieve the chosen menu option
+    func menuChoice(choice:Int){
         
     }
     

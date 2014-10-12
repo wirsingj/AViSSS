@@ -74,8 +74,9 @@ class ScenarioManager: UIViewController {
         cameraNode.camera = SCNCamera()
         scene.rootNode.addChildNode(cameraNode)
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 5, z: 5)
-        // cameraNode.eulerAngles = SCNVector3Make(degToRad(-20), degToRad(-25), 0)
+        cameraNode.position = SCNVector3(x: 0, y: 40, z: 80)
+         //cameraNode.eulerAngles = SCNVector3Make(degToRad(5), degToRad(0), 0)
+        cameraNode.rotation.x = degToRad(-45)
         cameraNode.camera?.automaticallyAdjustsZRange = true
         //cameraNode.camera?.focalBlurRadius = 2.0
 
@@ -85,7 +86,7 @@ class ScenarioManager: UIViewController {
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
         lightNode.light?.type = SCNLightTypeOmni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+        lightNode.position = SCNVector3(x: 0, y: 50, z: 10)
         scene.rootNode.addChildNode(lightNode)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
@@ -95,6 +96,7 @@ class ScenarioManager: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
 
     }
+    //Expects 6 images: Right, Left, Top, Bottom, front, back
     func buildSkybox(imageNames: [String]){
         scene.background.contents = imageNames
     }
@@ -111,10 +113,13 @@ class ScenarioManager: UIViewController {
         scene.rootNode.childNodeWithName(target, recursively: true)?.addAnimation(animation, forKey: key)
     }
     func testStuff(name:NSString){
-        SCNTransaction.begin()
-        SCNTransaction.setAnimationDuration(5.0)
-        scene.rootNode.childNodeWithName(name, recursively: true)?.rotation = SCNVector4Make(0, 1, 0, degToRad(360))
-        SCNTransaction.commit()
+        
+       NSLog("\(scene.rootNode.childNodeWithName(name, recursively: true)?.description)")
+//        NSLog("\(scene.rootNode.childNodes)")
+//        SCNTransaction.begin()
+//        SCNTransaction.setAnimationDuration(20)
+//        scene.rootNode.childNodeWithName(name, recursively: true)?.eulerAngles = SCNVector3Make(0, 0, 90)
+//        SCNTransaction.commit()
     }
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
@@ -169,7 +174,7 @@ class ScenarioManager: UIViewController {
         // Release any cached data, images, etc that aren't in use.
     }
     func degToRad(deg: Float)->Float{
-        return (deg / 180 * Float(M_PI))
+        return (deg * 180 / Float(M_PI))
     }
     
     
