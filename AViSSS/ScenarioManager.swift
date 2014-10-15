@@ -66,7 +66,9 @@ class ScenarioManager: UIViewController {
             gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
         }
         scnView.gestureRecognizers = gestureRecognizers
-
+        
+        //GUI Manager Testing
+        let _GUIManager = GUIManager(sm: self)
     }
     
     func addCamera(){

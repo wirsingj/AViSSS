@@ -19,8 +19,8 @@ class ScriptManager {
     //Initialize and get copy of manager
     init(sm: ScenarioManager){
         scenarioManager = sm
+        
     }
-
     //Input: xml scenario file name to load as XML document
     //This function is the main parser of our scripts-
     //It first loads environment script if found
@@ -28,9 +28,6 @@ class ScriptManager {
     //It will then begin to run through the states
     func runScenario(scenarioName: String){
         var scenarioScript = getXMLDocument(scenarioName)
-        var scenarioScript2 = getXMLDocument(scenarioName)
-        
-        var scenarioScript3 = getXMLDocument(scenarioName)
         //Check for environment
         if let environment = scenarioScript.rootElement().elementsForName("environment").first as? GDataXMLElement{
             parseEnvironment(getXMLDocument(environment.stringValue()))
@@ -39,7 +36,6 @@ class ScriptManager {
         //Get states
         states = scenarioScript.rootElement().elementsForName("state") as [GDataXMLElement]
         goToState(0)
-        
     }
     //Process (switch to) given stateID
     func goToState(stateID: Int){
@@ -64,6 +60,7 @@ class ScriptManager {
         scenarioManager.testStuff("wall1")
         //Actions
         
+        
         //Skybox
         //Right, Left, Top, Bottom, front, back   (last two reversed from apple suggested for first skybox tried..)
         var skyboxArray = [String]()
@@ -77,16 +74,26 @@ class ScriptManager {
     ///////////////////ACTIONS////////////////////////////////////////////////////////////////////////////////////
     //Method for parsing and processing actions in a given GDataXMLElement
     //These may be animations (armature, pos/rot/scale, morphers) which effect a target
-    //or they may be instructions for playing a sound and displaying text.   Actions are
+    //or they may be instructions for playing a sound and displaying text.
     func parseActions(actions: GDataXMLElement){
         
         //Go through targets, building up a sequence of actions (some actions can be simultaneously embedded in sequence) for each
-        //for target:GDataXMLElement in actions.elementsForName("target_name") as [GDataXMLElement] {
+        //May be camera, node, display text, or sound file
+        for target:GDataXMLElement in actions.elementsForName("target_name") as [GDataXMLElement] {
             
-        //}
-        
-    }
-    func buildActionSequence(sequence: GDataXMLElement){
+            
+            
+            //Build up the actions to present the text
+            if target.attributeForName("name").stringValue() == "text"{
+                
+            }else if target.attributeForName("name").stringValue() == "sound"{
+            //Build up actions to play sounds at various times
+                
+            }else{
+                //Build action of any other node
+            }
+            
+        }
         
     }
     
@@ -163,7 +170,7 @@ class ScriptManager {
             geometry.firstMaterial?.doubleSided = false
             geometry.firstMaterial?.locksAmbientWithDiffuse = true
             
-             scnNode = SCNNode(geometry: geometry)
+            scnNode = SCNNode(geometry: geometry)
            
         }
         //NSLog("nodeInfo-\(scnNode)")
