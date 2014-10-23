@@ -135,7 +135,7 @@ class ScenarioManagerBackup: UIViewController {
         animation2.duration = 2;
         
         //Adding body animation to character's skinner skeleton object
-        //character.addAnimation(animation, forKey: "run")
+        character.addAnimation(animation, forKey: "run")
         //Adding morpher (face) animation(s) to character
         character.addAnimation(animation2, forKey: "smile")
         

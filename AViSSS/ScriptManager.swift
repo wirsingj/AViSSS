@@ -35,8 +35,11 @@ class ScriptManager {
         
         //Get states
         states = scenarioScript.rootElement().elementsForName("state") as [GDataXMLElement]
+        
+        //Start scenario at state 0
         goToState(0)
     }
+    
     //Process (switch to) given stateID
     func goToState(stateID: Int){
         
@@ -44,11 +47,12 @@ class ScriptManager {
         if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
             
             //Handle actions.
-            parseActions(state)
+            parseActions(state.elementsForName("actions").first as GDataXMLElement)
             
+            //scenarioManager.testStuff("boy1")
             //Menu Options
-            let menuChoices: [GDataXMLElement] = state.elementsForName("menu_option") as [GDataXMLElement]
-            buildMenuChoices(menuChoices)
+          //  let menuChoices: [GDataXMLElement] = state.elementsForName("menu_option") as [GDataXMLElement]
+           // buildMenuChoices(menuChoices)
         }
         
     
@@ -57,9 +61,12 @@ class ScriptManager {
     func parseEnvironment(environment :GDataXMLDocument){
         //Add Nodes
         parseNodes(environment)
-        scenarioManager.testStuff("wall1")
-        //Actions
         
+        //Actions
+        if let actions = environment.rootElement().elementsForName("actions")?.first as? GDataXMLElement{
+             parseActions(actions)
+        }
+       
         
         //Skybox
         //Right, Left, Top, Bottom, front, back   (last two reversed from apple suggested for first skybox tried..)
@@ -76,27 +83,132 @@ class ScriptManager {
     //These may be animations (armature, pos/rot/scale, morphers) which effect a target
     //or they may be instructions for playing a sound and displaying text.
     func parseActions(actions: GDataXMLElement){
-        
-        //Go through targets, building up a sequence of actions (some actions can be simultaneously embedded in sequence) for each
+        //Go through targets, building up a sequence of actions (some actions can be simultaneously embedded in sequence as a 'batch') for each
         //May be camera, node, display text, or sound file
-        for target:GDataXMLElement in actions.elementsForName("target_name") as [GDataXMLElement] {
+        var targetSequences = [String:SCNAction]()
+        
+        //Go through all TARGETS
+        for target:GDataXMLElement in actions.elementsForName("target") as [GDataXMLElement] {
+            let name: String = target.attributeForName("name").stringValue()
+            var targetActionSeq = SCNAction()
+            NSLog("\(name)")
+            //Go through all sequenced ACTIONS for target
+            let seqActions = target.elementsForName("action") as [GDataXMLElement]
+            
+            //Check for case where we don't need a sequence, just a single action
+            if seqActions.count == 1 {
+                //Build action (possible batch)
+               targetActionSeq = buildAction(seqActions[0])
+             
+            //If many actions, build a sequence of all the actions.
+            }else{
+                NSLog(" \(seqActions.count)")
+                var targetActionSeqTempList = [SCNAction]()
+                for seqAction in seqActions{
+                    targetActionSeqTempList.append(buildAction(seqAction))
+                }
+                targetActionSeq = SCNAction.sequence(targetActionSeqTempList)
+            }
             
             
-            
-            //Build up the actions to present the text
+            ///////specialize what we do with the sequence..?
             if target.attributeForName("name").stringValue() == "text"{
                 
             }else if target.attributeForName("name").stringValue() == "sound"{
-            //Build up actions to play sounds at various times
                 
             }else{
                 //Build action of any other node
+                NSLog("Not text/sound- \(name)")
+                
             }
+            
+            //Add action (possible sequence) to target in scene
+            targetSequences.updateValue(targetActionSeq, forKey: name)
+            
             
         }
         
+        //After all action sequences have been created for all targets, pass the collection to the scene manager
+        for(_targetName, _targetAction) in targetSequences{
+            scenarioManager.addAction(_targetName, action: _targetAction)
+        }
+        
+        
     }
     
+    //Build a single action in a sequence- may be a 'batch' of simultanious action
+    func buildAction(action: GDataXMLElement)-> SCNAction{
+        var scnAction = SCNAction()
+        //May be a batch
+        let coActions = action.children() as [GDataXMLElement]
+        var scnCoActionsArray: [SCNAction] = []
+        
+        //Add coActions to collection
+        for coAction in coActions {
+            let type = coAction.name()
+            var buildAction = SCNAction()
+            switch type {
+                case "position":
+                    
+                    NSLog("Creating Position action")
+                    let x = ((coAction.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let y = ((coAction.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let z = ((coAction.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let moveBy = SCNVector3Make(x, y, z)
+                    let duration =  ((coAction.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let count = ((coAction.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).integerValue
+                    buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
+                case "rotation":
+                    
+                    NSLog("Creating Rotation action")
+                    let x = ((coAction.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let y = ((coAction.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let z = ((coAction.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let angle = ((coAction.elementsForName("angle").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    let duration =  ((coAction.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).doubleValue
+                    
+                    
+                    NSLog("Rot debug (angle, dur, x,y,z) \(angle, duration, x, y, z)")
+                    buildAction = SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration))
+                   // scnAction = SCNAction.rotateByAngle(CGFloat(degToRad(90)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(3))
+                case "delay":
+                    NSLog("Creating Delay action")
+                    let duration =  (coAction.stringValue() as NSString).floatValue
+                    buildAction = SCNAction.waitForDuration(NSTimeInterval(duration))
+                case "animation":
+                    //Create a custom closure action which has code to start an animation
+                    //Animation is made outside of closure (variable closure)
+                    //Get character (armature) animation scene
+                    var sceneAnimationSourceName = (coAction.elementsForName("file").first as GDataXMLElement).stringValue() as NSString
+                    var sceneAnimationURL = NSBundle.mainBundle().URLForResource(sceneAnimationSourceName, withExtension: "dae")
+                    var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
+                    let animationName = "\(sceneAnimationSourceName)-1"
+                    var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
+                    
+                    buildAction = SCNAction.runBlock{
+                        (node: SCNNode!) in
+                        node.addAnimation(animation, forKey: "run")
+                    }
+                
+                default:
+                    break
+            }
+            scnCoActionsArray.append(buildAction)
+        }
+        
+        if scnCoActionsArray.count == 1 {
+            
+            NSLog("Creating Single Action")
+            scnAction = scnCoActionsArray[0]
+        }else{
+            NSLog("Creating Group. Size- \(scnCoActionsArray.count)")
+            scnAction = SCNAction.group(scnCoActionsArray)
+            
+        }
+        
+        
+        return scnAction
+    }
     //Pull out sound and pass to SoundManager
     func buildSound(location:String){
         

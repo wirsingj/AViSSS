@@ -41,7 +41,9 @@ class ScenarioManager: UIViewController {
         addCamera()
         
         //Will get scenario name from first scene/GUIManager
-        var scenarioName = "testScenario"
+       // var scenarioName = "testScenario"
+        var scenarioName = "action_test"
+        
         
         //Ask sciptManager to begin running script
         scriptManager.runScenario(scenarioName)
@@ -80,8 +82,8 @@ class ScenarioManager: UIViewController {
          //cameraNode.eulerAngles = SCNVector3Make(degToRad(5), degToRad(0), 0)
         cameraNode.rotation.x = degToRad(-45)
         cameraNode.camera?.automaticallyAdjustsZRange = true
-        //cameraNode.camera?.focalBlurRadius = 2.0
-
+        //cameraNode.camera?.focalBlurRadius = 0.005   //looks terrrible..?
+        cameraNode.name = "camera"
     }
     func addLights(){
         // create and add a light to the scene
@@ -106,22 +108,13 @@ class ScenarioManager: UIViewController {
     func addNode(node: SCNNode){
         scene.rootNode.addChildNode(node)
     }
-    //Add animation to a node-  This can be loc/rot/scale animations, or armature animations
-    func addAnimation(target: String, animation: CAAnimation, key: String){
-        scene.rootNode.childNodeWithName(target, recursively: true)?.addAnimation(animation, forKey: key)
-    }
-    //Add CABasicAnimation to a node-  This can be the Morphers (facial animation)
-    func addAnimation(target: String, animation: CABasicAnimation, key: String){
-        scene.rootNode.childNodeWithName(target, recursively: true)?.addAnimation(animation, forKey: key)
+    func addAction(target: String, action: SCNAction){
+        scene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
     }
     func testStuff(name:NSString){
         
-       NSLog("\(scene.rootNode.childNodeWithName(name, recursively: true)?.description)")
-//        NSLog("\(scene.rootNode.childNodes)")
-//        SCNTransaction.begin()
-//        SCNTransaction.setAnimationDuration(20)
-//        scene.rootNode.childNodeWithName(name, recursively: true)?.eulerAngles = SCNVector3Make(0, 0, 90)
-//        SCNTransaction.commit()
+     var rotAction = SCNAction.rotateByAngle(CGFloat(degToRad(90.0)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(2))
+        addAction(name, action: rotAction)
     }
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView

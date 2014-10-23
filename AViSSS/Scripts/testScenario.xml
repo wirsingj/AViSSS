@@ -9,6 +9,19 @@
 		<text>You are getting on a bus...</text>
 		<sound>getOnBus.mp3</sound>
 		<actions>
+            <target name="text">
+                <text>"Hello!" </text>
+                <delay> 2 </delay>
+                <text>"You are getting on the bus" <text>
+                <delay> 4 </delay>
+                <text>""<text>
+            </target>
+            
+            <target name="sound">
+                <sound>intro.mp3</sound>
+                <delay>
+                
+            </target>
 			<target name="camera">
 				<action>
 					<position>

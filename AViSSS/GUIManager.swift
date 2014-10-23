@@ -11,8 +11,6 @@ import Spritekit
 import SceneKit
 
 class GUIManager {
-    
-    var speechText = SKLabelNode()
     var option1 = SKLabelNode()
     var option2 = SKLabelNode()
     var option3 = SKLabelNode()
