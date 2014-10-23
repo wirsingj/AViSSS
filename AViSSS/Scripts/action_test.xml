@@ -8,30 +8,33 @@
 		<actions>
             <target name="camera">
                 <action>
+					<position>
+                        <x>0</x>
+                        <y>5</y>
+                        <z>10</z>
+                        <duration>0.1</duration>
+                        <count>1</count>
+                    </position>
+                </action>
+                <action>
                     <rotation>
                         <x>0</x>
                         <y>1</y>
                         <z>0</z>
-                        <angle>45</angle>
-                        <duration>3</duration>
+                        <angle>-15</angle>
+                        <duration>6</duration>
                         <count>1</count>
                     </rotation>
+                    <position>
+                        <x>8</x>
+                        <y>0</y>
+                        <z>-5</z>
+                        <duration>5</duration>
+                        <count>1</count>
+                    </position>
                 </action>
                 <action>
-                    <position>
-                        <x>0</x>
-                        <y>0</y>
-                        <z>10</z>
-                        <duration>5</duration>
-                        <count>1</count>
-                    </position>
-                    <position>
-                        <x>10</x>
-                        <y>0</y>
-                        <z>0</z>
-                        <duration>5</duration>
-                        <count>1</count>
-                    </position>
+                    <delay>4</delay>
                 </action>
             </target>
 			<target name="boy1">
@@ -40,21 +43,14 @@
                         <x>0</x>
                         <y>1</y>
                         <z>0</z>
-                        <angle>45</angle>
+                        <angle>90</angle>
                         <duration>3</duration>
                         <count>1</count>
                     </rotation>
                 </action>
 				<action>
-					<position>
-						<x>0</x>
-						<y>0</y>
-						<z>10</z>
-						<duration>5</duration>
-						<count>1</count>
-					</position>
                     <position>
-                        <x>10</x>
+                        <x>-8</x>
                         <y>0</y>
                         <z>0</z>
                         <duration>5</duration>
@@ -69,7 +65,7 @@
                         <x>0</x>
                         <y>1</y>
                         <z>0</z>
-                        <angle>-45</angle>
+                        <angle>20</angle>
                         <duration>3</duration>
                         <count>1</count>
                     </rotation>

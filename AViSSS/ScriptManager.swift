@@ -167,8 +167,6 @@ class ScriptManager {
                     let angle = ((coAction.elementsForName("angle").first as GDataXMLElement).stringValue() as NSString).floatValue
                     let duration =  ((coAction.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).doubleValue
                     
-                    
-                    NSLog("Rot debug (angle, dur, x,y,z) \(angle, duration, x, y, z)")
                     buildAction = SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration))
                    // scnAction = SCNAction.rotateByAngle(CGFloat(degToRad(90)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(3))
                 case "delay":

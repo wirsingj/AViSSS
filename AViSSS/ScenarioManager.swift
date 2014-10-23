@@ -78,7 +78,7 @@ class ScenarioManager: UIViewController {
         cameraNode.camera = SCNCamera()
         scene.rootNode.addChildNode(cameraNode)
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 40, z: 80)
+        cameraNode.position = SCNVector3(x: 0, y: 5, z: 20)
          //cameraNode.eulerAngles = SCNVector3Make(degToRad(5), degToRad(0), 0)
         cameraNode.rotation.x = degToRad(-45)
         cameraNode.camera?.automaticallyAdjustsZRange = true
