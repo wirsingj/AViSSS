@@ -12,7 +12,7 @@
                         <x>0</x>
                         <y>5</y>
                         <z>10</z>
-                        <duration>0.1</duration>
+                        <duration>0</duration>
                         <count>1</count>
                     </position>
                 </action>
@@ -74,8 +74,8 @@
             <target name="boy3">
                 <action>
                     <animation>
-                        <file>boy3_Run</file>
-                        <count>loop</count>
+                            <file>boy3_Run</file>
+                            <count>loop</count>
                     </animation>
                     <position>
                         <x>0</x>
@@ -118,6 +118,17 @@
                         <duration>5</duration>
                         <count>1</count>
                     </position>
+                </action>
+            </target>
+            <target name="boy2">
+                <action>
+                    <morpher>
+                        <id>1</id>
+                        <from>0</from>
+                        <to>1</to>
+                        <count>loop</count>
+                        <reverse>true</reverse>
+                    </morpher>
                 </action>
             </target>
 		</actions>

@@ -91,21 +91,26 @@ class ScriptManager {
         for target:GDataXMLElement in actions.elementsForName("target") as [GDataXMLElement] {
             let name: String = target.attributeForName("name").stringValue()
             var targetActionSeq = SCNAction()
-            NSLog("\(name)")
+            NSLog("ParseActions: Target-\(name)")
             //Go through all sequenced ACTIONS for target
             let seqActions = target.elementsForName("action") as [GDataXMLElement]
             
             //Check for case where we don't need a sequence, just a single action
             if seqActions.count == 1 {
                 //Build action (possible batch)
-               targetActionSeq = buildAction(seqActions[0])
+                if let _tempAction = buildAction(seqActions[0], name:name){
+                    targetActionSeq = _tempAction
+                }
+                
              
             //If many actions, build a sequence of all the actions.
             }else{
                 NSLog(" \(seqActions.count)")
                 var targetActionSeqTempList = [SCNAction]()
                 for seqAction in seqActions{
-                    targetActionSeqTempList.append(buildAction(seqAction))
+                    if let _ScnAction = buildAction(seqAction, name: name){
+                        targetActionSeqTempList += [_ScnAction]
+                    }
                 }
                 targetActionSeq = SCNAction.sequence(targetActionSeqTempList)
             }
@@ -118,7 +123,7 @@ class ScriptManager {
                 
             }else{
                 //Build action of any other node
-                NSLog("Not text/sound- \(name)")
+                //NSLog("Not text/sound- \(name)")
                 
             }
             
@@ -137,7 +142,7 @@ class ScriptManager {
     }
     
     //Build a single action in a sequence- may be a 'batch' of simultanious action
-    func buildAction(action: GDataXMLElement)-> SCNAction{
+    func buildAction(action: GDataXMLElement, name: NSString)-> SCNAction?{
         var scnAction = SCNAction()
         //May be a batch
         let coActions = action.children() as [GDataXMLElement]
@@ -149,7 +154,6 @@ class ScriptManager {
             var buildAction = SCNAction()
             switch type {
                 case "position":
-                    
                     NSLog("Creating Position action")
                     let x = ((coAction.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
                     let y = ((coAction.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
@@ -159,14 +163,12 @@ class ScriptManager {
                     let count = ((coAction.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).integerValue
                     buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
                 case "rotation":
-                    
                     NSLog("Creating Rotation action")
                     let x = ((coAction.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
                     let y = ((coAction.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
                     let z = ((coAction.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
                     let angle = ((coAction.elementsForName("angle").first as GDataXMLElement).stringValue() as NSString).floatValue
                     let duration =  ((coAction.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).doubleValue
-                    
                     buildAction = SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration))
                    // scnAction = SCNAction.rotateByAngle(CGFloat(degToRad(90)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(3))
                 case "delay":
@@ -182,20 +184,31 @@ class ScriptManager {
                     var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
                     let animationName = "\(sceneAnimationSourceName)-1"
                     var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
-                    
+                    buildAction = SCNAction.runBlock{
+                        (node: SCNNode!) in
+                        node.addAnimation(animation, forKey: animationName)
+                    }
+                case "morpher":
+                   //scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets
+                    NSLog("buildAction: Morpher case-\(scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets )")
+                    //This is how the facial morphers are used as an animation
+                    var morpherNumber = ((coAction.elementsForName("id").first as GDataXMLElement).stringValue() as NSString).floatValue
+                    var animation = CABasicAnimation(keyPath: "morpher.weights[\(morpherNumber)]")
+                    animation.fromValue = 0.0;
+                    animation.toValue = 1.0;
+                    animation.autoreverses = true;
+                    animation.repeatCount = Float.infinity;
+                    animation.duration = 2;
                     buildAction = SCNAction.runBlock{
                         (node: SCNNode!) in
                         node.addAnimation(animation, forKey: "run")
                     }
-                
                 default:
                     break
             }
-            scnCoActionsArray.append(buildAction)
+            scnCoActionsArray += [buildAction]
         }
-        
         if scnCoActionsArray.count == 1 {
-            
             NSLog("Creating Single Action")
             scnAction = scnCoActionsArray[0]
         }else{
@@ -203,25 +216,15 @@ class ScriptManager {
             scnAction = SCNAction.group(scnCoActionsArray)
             
         }
-        
-        
         return scnAction
     }
     //Pull out sound and pass to SoundManager
     func buildSound(location:String){
         
     }
-    //Build animation and send to ScenarioManager
-    //Will need to send target info (name) as well...
-    func buildAnimation(node : GDataXMLElement){
-        
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    
-    
-    
     //Method for retrieving nodes (3d object description) from a document and get then processed
     func parseNodes(script: GDataXMLDocument){
         var nodes: [GDataXMLElement] = script.rootElement().elementsForName("node") as [GDataXMLElement]
@@ -229,9 +232,7 @@ class ScriptManager {
             for node in nodes{
                 buildSCNNode(node)
             }
-            
         }
-
     }
     //Method getting an xml document from string location
     func getXMLDocument(location: NSString)->GDataXMLDocument{
