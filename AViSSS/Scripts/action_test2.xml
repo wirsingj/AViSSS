@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Jeff Wirsing AViSSS XML -->
+
+<scenario>
+    <environment>hallway2</environment>
+    <state id="0">
+        <actions>
+            <target name="camera">
+                <actionSequence>
+                    <position>
+                        <x>0</x>
+                        <y>5</y>
+                        <z>10</z>
+                        <duration>0</duration>
+                        <count>1</count>
+                    </position>
+                    <rotation>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <angle>0</angle>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </rotation>
+
+                </actionSequence>
+                
+            </target>
+            <target name="boy1">
+                <actionSequence desc="Pos">
+                    <position>
+                        <x>-15</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </position>
+                    <position>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-10</z>
+                        <duration>4</duration>
+                        <count>1</count>
+                    </position>
+                    <rotation>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <angle>0</angle>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </rotation>
+                </actionSequence>
+                
+                <actionSequence desc="Pos2">
+                    <position>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-15</z>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </position>
+                </actionSequence>
+				
+				<actionSequence desc="Rot">
+                   <rotation>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <angle>90</angle>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </rotation>
+                </actionSequence>
+            </target>
+        </actions>
+        <gui>
+			<ambient_sound></ambient_sound>
+            <situation_sound>1-1a.mp3</situation_sound>
+            <situation_text>Test</situation_text>
+            <menu_option id="0">
+                <text>First option text</text>
+                <text_on_select>Correct!</text_on_select>
+                <sound_on_select>1-1a-1.mp3</sound_on_select>
+                <actions></actions>
+            </menu_option>
+			<menu_option id="1">
+                <text>Second option text</text>
+                <text_on_select>Incorrect!</text_on_select>
+                <sound_on_select>1-1a-2.mp3</sound_on_select>
+                <actions></actions>
+            </menu_option>
+			<menu_option id="2">
+                <text>Third option text</text>
+                <text_on_select>Incorrect!</text_on_select>
+                <sound_on_select>1-1a-3.mp3</sound_on_select>
+                <actions></actions>
+            </menu_option>
+			<menu_option id="3">
+                <text>Fourth option text</text>
+                <text_on_select>Incorrect!</text_on_select>
+                <sound_on_select>1-1a-4.mp3</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <next_state>1</next_state>
+        </gui>
+    </state>
+</scenario>

@@ -30,7 +30,11 @@ class ScenarioManager: UIViewController {
         ////////////////////////////////////////
         //Begin script reading process
         /////////////////////////////////////
-        let scriptManager = ScriptManager(sm: self)
+        
+        //GUI Manager Testing
+        let _GUIManager = GUIManager(sm: self)
+        
+        let scriptManager = ScriptManager(sm: self, gm:_GUIManager)
         
         //Set new working scene
         //May have some loading screen/transition in future
@@ -42,7 +46,7 @@ class ScenarioManager: UIViewController {
         
         //Will get scenario name from first scene/GUIManager
        // var scenarioName = "testScenario"
-        var scenarioName = "action_test"
+        var scenarioName = "action_test2"
         
         
         //Ask sciptManager to begin running script
@@ -68,9 +72,6 @@ class ScenarioManager: UIViewController {
             gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
         }
         scnView.gestureRecognizers = gestureRecognizers
-        
-        //GUI Manager Testing
-        let _GUIManager = GUIManager(sm: self)
     }
     
     func addCamera(){
@@ -108,13 +109,15 @@ class ScenarioManager: UIViewController {
     func addNode(node: SCNNode){
         scene.rootNode.addChildNode(node)
     }
-    func addAction(target: String, action: SCNAction){
-        scene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
+    func addActionsToTargets(targetActions : [String:SCNAction]){
+        for (target, action) in targetActions{
+            scene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
+        }
     }
     func testStuff(name:NSString){
         
      var rotAction = SCNAction.rotateByAngle(CGFloat(degToRad(90.0)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(2))
-        addAction(name, action: rotAction)
+        //addAction(name, action: rotAction)
     }
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView

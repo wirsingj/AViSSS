@@ -15,16 +15,17 @@ import SceneKit
 class ScriptManager {
     var states : [GDataXMLElement] = []
     let scenarioManager = ScenarioManager()
-    
+    var _GUIManager : GUIManager?
     //Initialize and get copy of manager
-    init(sm: ScenarioManager){
+    init(sm: ScenarioManager, gm: GUIManager){
         scenarioManager = sm
-        
+        _GUIManager = gm
     }
     //Input: xml scenario file name to load as XML document
     //This function is the main parser of our scripts-
     //It first loads environment script if found
-    //then it will pull out actions and send them to managers
+    //then it will pull out actions and send them
+ ///to managers
     //It will then begin to run through the states
     func runScenario(scenarioName: String){
         var scenarioScript = getXMLDocument(scenarioName)
@@ -35,8 +36,7 @@ class ScriptManager {
         
         //Get states
         states = scenarioScript.rootElement().elementsForName("state") as [GDataXMLElement]
-        
-        //Start scenario at state 0
+                //Start scenario at state 0
         goToState(0)
     }
     
@@ -49,13 +49,11 @@ class ScriptManager {
             //Handle actions.
             parseActions(state.elementsForName("actions").first as GDataXMLElement)
             
-            //scenarioManager.testStuff("boy1")
             //Menu Options
-          //  let menuChoices: [GDataXMLElement] = state.elementsForName("menu_option") as [GDataXMLElement]
-           // buildMenuChoices(menuChoices)
+            buildGUIBundle(state.elementsForName("gui").first as GDataXMLElement)
         }
         
-    
+        
     }
     //Build nodes and skybox for ScenarioManager
     func parseEnvironment(environment :GDataXMLDocument){
@@ -64,10 +62,8 @@ class ScriptManager {
         
         //Actions
         if let actions = environment.rootElement().elementsForName("actions")?.first as? GDataXMLElement{
-             parseActions(actions)
+            parseActions(actions)
         }
-       
-        
         //Skybox
         //Right, Left, Top, Bottom, front, back   (last two reversed from apple suggested for first skybox tried..)
         var skyboxArray = [String]()
@@ -77,154 +73,127 @@ class ScriptManager {
         scenarioManager.buildSkybox(skyboxArray)
     }
     
-    
     ///////////////////ACTIONS////////////////////////////////////////////////////////////////////////////////////
-    //Method for parsing and processing actions in a given GDataXMLElement
+    //Method for parsing and processing ACTIONS for all TARGETS in a given GDataXMLElement
     //These may be animations (armature, pos/rot/scale, morphers) which effect a target
     //or they may be instructions for playing a sound and displaying text.
+    //Function then passes actions to the scenarioManager
     func parseActions(actions: GDataXMLElement){
         //Go through targets, building up a sequence of actions (some actions can be simultaneously embedded in sequence as a 'batch') for each
         //May be camera, node, display text, or sound file
-        var targetSequences = [String:SCNAction]()
+        
+        //Dictionary of all Target:ActionBatch pairs
+        var targetBatches = [String:SCNAction]()
+        
+        //Variable which is populated by each targets batch of sequences
+        var targetSequenceBatch = SCNAction()
         
         //Go through all TARGETS
         for target:GDataXMLElement in actions.elementsForName("target") as [GDataXMLElement] {
             let name: String = target.attributeForName("name").stringValue()
-            var targetActionSeq = SCNAction()
-            NSLog("ParseActions: Target-\(name)")
-            //Go through all sequenced ACTIONS for target
-            let seqActions = target.elementsForName("action") as [GDataXMLElement]
             
-            //Check for case where we don't need a sequence, just a single action
-            if seqActions.count == 1 {
-                //Build action (possible batch)
-                if let _tempAction = buildAction(seqActions[0], name:name){
-                    targetActionSeq = _tempAction
-                }
-                
-             
-            //If many actions, build a sequence of all the actions.
-            }else{
-                NSLog(" \(seqActions.count)")
-                var targetActionSeqTempList = [SCNAction]()
-                for seqAction in seqActions{
-                    if let _ScnAction = buildAction(seqAction, name: name){
-                        targetActionSeqTempList += [_ScnAction]
-                    }
-                }
-                targetActionSeq = SCNAction.sequence(targetActionSeqTempList)
+            //First, initialize collection for batch of XMLSequences, and a temp List to hold the SCNAction Sequences
+            let batchOfSequences = target.elementsForName("actionSequence") as [GDataXMLElement]
+            var _tempSequenceList = [SCNAction]()
+            //Go through all sequences in the batch, adding them to temp list
+            for sequence in batchOfSequences {
+                let _tempSequence = buildActionSequence(sequence, name: name) as SCNAction
+                _tempSequenceList += [_tempSequence]
             }
-            
-            
-            ///////specialize what we do with the sequence..?
-            if target.attributeForName("name").stringValue() == "text"{
-                
-            }else if target.attributeForName("name").stringValue() == "sound"{
-                
-            }else{
-                //Build action of any other node
-                //NSLog("Not text/sound- \(name)")
-                
-            }
-            
-            //Add action (possible sequence) to target in scene
-            targetSequences.updateValue(targetActionSeq, forKey: name)
-            
-            
+            //Create a batch of created sequences
+            targetSequenceBatch = SCNAction.group(_tempSequenceList)
+            //Add batch of action sequences for target to collection of target-action batch pairs
+            targetBatches.updateValue(targetSequenceBatch, forKey: name)
         }
-        
-        //After all action sequences have been created for all targets, pass the collection to the scene manager
-        for(_targetName, _targetAction) in targetSequences{
-            scenarioManager.addAction(_targetName, action: _targetAction)
-        }
-        
-        
+        scenarioManager.addActionsToTargets(targetBatches)
     }
     
     //Build a single action in a sequence- may be a 'batch' of simultanious action
-    func buildAction(action: GDataXMLElement, name: NSString)-> SCNAction?{
-        var scnAction = SCNAction()
-        //May be a batch
-        let coActions = action.children() as [GDataXMLElement]
-        var scnCoActionsArray: [SCNAction] = []
+    func buildActionSequence(action: GDataXMLElement, name: NSString)-> SCNAction{
         
-        //Add coActions to collection
-        for coAction in coActions {
-            let type = coAction.name()
+        //Get XML action objects to be build into sequence
+        let xmlActionsInSequence = action.children() as [GDataXMLElement]
+        var scnActionSequenceArray: [SCNAction] = []
+        
+        //Go through all actions, adding them to an action sequence list
+        //At the end, we will make an ScnAction sequence from the list
+        for action in xmlActionsInSequence {
+            let type = action.name()
             var buildAction = SCNAction()
             switch type {
-                case "position":
-                    NSLog("Creating Position action")
-                    let x = ((coAction.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let y = ((coAction.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let z = ((coAction.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let moveBy = SCNVector3Make(x, y, z)
-                    let duration =  ((coAction.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let count = ((coAction.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).integerValue
-                    buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
-                case "rotation":
-                    NSLog("Creating Rotation action")
-                    let x = ((coAction.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let y = ((coAction.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let z = ((coAction.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let angle = ((coAction.elementsForName("angle").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    let duration =  ((coAction.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).doubleValue
-                    buildAction = SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration))
-                   // scnAction = SCNAction.rotateByAngle(CGFloat(degToRad(90)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(3))
-                case "delay":
-                    NSLog("Creating Delay action")
-                    let duration =  (coAction.stringValue() as NSString).floatValue
-                    buildAction = SCNAction.waitForDuration(NSTimeInterval(duration))
-                case "animation":
-                    //Create a custom closure action which has code to start an animation
-                    //Animation is made outside of closure (variable closure)
-                    //Get character (armature) animation scene
-                    var sceneAnimationSourceName = (coAction.elementsForName("file").first as GDataXMLElement).stringValue() as NSString
-                    var sceneAnimationURL = NSBundle.mainBundle().URLForResource(sceneAnimationSourceName, withExtension: "dae")
-                    var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
-                    let animationName = "\(sceneAnimationSourceName)-1"
-                    var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
-                    buildAction = SCNAction.runBlock{
-                        (node: SCNNode!) in
-                        node.addAnimation(animation, forKey: animationName)
-                    }
-                case "morpher":
-                   //scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets
-                    NSLog("buildAction: Morpher case-\(scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets )")
-                    //This is how the facial morphers are used as an animation
-                    var morpherNumber = ((coAction.elementsForName("id").first as GDataXMLElement).stringValue() as NSString).floatValue
-                    var animation = CABasicAnimation(keyPath: "morpher.weights[\(morpherNumber)]")
-                    animation.fromValue = 0.0;
-                    animation.toValue = 1.0;
-                    animation.autoreverses = true;
-                    animation.repeatCount = Float.infinity;
-                    animation.duration = 2;
-                    buildAction = SCNAction.runBlock{
-                        (node: SCNNode!) in
-                        node.addAnimation(animation, forKey: "run")
-                    }
+            case "position":
+                NSLog("Creating Position action")
+                let x = ((action.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let y = ((action.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let z = ((action.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let moveBy = SCNVector3Make(x, y, z)
+                let duration =  ((action.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let count = ((action.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).integerValue
+                buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
+            case "rotation":
+                NSLog("Creating Rotation action")
+                let x = ((action.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let y = ((action.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let z = ((action.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let angle = ((action.elementsForName("angle").first as GDataXMLElement).stringValue() as NSString).floatValue
+                let duration =  ((action.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).doubleValue
+                buildAction = SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration))
+                // scnAction = SCNAction.rotateByAngle(CGFloat(degToRad(90)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(3))
+            case "delay":
+                NSLog("Creating Delay action")
+                let duration =  (action.stringValue() as NSString).floatValue
+                buildAction = SCNAction.waitForDuration(NSTimeInterval(duration))
+            case "animation":
+                //Create a custom closure action which has code to start an animation
+                //Animation is made outside of closure (variable closure)
+                //Get character (armature) animation scene
+                var sceneAnimationSourceName = (action.elementsForName("file").first as GDataXMLElement).stringValue() as NSString
+                var sceneAnimationURL = NSBundle.mainBundle().URLForResource(sceneAnimationSourceName, withExtension: "dae")
+                var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
+                let animationName = "\(sceneAnimationSourceName)-1"
+                var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
+                buildAction = SCNAction.runBlock{
+                    (node: SCNNode!) in
+                    node.addAnimation(animation, forKey: animationName)
+                }
+            case "morpher":
+                //scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets
+                NSLog("buildAction: Morpher case-\(scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets )")
+                //This is how the facial morphers are used as an animation
+                var morpherNumber = ((action.elementsForName("id").first as GDataXMLElement).stringValue() as NSString).floatValue
+                var animation = CABasicAnimation(keyPath: "morpher.weights[\(morpherNumber)]")
+                animation.fromValue = 0.0;
+                animation.toValue = 1.0;
+                animation.autoreverses = true;
+                animation.repeatCount = Float.infinity;
+                animation.duration = 2;
+                buildAction = SCNAction.runBlock{
+                    (node: SCNNode!) in
+                    node.addAnimation(animation, forKey: "run")
+                }
+            default:
+                break
+            }
+            
+            if let fade = action.elementsForName("fade")?.first as? GDataXMLElement{
+                switch fade.stringValue(){
+                case "in":
+                    buildAction.timingMode = SCNActionTimingMode.EaseIn
+                case "out":
+                    buildAction.timingMode = SCNActionTimingMode.EaseOut
+                    NSLog("\(fade.stringValue())")
+                case "inout":
+                    buildAction.timingMode = SCNActionTimingMode.EaseInEaseOut
                 default:
                     break
+                }
             }
-            scnCoActionsArray += [buildAction]
+            //Get optional fade in/out information for action
+            scnActionSequenceArray += [buildAction]
         }
-        if scnCoActionsArray.count == 1 {
-            NSLog("Creating Single Action")
-            scnAction = scnCoActionsArray[0]
-        }else{
-            NSLog("Creating Group. Size- \(scnCoActionsArray.count)")
-            scnAction = SCNAction.group(scnCoActionsArray)
-            
-        }
-        return scnAction
+        return SCNAction.sequence(scnActionSequenceArray)
     }
-    //Pull out sound and pass to SoundManager
-    func buildSound(location:String){
-        
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     //Method for retrieving nodes (3d object description) from a document and get then processed
     func parseNodes(script: GDataXMLDocument){
         var nodes: [GDataXMLElement] = script.rootElement().elementsForName("node") as [GDataXMLElement]
@@ -259,7 +228,7 @@ class ScriptManager {
             //Get Character model scene
             var sceneURL = NSBundle.mainBundle().URLForResource(sceneName!, withExtension: "dae")
             var sceneSource = SCNSceneSource(URL: sceneURL!, options: nil)
-       
+            
             //Get Node containing information about the character mesh
             scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as SCNNode
             
@@ -275,24 +244,24 @@ class ScriptManager {
             let textureName = (node.elementsForName("texture").first as GDataXMLElement).stringValue()
             
             geometry.firstMaterial?.diffuse.contents = textureName
-        
+            
             geometry.firstMaterial?.diffuse.wrapS = SCNWrapMode.ClampToBorder
             geometry.firstMaterial?.diffuse.wrapT = SCNWrapMode.ClampToBorder
             geometry.firstMaterial?.doubleSided = false
             geometry.firstMaterial?.locksAmbientWithDiffuse = true
             
             scnNode = SCNNode(geometry: geometry)
-           
+            
         }
         //NSLog("nodeInfo-\(scnNode)")
-         scnNode.castsShadow = false
+        scnNode.castsShadow = false
         //Get position data
         let posNode = node.elementsForName("position").first as GDataXMLElement
         let posX = ((posNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
         let posY = ((posNode.elementsForName("y").first as GDataXMLElement).stringValue() as NSString).floatValue
         let posZ = ((posNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
         scnNode.position = SCNVector3Make(posX, posY, posZ)
-       
+        
         //Get rotation data
         let rotNode = node.elementsForName("rotation").first as GDataXMLElement
         let rotX = ((rotNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
@@ -305,7 +274,7 @@ class ScriptManager {
         var result = SCNMatrix4Mult(SCNMatrix4Mult(xAngle, yAngle), zAngle)
         //Apply rotation transformation to character
         scnNode.transform = SCNMatrix4Mult(result, scnNode.transform)
-
+        
         //Get scale data
         if let scaleNode:GDataXMLElement = (node.elementsForName("scale")?.first) as? GDataXMLElement{
             let scaleX = ((scaleNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
@@ -320,16 +289,34 @@ class ScriptManager {
     }
     
     
-    //Make menu choices.  Menu choices will be converted to datastructure which is passed to GUIManager
-    func buildMenuChoices(choices: [GDataXMLElement]){
+    //Set fields of the GUI bundle
+    func buildGUIBundle(xmlBundle: GDataXMLElement){
+        var guiBundle = GUIBundle()
         
-    }
-    
-    //Recieve the chosen menu option
-    func menuChoice(choice:Int){
+        //Ambient sound
+        guiBundle.ambientSound = (xmlBundle.elementsForName("ambient_sound")?.first as GDataXMLElement).stringValue()
+        //Situation sound
+        guiBundle.soundLocation = (xmlBundle.elementsForName("situation_sound")?.first as GDataXMLElement).stringValue()
+        //Situation text
+        guiBundle.situationText = (xmlBundle.elementsForName("situation_text")?.first as GDataXMLElement).stringValue()
+        //Next State
+        guiBundle.nextState = (xmlBundle.elementsForName("next_state")?.first as GDataXMLElement).stringValue().toInt()!
         
+        //TODO-  Set object boolean
+        
+        //Menu choices   text/text-on-select/sound-on-swift select/actions-on-select
+        for menuOption:GDataXMLElement in xmlBundle.elementsForName("menu_option") as [GDataXMLElement]{
+            //
+            let index = menuOption.attributeForName("id").stringValue().toInt()
+            guiBundle.optionsText[index!] = (menuOption.elementsForName("text")?.first as GDataXMLElement).stringValue()
+            guiBundle.textOnSelect[index!] = (menuOption.elementsForName("text_on_select")?.first as GDataXMLElement).stringValue()
+            guiBundle.soundOnSelect[index!] = (menuOption.elementsForName("sound_on_select")?.first as GDataXMLElement).stringValue()
+            guiBundle.optionsText[index!] = (menuOption.elementsForName("text")?.first as GDataXMLElement).stringValue()
+            
+            //TODO-  Build actionsOnSelect
+        }
+        _GUIManager?.setGUIBundle(guiBundle)
     }
-    
     
     
     ////Utility Method
