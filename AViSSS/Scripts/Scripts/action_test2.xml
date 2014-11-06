@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Jeff Wirsing AViSSS XML -->
+
+<scenario>
+    <environment>hallway</environment>
+    <state id="0">
+        <actions>
+            <target name="camera">
+                <actionSequence>
+                    <position>
+                        <x>0</x>
+                        <y>5</y>
+                        <z>10</z>
+                        <duration>0</duration>
+                        <count>1</count>
+                    </position>
+                    <rotation>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <angle>0</angle>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </rotation>
+
+                </actionSequence>
+                
+            </target>
+            <target name="boy1">
+                <actionSequence desc="Pos">
+                    <position>
+                        <x>-15</x>
+                        <y>0</y>
+                        <z>0</z>
+                        <duration>10</duration>
+                        <count>1</count>
+                        <fade>out</fade>
+                    </position>
+                    <position>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-10</z>
+                        <duration>4</duration>
+                        <count>1</count>
+                    </position>
+                    <rotation>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <angle>0</angle>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </rotation>
+                </actionSequence>
+                
+                <actionSequence desc="Pos2">
+                    <position>
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-15</z>
+                        <duration>10</duration>
+                        <count>1</count>
+                        <fade>in</fade>
+                    </position>
+                </actionSequence>
+				
+				<actionSequence desc="Rot">
+                   <rotation>
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <angle>90</angle>
+                        <duration>10</duration>
+                        <count>1</count>
+                    </rotation>
+                </actionSequence>
+            </target>
+        </actions>
+    </state>
+</scenario>
