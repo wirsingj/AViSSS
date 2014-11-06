@@ -3,9 +3,9 @@
 <!--Hallway Environment -->
 <environment name="hallway">
     
-	<node name="boy1" type="dae">
-		<file>boy1_Character</file>
-        <objectName>CBoy0001</objectName>
+	<node name="boy3" type="dae">
+		<file>boy3_Character</file>
+        <objectName>CBoy0003</objectName>
 		<position>
 			<x>20</x>
 			<y>0</y>

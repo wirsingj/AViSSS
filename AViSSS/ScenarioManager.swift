@@ -90,8 +90,12 @@ class ScenarioManager: UIViewController {
         // create and add a light to the scene
         let lightNode = SCNNode()
         lightNode.light = SCNLight()
-        lightNode.light?.type = SCNLightTypeOmni
-        lightNode.position = SCNVector3(x: 0, y: 50, z: 10)
+        lightNode.light?.type = SCNLightTypeSpot
+        lightNode.light?.spotOuterAngle = CGFloat(160)
+        lightNode.position = SCNVector3(x: 0, y: 20, z: 0)
+        lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
+        lightNode.light?.shadowColor = UIColor.blackColor()
+        lightNode.light?.castsShadow = true
         scene.rootNode.addChildNode(lightNode)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()

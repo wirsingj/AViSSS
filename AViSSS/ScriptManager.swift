@@ -24,8 +24,7 @@ class ScriptManager {
     //Input: xml scenario file name to load as XML document
     //This function is the main parser of our scripts-
     //It first loads environment script if found
-    //then it will pull out actions and send them
- ///to managers
+    //then it will pull out actions and send them to managers
     //It will then begin to run through the states
     func runScenario(scenarioName: String){
         var scenarioScript = getXMLDocument(scenarioName)
@@ -36,7 +35,7 @@ class ScriptManager {
         
         //Get states
         states = scenarioScript.rootElement().elementsForName("state") as [GDataXMLElement]
-                //Start scenario at state 0
+        //Start scenario at state 0
         goToState(0)
     }
     
@@ -52,9 +51,8 @@ class ScriptManager {
             //Menu Options
             buildGUIBundle(state.elementsForName("gui").first as GDataXMLElement)
         }
-        
-        
     }
+    
     //Build nodes and skybox for ScenarioManager
     func parseEnvironment(environment :GDataXMLDocument){
         //Add Nodes
@@ -73,14 +71,15 @@ class ScriptManager {
         scenarioManager.buildSkybox(skyboxArray)
     }
     
-    ///////////////////ACTIONS////////////////////////////////////////////////////////////////////////////////////
+    ///////ACTIONS////////////////////////////////////////////////////////////
     //Method for parsing and processing ACTIONS for all TARGETS in a given GDataXMLElement
     //These may be animations (armature, pos/rot/scale, morphers) which effect a target
     //or they may be instructions for playing a sound and displaying text.
     //Function then passes actions to the scenarioManager
     func parseActions(actions: GDataXMLElement){
-        //Go through targets, building up a sequence of actions (some actions can be simultaneously embedded in sequence as a 'batch') for each
-        //May be camera, node, display text, or sound file
+        //Go through targets, building up a sequence of actions 
+        //(some actions can be simultaneously embedded in sequence as a 'batch') for each
+        //May be camera or node
         
         //Dictionary of all Target:ActionBatch pairs
         var targetBatches = [String:SCNAction]()
@@ -152,6 +151,8 @@ class ScriptManager {
                 var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
                 let animationName = "\(sceneAnimationSourceName)-1"
                 var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as CAAnimation
+                let count = ((action.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).floatValue
+                animation.repeatCount = count
                 buildAction = SCNAction.runBlock{
                     (node: SCNNode!) in
                     node.addAnimation(animation, forKey: animationName)
@@ -165,8 +166,10 @@ class ScriptManager {
                 animation.fromValue = 0.0;
                 animation.toValue = 1.0;
                 animation.autoreverses = true;
-                animation.repeatCount = Float.infinity;
-                animation.duration = 2;
+                let count = ((action.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).floatValue
+                animation.repeatCount = count
+                let duration = ((action.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).floatValue
+                animation.duration = CFTimeInterval(duration);
                 buildAction = SCNAction.runBlock{
                     (node: SCNNode!) in
                     node.addAnimation(animation, forKey: "run")
@@ -203,6 +206,7 @@ class ScriptManager {
             }
         }
     }
+    
     //Method getting an xml document from string location
     func getXMLDocument(location: NSString)->GDataXMLDocument{
         let xmlLocation = NSBundle.mainBundle().pathForResource(location, ofType: ".xml")
@@ -247,14 +251,11 @@ class ScriptManager {
             
             geometry.firstMaterial?.diffuse.wrapS = SCNWrapMode.ClampToBorder
             geometry.firstMaterial?.diffuse.wrapT = SCNWrapMode.ClampToBorder
-            geometry.firstMaterial?.doubleSided = false
+            geometry.firstMaterial?.doubleSided = true
             geometry.firstMaterial?.locksAmbientWithDiffuse = true
             
             scnNode = SCNNode(geometry: geometry)
-            
         }
-        //NSLog("nodeInfo-\(scnNode)")
-        scnNode.castsShadow = false
         //Get position data
         let posNode = node.elementsForName("position").first as GDataXMLElement
         let posX = ((posNode.elementsForName("x").first as GDataXMLElement).stringValue() as NSString).floatValue
@@ -282,6 +283,7 @@ class ScriptManager {
             let scaleZ = ((scaleNode.elementsForName("z").first as GDataXMLElement).stringValue() as NSString).floatValue
             scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
         }
+        scnNode.castsShadow = true
         //Set name
         scnNode.name = node.attributeForName("name").stringValue()
         //Add Node to scenario manager
