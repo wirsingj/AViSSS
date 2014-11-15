@@ -10,88 +10,160 @@ import Foundation
 import Spritekit
 import SceneKit
 
-class GUIManager {
+//GUI manager is responsible for recieving
+class GUIManager : SKScene{
+    
+    
+    //Labels used during scenarios
     var option1 = SKLabelNode()
     var option2 = SKLabelNode()
     var option3 = SKLabelNode()
     var option4 = SKLabelNode()
     var descriptionNode = SKLabelNode()
-    var skScene = SKScene()
-    var soundNode = SKNode()
+    var style = [String:Any]()
+    
+    var labelNodeArray = [SKLabelNode()]
+    var actionNode = SKNode()
+    //Current States' GUI data
     var _GUIBundle = GUIBundle()
+    
     init(sm: ScenarioManager){
-        skScene = SKScene(size: sm.view.frame.size)
-        skScene.anchorPoint = CGPointMake(0.5, 0.5)
-        NSLog("GUI/ size \(sm.view.frame.size)")
-        skScene.addChild(soundNode)
-        setupLabelNodes()
-        (sm.view as SCNView).overlaySKScene = skScene
+        super.init(size: sm.view.frame.size)
+        self.anchorPoint = CGPointMake(0.5, 0.5)
+        self.addChild(actionNode)
+        let _GUIStyles = GUIStyles()
+        style = _GUIStyles.getStyleDictionary(0)
+        labelNodeArray = [option1, option2, option3, option4, descriptionNode]
+        //Needs parameter for style from GUIStyles
+        setupChoiceLabels()
     }
-    func setupLabelNodes(){
-        
-        option1 = SKLabelNode(fontNamed:"Copperplate")
-        option1.text = "Option1";
-        option1.color = SKColor.blueColor()
-        option1.colorBlendFactor = 1
-        option1.fontSize = 35;
-        option1.position = CGPoint(x:-275, y:-200);
-        option1.name = "option1"
-        skScene.addChild(option1)
-        
-        
-        option2 = SKLabelNode(fontNamed:"Copperplate")
-        option2.text = "Option2";
-        option2.color = SKColor.blueColor()
-        option2.colorBlendFactor = 1
-        option2.fontSize = 35;
-        option2.position = CGPoint(x:275, y:-200);
-        option2.name = "option2"
-        skScene.addChild(option2)
-        
-        option3 = SKLabelNode(fontNamed:"Copperplate")
-        option3.text = "Option3";
-        option3.color = SKColor.blueColor()
-        option3.colorBlendFactor = 1
-        option3.fontSize = 35;
-        option3.position = CGPoint(x:-275, y:-300);
-        option3.name = "option3"
-        skScene.addChild(option3)
-        
-        option4 = SKLabelNode(fontNamed:"Copperplate")
-        option4.text = "Option4";
-        option4.color = SKColor.blueColor()
-        option4.colorBlendFactor = 1
-        option4.fontSize = 35;
-        option4.position = CGPoint(x:275, y:-300);
-        option4.name = "option2"
-        skScene.addChild(option4)
-        
-        descriptionNode = SKLabelNode(fontNamed:"Copperplate")
-        descriptionNode.text = "Desc";
-        descriptionNode.color = SKColor.blueColor()
-        descriptionNode.colorBlendFactor = 1
-        descriptionNode.fontSize = 25;
-        descriptionNode.position = CGPoint(x:0, y:100);
-        descriptionNode.name = "option2"
-        skScene.addChild(descriptionNode)
-
-
-    }
+    
+    
+    //Recieve and "start" GUI for each state
     func setGUIBundle(bundle: GUIBundle){
         _GUIBundle = bundle
+        
+        //Play ambient sound if needed
+        
+        //Maybe a delay before display/read situation text
+        presentDescription()
+        
+        //May be a delay before setting/presenting options
         setChoices()
-        playDescriptionSound()
     }
+    
+    //Set or present N number of choices- name/text recieved in an array
+    //May be a delay before choices are made visible
     func setChoices(){
-        option1.text = _GUIBundle.optionsText[0]
-        option2.text = _GUIBundle.optionsText[1]
-        option3.text = _GUIBundle.optionsText[2]
-        option4.text = _GUIBundle.optionsText[3]
+        
+        var delay = _GUIBundle.optionsDelay as Int?
+        //Action that will run code..
+        var optionsSetAction = SKAction.runBlock{  () in
+            //If not an object, so we must set the text, location, and hidden values of the labels
+            if self._GUIBundle.object == false {
+                //Make array for non-empty choices text (from bundle)
+                let usedOptions = self._GUIBundle.optionsText.filter{($0) != ""}
+                //Make array to hold
+                for (index, choice) in enumerate(usedOptions){
+                    var labelNode = self.labelNodeArray[index]
+                    labelNode.text = choice
+                    labelNode.hidden = false
+                }
+                //Get x/y locations for labels
+                let leftColX = self.style["leftColumnX"]! as Int
+                let rightColX = self.style["rightColumnX"]! as Int
+                let topRowY = self.style["topRowY"]! as Int
+                let botRowY = self.style["bottomRowY"]! as Int
+                    //Place options based on
+                switch usedOptions.count {
+                case 1:
+                    self.labelNodeArray[0].position = CGPointMake(0, CGFloat(topRowY))
+                case 2:
+                    self.labelNodeArray[0].position = CGPointMake(CGFloat(leftColX), CGFloat(topRowY))
+                    self.labelNodeArray[1].position = CGPointMake(CGFloat(rightColX), CGFloat(topRowY))
+                case 3:
+                    self.labelNodeArray[0].position = CGPointMake(CGFloat(leftColX), CGFloat(topRowY))
+                    self.labelNodeArray[1].position = CGPointMake(CGFloat(rightColX), CGFloat(topRowY))
+                    self.labelNodeArray[2].position = CGPointMake(CGFloat(0), CGFloat(botRowY))
+                    
+                case 4:
+                    self.labelNodeArray[0].position = CGPointMake(CGFloat(leftColX), CGFloat(topRowY))
+                    self.labelNodeArray[1].position = CGPointMake(CGFloat(rightColX), CGFloat(topRowY))
+                    self.labelNodeArray[2].position = CGPointMake(CGFloat(leftColX), CGFloat(botRowY))
+                    self.labelNodeArray[3].position = CGPointMake(CGFloat(rightColX), CGFloat(botRowY))
+                default:
+                    break
+                }
+                
+            }else{
+                //Tell scenarioManager what objects to listen for
+            }
+        }
+        
+        if delay > 0 {
+            let delayAction = SKAction.waitForDuration(NSTimeInterval(delay!))
+            let descriptionSequence = SKAction.sequence([delayAction, optionsSetAction])
+            actionNode.runAction(descriptionSequence)
+        }else{
+            actionNode.runAction(optionsSetAction)
+        }
     }
-    func setDescription(){
-        descriptionNode.text = _GUIBundle.situationText
+    //After a possible delay, present situation text and begin audio playback
+    func presentDescription(){
+        var delay = _GUIBundle.descriptionDelay as Int?
+        
+        var descPosition = self.style["descriptionLocation"]! as CGPoint
+         self.labelNodeArray[4].position = descPosition
+        var textSetAction = SKAction.runBlock{  () in
+            self.descriptionNode.text = self._GUIBundle.situationText
+            self.descriptionNode.hidden = false
+        }
+        
+        if delay > 0 {
+            let delayAction = SKAction.waitForDuration(NSTimeInterval(delay!))
+            let descriptionSequence = SKAction.sequence([delayAction, textSetAction, SKAction.playSoundFileNamed(_GUIBundle.soundLocation, waitForCompletion: false)])
+            actionNode.runAction(descriptionSequence)
+        }else{
+            let descriptionSequence = SKAction.sequence([textSetAction, SKAction.playSoundFileNamed(_GUIBundle.soundLocation, waitForCompletion: false)])
+            actionNode.runAction(descriptionSequence)
+        }
+        
     }
-    func playDescriptionSound(){
-        soundNode.runAction(SKAction.playSoundFileNamed(_GUIBundle.soundLocation, waitForCompletion: true))
+    //Called (by GUIManager or ScenarioManager for choice/object) when an option has been selected
+    //Responsible for hiding options, playing response audio, and presenting response text
+    //Driver of logic
+    func respondToSelection(choice : Int){
+        //Play response audio and show text
+        //If correct send ScriptManager into next state
+        
+        //If incorrect remove selected choice from the bundle the incorrect choice and re-call presentChoices
+    }
+    
+    
+    //Set up formatting of labels based on supplied style Dictionary, does not present, place, or supply text to labels
+    func setupChoiceLabels(){
+        
+        option1.name = "option1"
+        option2.name = "option2"
+        option3.name = "option3"
+        option4.name = "option4"
+        descriptionNode.name = "description"
+        for label in labelNodeArray{
+            //label = SKLabelNode(fontNamed:"Copperplate")
+          // label.fontName = style["fontName"] as String
+            label.text = ""
+            label.color = style["fontColor"] as? UIColor
+            
+            //label.colorBlendFactor = 1
+            var _fontSize = style["fontSize"]! as Int
+            label.fontSize = CGFloat(_fontSize)
+            label.hidden = true
+            self.addChild(label)
+        }
+        
+        
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

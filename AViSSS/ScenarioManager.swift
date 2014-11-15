@@ -14,7 +14,7 @@ import Foundation
 class ScenarioManager: UIViewController {
     var scene = SCNScene()
     let cameraNode = SCNNode()
-    
+    var targets = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,9 +31,9 @@ class ScenarioManager: UIViewController {
         //Begin script reading process
         /////////////////////////////////////
         
-        //GUI Manager Testing
+        //GUI Manager
         let _GUIManager = GUIManager(sm: self)
-        
+        scnView.overlaySKScene = _GUIManager
         let scriptManager = ScriptManager(sm: self, gm:_GUIManager)
         
         //Set new working scene
@@ -45,16 +45,12 @@ class ScenarioManager: UIViewController {
         addCamera()
         
         //Will get scenario name from first scene/GUIManager
-       // var scenarioName = "testScenario"
+        //var scenarioName = "testScenario"
         var scenarioName = "action_test2"
         
         
         //Ask sciptManager to begin running script
         scriptManager.runScenario(scenarioName)
-        
-        //Old testing method
-        //addCharacter()
-        
         
         
         ////////////Other settings....///////////////////
@@ -94,7 +90,7 @@ class ScenarioManager: UIViewController {
         lightNode.light?.spotOuterAngle = CGFloat(160)
         lightNode.position = SCNVector3(x: 0, y: 20, z: 0)
         lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-        lightNode.light?.shadowColor = UIColor.blackColor()
+        //lightNode.light?.shadowColor = UIColor.blackColor()
         lightNode.light?.castsShadow = true
         scene.rootNode.addChildNode(lightNode)
         // create and add an ambient light to the scene
@@ -118,11 +114,10 @@ class ScenarioManager: UIViewController {
             scene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
         }
     }
-    func testStuff(name:NSString){
-        
-     var rotAction = SCNAction.rotateByAngle(CGFloat(degToRad(90.0)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(2))
-        //addAction(name, action: rotAction)
+    func setSelectableTargets(targets:[String]){
+        self.targets = targets
     }
+    //Used to detect touches to clickable objects in scene
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
         let scnView = self.view as SCNView
@@ -135,27 +130,8 @@ class ScenarioManager: UIViewController {
                 // retrieved the first clicked object
                 let result: AnyObject! = hitResults[0]
                 
-                // get its material
-                let material = result.node!.geometry!.firstMaterial!
-                
-                // highlight it
-                SCNTransaction.begin()
-                SCNTransaction.setAnimationDuration(0.5)
-                
-                // on completion - unhighlight
-                SCNTransaction.setCompletionBlock {
-                    SCNTransaction.begin()
-                    SCNTransaction.setAnimationDuration(0.5)
-                    
-                    material.emission.contents = UIColor.blackColor()
-                    
-                    SCNTransaction.commit()
-                }
-                
-                material.emission.contents = UIColor.redColor()
-                
-                SCNTransaction.commit()
             }
+            
         }
     }
     

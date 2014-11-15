@@ -304,8 +304,11 @@ class ScriptManager {
         //Next State
         guiBundle.nextState = (xmlBundle.elementsForName("next_state")?.first as GDataXMLElement).stringValue().toInt()!
         
-        //TODO-  Set object boolean
+        //Set object boolean
+        guiBundle.object = (xmlBundle.elementsForName("option_type")?.first as GDataXMLElement).stringValue() == "object" ? true : false
         
+        //Set Correct Choice
+        guiBundle.correctChoiceID = (xmlBundle.elementsForName("correct_choice")?.first as GDataXMLElement).stringValue().toInt()!
         //Menu choices   text/text-on-select/sound-on-swift select/actions-on-select
         for menuOption:GDataXMLElement in xmlBundle.elementsForName("menu_option") as [GDataXMLElement]{
             //

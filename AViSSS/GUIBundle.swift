@@ -20,11 +20,13 @@ class GUIBundle {
     var object = false
     
     //index into each of the following array represents which option it is associated with
-    var optionsText  = ["","","",""]
+    var optionsText  = ["","","",""] //Maybe be object names
     var textOnSelect = ["","","",""]
     var soundOnSelect = ["","","",""]
     var actionsOnSelect = [SCNAction]()
-    
+    var correctChoiceID = 0
     var nextState = 0
+    var descriptionDelay = 0
+    var optionsDelay = 0
     
 }
