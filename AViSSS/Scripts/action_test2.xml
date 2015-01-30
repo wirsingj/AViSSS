@@ -21,6 +21,7 @@
                         <duration>20</duration>
                         <count>1</count>
                     </position>
+                    
                 </actionSequence>
                 <actionSequence>
                     <position>
@@ -53,7 +54,6 @@
                         <count>1</count>
                     </position>
                 </actionSequence>
-                
                 <actionSequence desc="Rot">
                     <rotation>
                         <x>0</x>
@@ -70,11 +70,9 @@
                 </actionSequence>
             </target>
         </actions>
-        
-        
         <gui>
             <ambient_sound></ambient_sound>
-            <situation_sound>1-1a.mp3</situation_sound>
+            <situation_sound>1-1a</situation_sound>
             <situation_text>I'm walking down the hallway and someone bumps into me and says "excuse me"</situation_text>
             <next_state>1</next_state>
             <correct_choice>0</correct_choice>
@@ -85,26 +83,25 @@
             
             <menu_option id="0">
                 <text>Scowl at him</text>
-                <text_on_select>Correct!</text_on_select>
-                <sound_on_select>1-1a-1.mp3</sound_on_select>
-                <actions></actions>
+                <text_on_select>Look at the persons face, it shows that he person is upset because you became angry with him, you may feel upset inside at first when someone bumps you, however it is not right to stay angry because he or she probably did not mean to run into you. Hallways are busy places and people will often bump into each other accidentally. Think about a more appropriate action and try again.</text_on_select>
+                <sound_on_select>1-1a-1</sound_on_select>
             </menu_option>
             <menu_option id="1">
-                <text>Tell him not to run in hallway</text>
-                <text_on_select>Incorrect!</text_on_select>
-                <sound_on_select>1-1a-2.mp3</sound_on_select>
+                <text>Tell him not to run in hallways</text>
+                <text_on_select>You have made this person angry, you can tell by looking at the the expression on his face. He is upset because you lectured him.  Running in the hallway is usually against the rules but it is not your responsiblity to give orders to your peers.  Only adults or students with special responsibilities, such as hall monitors should give directions to students.  Your classmates may think you are bossy or arrogant if you tell them what to do.  Think about your appropriate action and try again. </text_on_select>
+                <sound_on_select>1-1a-2</sound_on_select>
                 <actions></actions>
             </menu_option>
             <menu_option id="2">
                 <text>Ignore him and keep going on my way</text>
-                <text_on_select>Incorrect!</text_on_select>
-                <sound_on_select>1-1a-3.mp3</sound_on_select>
+                <text_on_select>This is not the best choice, look at this persons face- his expression shows that you have made him feel sad. When someone apologizes to you, it is best to let him or her know you accept their apology so you don't hurt their feeling.  Think about your appropriate action and try again </text_on_select>
+                <sound_on_select>1-1a-3</sound_on_select>
                 <actions></actions>
             </menu_option>
             <menu_option id="3">
                 <text>Because he said excuse me, I'll say "thats alright"</text>
-                <text_on_select>Incorrect!</text_on_select>
-                <sound_on_select>1-1a-4.mp3</sound_on_select>
+                <text_on_select>Good job!   When you are in a busy crowded place like a hallway someone may bump into you by mistake, when this happens and the person apologizes, you should show them you accept their apology and move on  </text_on_select>
+                <sound_on_select>1-1a-4</sound_on_select>
                 <actions></actions>
             </menu_option>
             

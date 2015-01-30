@@ -11,17 +11,19 @@ class GUIStyles{
     var styleDictionaries = [[String:Any]]()
     
     init(){
+        
         var styleDictionary_1 = [String:Any]()
-        styleDictionary_1["fontSize"] = 22
-        styleDictionary_1["fontName"] = "Copperplate"
-        styleDictionary_1["fontcolor"] = SKColor.blackColor()
+        styleDictionary_1["fontSize"] = 18 as CGFloat
+        styleDictionary_1["largeFontSize"] = 22 as CGFloat
+        styleDictionary_1["fontName"] = "ArialMT"
+        styleDictionary_1["fontColor"] = UIColor.whiteColor()
         styleDictionary_1["labelForegroundColor"] = SKColor.grayColor()
-        styleDictionary_1["labelBackgroundColor"] = SKColor.blackColor()
-        styleDictionary_1["descriptionLocation"] = CGPointMake(0, 200.0)
-        styleDictionary_1["leftColumnX"] = -275
-        styleDictionary_1["rightColumnX"] = 275
-        styleDictionary_1["topRowY"] = -200
-        styleDictionary_1["bottomRowY"] = -300
+        styleDictionary_1["labelBackgroundColor"] = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        styleDictionary_1["descriptionLocation"] = CGPointMake(700, 100)
+        styleDictionary_1["leftColumnX"] = 341
+        styleDictionary_1["rightColumnX"] = 682
+        styleDictionary_1["topRowY"] = 600
+        styleDictionary_1["bottomRowY"] = 700
         styleDictionaries.append(styleDictionary_1)
         
         //Add more style dictionaries as needed

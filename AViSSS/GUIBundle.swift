@@ -26,7 +26,7 @@ class GUIBundle {
     var actionsOnSelect = [SCNAction]()
     var correctChoiceID = 0
     var nextState = 0
-    var descriptionDelay = 0
-    var optionsDelay = 0
+    var descriptionDelay: Double = 0
+    var optionsDelay: Double = 0
     
 }

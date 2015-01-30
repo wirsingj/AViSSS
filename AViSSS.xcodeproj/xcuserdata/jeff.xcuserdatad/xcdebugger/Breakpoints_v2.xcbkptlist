@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScenarioManager.swift"
-            timestampString = "437634176.396617"
+            timestampString = "444159714.26097"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "addLights()"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "handleTap(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScenarioManager.swift"
-            timestampString = "437634176.396617"
+            timestampString = "444159714.26097"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "addLights()"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "handleTap(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -64,6 +64,38 @@
             startingLineNumber = "310"
             endingLineNumber = "310"
             landmarkName = "buildGUIBundle(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AViSSS/ScenarioManager.swift"
+            timestampString = "444159714.26097"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "addLights()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AViSSS/GUIManager.swift"
+            timestampString = "444327803.119852"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
+            landmarkName = "speechSynthesizer(_:didFinishSpeechUtterance:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

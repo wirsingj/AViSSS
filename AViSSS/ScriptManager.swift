@@ -45,6 +45,10 @@ class ScriptManager {
         //If there is a state with that number, get it and continue..
         if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
             
+            
+            //Add Nodes!
+            
+            
             //Handle actions.
             parseActions(state.elementsForName("actions").first as GDataXMLElement)
             
@@ -159,7 +163,7 @@ class ScriptManager {
                 }
             case "morpher":
                 //scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets
-                NSLog("buildAction: Morpher case-\(scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets )")
+                NSLog("buildAction: Morpher case-\(scenarioManager.runningScene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets )")
                 //This is how the facial morphers are used as an animation
                 var morpherNumber = ((action.elementsForName("id").first as GDataXMLElement).stringValue() as NSString).floatValue
                 var animation = CABasicAnimation(keyPath: "morpher.weights[\(morpherNumber)]")
@@ -212,6 +216,9 @@ class ScriptManager {
         let xmlLocation = NSBundle.mainBundle().pathForResource(location, ofType: ".xml")
         let xmlData = NSData(contentsOfFile: xmlLocation!)
         var error: NSError?
+        
+        
+        
         let xmlDocument = GDataXMLDocument(data: xmlData, options: 0, error: &error )
         return xmlDocument
     }
@@ -323,6 +330,7 @@ class ScriptManager {
         _GUIManager?.setGUIBundle(guiBundle)
     }
     
+        
     
     ////Utility Method
     func degToRad(deg: Float)->Float{

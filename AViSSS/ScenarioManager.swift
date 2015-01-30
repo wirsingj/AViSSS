@@ -10,22 +10,32 @@ import UIKit
 import QuartzCore
 import SceneKit
 import Foundation
-
+import AVFoundation
+//This class manages the menu scene and the running scenarios.
+//It first builds the menu scene, and then builds and runs scenarios.
+//It is is responsible for adding nodes to the scenes, and removing/refreshing/switching between scenes when needed.
 class ScenarioManager: UIViewController {
-    var scene = SCNScene()
+    var runningScene = SCNScene()
+    var menuScene = SCNScene()
     let cameraNode = SCNNode()
     var targets = [String]()
+    var currentSceneIsMenu: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Get view
         let scnView = self.view as SCNView
+        scnView.layer.anchorPoint = CGPointMake(512, 384)
+        scnView.center = CGPointMake(512, 384)
         // allows the user to manipulate the camera
         scnView.allowsCameraControl = true
         
         /////////////////////
         //Will have section here for 'intro' scene to be used before scripting scenes
-        ////////////////////
+         ////////////////////
+        
+        
         
         ////////////////////////////////////////
         //Begin script reading process
@@ -33,12 +43,12 @@ class ScenarioManager: UIViewController {
         
         //GUI Manager
         let _GUIManager = GUIManager(sm: self)
-        scnView.overlaySKScene = _GUIManager
+       // scnView.overlaySKScene = _GUIManager
         let scriptManager = ScriptManager(sm: self, gm:_GUIManager)
-        
+        _GUIManager.setScriptManager(scriptManager)
         //Set new working scene
         //May have some loading screen/transition in future
-        scnView.scene = scene
+        scnView.scene = runningScene
         
         //Add lights and camera
         addLights()
@@ -51,7 +61,6 @@ class ScenarioManager: UIViewController {
         
         //Ask sciptManager to begin running script
         scriptManager.runScenario(scenarioName)
-        
         
         ////////////Other settings....///////////////////
         
@@ -69,11 +78,17 @@ class ScenarioManager: UIViewController {
         }
         scnView.gestureRecognizers = gestureRecognizers
     }
-    
+        func buildMenuScene(){
+        currentSceneIsMenu = true
+        menuScene = SCNScene(named: "StartScene")!
+    }
+    func rebuildRunningScene(){
+        
+    }
     func addCamera(){
         // create and add a camera to the scene
         cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
+        runningScene.rootNode.addChildNode(cameraNode)
         // place the camera
         cameraNode.position = SCNVector3(x: 0, y: 5, z: 20)
          //cameraNode.eulerAngles = SCNVector3Make(degToRad(5), degToRad(0), 0)
@@ -92,26 +107,26 @@ class ScenarioManager: UIViewController {
         lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
         //lightNode.light?.shadowColor = UIColor.blackColor()
         lightNode.light?.castsShadow = true
-        scene.rootNode.addChildNode(lightNode)
+        runningScene.rootNode.addChildNode(lightNode)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light?.type = SCNLightTypeAmbient
         ambientLightNode.light?.color = UIColor.darkGrayColor()
-        scene.rootNode.addChildNode(ambientLightNode)
+        runningScene.rootNode.addChildNode(ambientLightNode)
 
     }
     //Expects 6 images: Right, Left, Top, Bottom, front, back
     func buildSkybox(imageNames: [String]){
-        scene.background.contents = imageNames
+        runningScene.background.contents = imageNames
     }
     //Add prepared node to scene
     func addNode(node: SCNNode){
-        scene.rootNode.addChildNode(node)
+        runningScene.rootNode.addChildNode(node)
     }
     func addActionsToTargets(targetActions : [String:SCNAction]){
         for (target, action) in targetActions{
-            scene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
+            runningScene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
         }
     }
     func setSelectableTargets(targets:[String]){
