@@ -49,6 +49,8 @@
 		1F8C839919F74B5600CEA215 /* hallway.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1F8C839619F74B5600CEA215 /* hallway.xml */; };
 		1FAADEA51A795C0C00273DDA /* GUIManager_Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAADEA41A795C0C00273DDA /* GUIManager_Backup.swift */; };
 		1FAD31731A673C1A00D4569C /* ASAttributedLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAD31721A673C1A00D4569C /* ASAttributedLabelNode.swift */; };
+		1FC5A8541A7FFFDA0088F8D2 /* hallwayScenario.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5A8531A7FFFDA0088F8D2 /* hallwayScenario.xml */; };
+		1FC5A8561A7FFFF20088F8D2 /* hallwayEnvironment.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5A8551A7FFFF20088F8D2 /* hallwayEnvironment.xml */; };
 		1FCF20E1197EB64800A2AB99 /* ScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */; };
 		1FCF20E5197EB8C900A2AB99 /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E4197EB8C900A2AB99 /* StartScene.swift */; };
 		1FCF20E7197EC2D300A2AB99 /* GUIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */; };
@@ -120,6 +122,8 @@
 		1F8C839619F74B5600CEA215 /* hallway.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hallway.xml; sourceTree = "<group>"; };
 		1FAADEA41A795C0C00273DDA /* GUIManager_Backup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIManager_Backup.swift; sourceTree = "<group>"; };
 		1FAD31721A673C1A00D4569C /* ASAttributedLabelNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASAttributedLabelNode.swift; sourceTree = "<group>"; };
+		1FC5A8531A7FFFDA0088F8D2 /* hallwayScenario.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hallwayScenario.xml; sourceTree = "<group>"; };
+		1FC5A8551A7FFFF20088F8D2 /* hallwayEnvironment.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hallwayEnvironment.xml; sourceTree = "<group>"; };
 		1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptManager.swift; sourceTree = "<group>"; };
 		1FCF20E4197EB8C900A2AB99 /* StartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
 		1FCF20E6197EC2D300A2AB99 /* GUIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIManager.swift; sourceTree = "<group>"; };
@@ -326,6 +330,8 @@
 				1F8C839519F74B5600CEA215 /* action_test.xml */,
 				1F8C839619F74B5600CEA215 /* hallway.xml */,
 				1F19A9D61A04004A00A802BA /* action_test2.xml */,
+				1FC5A8531A7FFFDA0088F8D2 /* hallwayScenario.xml */,
+				1FC5A8551A7FFFF20088F8D2 /* hallwayEnvironment.xml */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -427,6 +433,7 @@
 				1F64C6331A75C756005EE5D6 /* hallway2.xml in Resources */,
 				1FF3088119EB2FA80057C6B0 /* lockerwall.png in Resources */,
 				1F78E54219E0D50C007CE18A /* boy4_Character.dae in Resources */,
+				1FC5A8541A7FFFDA0088F8D2 /* hallwayScenario.xml in Resources */,
 				1F78E51919E0D50C007CE18A /* CBoy0002.tif in Resources */,
 				1F78E51F19E0D50C007CE18A /* CGirl0003.tif in Resources */,
 				1F78E51B19E0D50C007CE18A /* CBoy0004.tif in Resources */,
@@ -434,6 +441,7 @@
 				1FF9198319E5A5C600A1A6EF /* hexagon_left.tif in Resources */,
 				1FF9198519E5A5C600A1A6EF /* hexagon_top.tif in Resources */,
 				1F78E52119E0D50C007CE18A /* CWom0017.tif in Resources */,
+				1FC5A8561A7FFFF20088F8D2 /* hallwayEnvironment.xml in Resources */,
 				1F869F601A16EEB0004E9369 /* 1-1a.mp3 in Resources */,
 				1F78E54519E0D50C007CE18A /* woman16_Run.dae in Resources */,
 				1F78E52019E0D50C007CE18A /* CWom0016.tif in Resources */,

@@ -117,7 +117,7 @@ class ScriptManager {
         //Get XML action objects to be build into sequence
         let xmlActionsInSequence = action.children() as [GDataXMLElement]
         var scnActionSequenceArray: [SCNAction] = []
-        
+        var repeatCount: Float = 1
         //Go through all actions, adding them to an action sequence list
         //At the end, we will make an ScnAction sequence from the list
         for action in xmlActionsInSequence {
@@ -173,32 +173,24 @@ class ScriptManager {
                 let count = ((action.elementsForName("count").first as GDataXMLElement).stringValue() as NSString).floatValue
                 animation.repeatCount = count
                 let duration = ((action.elementsForName("duration").first as GDataXMLElement).stringValue() as NSString).floatValue
-                animation.duration = CFTimeInterval(duration);
+                animation.duration = CFTimeInterval(duration );
                 buildAction = SCNAction.runBlock{
                     (node: SCNNode!) in
                     node.addAnimation(animation, forKey: "run")
                 }
+            case "count":
+                //The whole sequence may be repeated N times
+                repeatCount = (action.stringValue() as NSString).floatValue
+                NSLog("count- \(repeatCount)")
             default:
                 break
             }
             
-            if let fade = action.elementsForName("fade")?.first as? GDataXMLElement{
-                switch fade.stringValue(){
-                case "in":
-                    buildAction.timingMode = SCNActionTimingMode.EaseIn
-                case "out":
-                    buildAction.timingMode = SCNActionTimingMode.EaseOut
-                    NSLog("\(fade.stringValue())")
-                case "inout":
-                    buildAction.timingMode = SCNActionTimingMode.EaseInEaseOut
-                default:
-                    break
-                }
-            }
-            //Get optional fade in/out information for action
+            
             scnActionSequenceArray += [buildAction]
         }
-        return SCNAction.sequence(scnActionSequenceArray)
+        let sequenceAction = SCNAction.sequence(scnActionSequenceArray)
+        return SCNAction.repeatAction(sequenceAction, count: Int(repeatCount))
     }
     
     //Method for retrieving nodes (3d object description) from a document and get then processed

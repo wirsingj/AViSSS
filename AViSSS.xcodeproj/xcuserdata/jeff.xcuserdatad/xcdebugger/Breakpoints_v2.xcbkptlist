@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScriptManager.swift"
-            timestampString = "437634176.396617"
+            timestampString = "444599570.472472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "buildGUIBundle(_:)"
             landmarkType = "5">
          </BreakpointContent>

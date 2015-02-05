@@ -56,7 +56,7 @@ class ScenarioManager: UIViewController {
         
         //Will get scenario name from first scene/GUIManager
         //var scenarioName = "testScenario"
-        var scenarioName = "action_test2"
+        var scenarioName = "hallwayScenario"
         
         
         //Ask sciptManager to begin running script
