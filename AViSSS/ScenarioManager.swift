@@ -20,12 +20,12 @@ class ScenarioManager: UIViewController {
     let cameraNode = SCNNode()
     var targets = [String]()
     var currentSceneIsMenu: Bool = true
-    
+    var scnView : SCNView = SCNView()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Get view
-        let scnView = self.view as SCNView
+        scnView = self.view as! SCNView
         scnView.layer.anchorPoint = CGPointMake(512, 384)
         scnView.center = CGPointMake(512, 384)
         // allows the user to manipulate the camera
@@ -51,8 +51,8 @@ class ScenarioManager: UIViewController {
         scnView.scene = runningScene
         
         //Add lights and camera
-        addLights()
-        addCamera()
+        //addLights()
+        //addCamera()
         
         //Will get scenario name from first scene/GUIManager
         //var scenarioName = "testScenario"
@@ -76,14 +76,18 @@ class ScenarioManager: UIViewController {
         if let existingGestureRecognizers = scnView.gestureRecognizers {
             gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
         }
-        scnView.gestureRecognizers = gestureRecognizers
+        scnView.gestureRecognizers = gestureRecognizers as [AnyObject]
     }
-        func buildMenuScene(){
+    func buildMenuScene(){
         currentSceneIsMenu = true
         menuScene = SCNScene(named: "StartScene")!
     }
-    func rebuildRunningScene(){
-        
+    func refreshRunningScene(){
+        NSLog("refreshingScene")
+        runningScene = SCNScene()
+        addCamera()
+        addLights()
+        scnView.scene = runningScene
     }
     func addCamera(){
         // create and add a camera to the scene
@@ -105,9 +109,26 @@ class ScenarioManager: UIViewController {
         lightNode.light?.spotOuterAngle = CGFloat(160)
         lightNode.position = SCNVector3(x: 0, y: 20, z: 0)
         lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-        //lightNode.light?.shadowColor = UIColor.blackColor()
-        lightNode.light?.castsShadow = true
+        lightNode.light?.castsShadow = false
+        let lightNode2 = SCNNode()
+        lightNode2.light = SCNLight()
+        lightNode2.light?.type = SCNLightTypeSpot
+        lightNode2.light?.spotOuterAngle = CGFloat(160)
+        lightNode2.position = SCNVector3(x: 0, y: 20, z: -50)
+        lightNode2.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
+        lightNode2.light?.castsShadow = false
+        let lightNode3 = SCNNode()
+        lightNode3.light = SCNLight()
+        lightNode3.light?.type = SCNLightTypeSpot
+        lightNode3.light?.spotOuterAngle = CGFloat(160)
+        lightNode3.position = SCNVector3(x: 50, y: 20, z: 0)
+        lightNode3.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
+        lightNode3.light?.castsShadow = false
+
+        
         runningScene.rootNode.addChildNode(lightNode)
+        runningScene.rootNode.addChildNode(lightNode2)
+        runningScene.rootNode.addChildNode(lightNode3)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
@@ -135,7 +156,7 @@ class ScenarioManager: UIViewController {
     //Used to detect touches to clickable objects in scene
     func handleTap(gestureRecognize: UIGestureRecognizer) {
         // retrieve the SCNView
-        let scnView = self.view as SCNView
+        let scnView = self.view as! SCNView
         
         // check what nodes are tapped
         let p = gestureRecognize.locationInView(scnView)

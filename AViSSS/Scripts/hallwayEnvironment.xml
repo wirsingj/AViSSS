@@ -7,13 +7,13 @@
         <file>boy1_Character</file>
         <objectName>CBoy0001</objectName>
         <position>
-            <x>0</x>
+            <x>16</x>
             <y>0</y>
-            <z>0</z>
+            <z>-30</z>
         </position>
         <rotation>
             <x>-90</x>
-            <y>180</y>
+            <y>-90</y>
             <z>0</z>
         </rotation>
         <scale>
@@ -26,33 +26,13 @@
         <file>boy2_Character</file>
         <objectName>CBoy0002</objectName>
         <position>
-            <x>-8</x>
+            <x>-15</x>
             <y>0</y>
             <z>-10</z>
         </position>
         <rotation>
             <x>-90</x>
-            <y>180</y>
-            <z>0</z>
-        </rotation>
-        <scale>
-            <x>8</x>
-            <y>8</y>
-            <z>8</z>
-        </scale>
-    </node>
-    
-    <node name="boy3" type="dae">
-        <file>boy3_Character</file>
-        <objectName>CBoy0003</objectName>
-        <position>
-            <x>4</x>
-            <y>0</y>
-            <z>-15</z>
-        </position>
-        <rotation>
-            <x>-90</x>
-            <y>180</y>
+            <y>90</y>
             <z>0</z>
         </rotation>
         <scale>
@@ -62,7 +42,46 @@
         </scale>
     </node>
     
+    <node name="boy3" type="dae">
+        <file>boy3_Character</file>
+        <objectName>CBoy0003</objectName>
+        <position>
+            <x>0</x>
+            <y>0</y>
+            <z>-15</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>180</y>
+            <z>0</z>
+        </rotation>
+        <scale>
+            <x>13</x>
+            <y>13</y>
+            <z>13</z>
+        </scale>
+    </node>
+    
     <node name="wall1" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>-25</x>
+            <y>20</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>90</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    
+    <node name="wall2" type="shape">
         <shape>plane</shape>
         <texture>lockerwall.png</texture>
         <position>
@@ -72,22 +91,21 @@
         </position>
         <rotation>
             <x>0</x>
-            <y>90</y>
+            <y>-90</y>
             <z>0</z>
         </rotation>
         <size>
-            <w>60</w>
+            <w>50</w>
             <h>40</h>
         </size>
     </node>
-    
-    <node name="wall2" type="shape">
+    <node name="wall3" type="shape">
         <shape>plane</shape>
         <texture>lockerwall.png</texture>
         <position>
-            <x>25</x>
+            <x>-25</x>
             <y>20</y>
-            <z>0</z>
+            <z>50</z>
         </position>
         <rotation>
             <x>0</x>
@@ -95,10 +113,252 @@
             <z>0</z>
         </rotation>
         <size>
-            <w>60</w>
+            <w>50</w>
             <h>40</h>
         </size>
     </node>
+    <node name="wall4" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>25</x>
+            <y>20</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>-90</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="wall5" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>25</x>
+            <y>20</y>
+            <z>50</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>-90</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="wall6" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>50</x>
+            <y>20</y>
+            <z>-25</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="wall7" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>50</x>
+            <y>20</y>
+            <z>25</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="wall8" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>100</x>
+            <y>20</y>
+            <z>-25</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="wall9" type="shape">
+        <shape>plane</shape>
+        <texture>lockerwall.png</texture>
+        <position>
+            <x>100</x>
+            <y>20</y>
+            <z>25</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="wall10" type="shape">
+        <shape>plane</shape>
+        <texture>hallwayWindow.png</texture>
+        <position>
+            <x>0</x>
+            <y>20</y>
+            <z>-75</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    
+    <node name="wall11" type="shape">
+        <shape>plane</shape>
+        <texture>hallwayWindow.png</texture>
+        <position>
+            <x>125</x>
+            <y>20</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>90</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>40</h>
+        </size>
+    </node>
+    <node name="ceiling1" type="shape">
+        <shape>plane</shape>
+        <texture>3087.jpg</texture>
+        <position>
+            <x>0</x>
+            <y>40</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="ceiling2" type="shape">
+        <shape>plane</shape>
+        <texture>3087.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>50</x>
+            <y>40</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="ceiling3" type="shape">
+        <shape>plane</shape>
+        <texture>3087.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>100</x>
+            <y>40</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="ceiling4" type="shape">
+        <shape>plane</shape>
+        <texture>3087.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>0</x>
+            <y>40</y>
+            <z>50</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="ceiling5" type="shape">
+        <shape>plane</shape>
+        <texture>3087.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>0</x>
+            <y>40</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+
+    
+    
     <node name="floor" type="shape">
         <shape>plane</shape>
         <texture>floor.jpg</texture>
@@ -115,9 +375,86 @@
         </rotation>
         <size>
             <w>50</w>
-            <h>60</h>
+            <h>50</h>
         </size>
     </node>
+    <node name="floor2" type="shape">
+        <shape>plane</shape>
+        <texture>floor.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>50</x>
+            <y>0</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="floor3" type="shape">
+        <shape>plane</shape>
+        <texture>floor.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>100</x>
+            <y>0</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="floor4" type="shape">
+        <shape>plane</shape>
+        <texture>floor.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>0</x>
+            <y>0</y>
+            <z>50</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    <node name="floor5" type="shape">
+        <shape>plane</shape>
+        <texture>floor.jpg</texture>
+        <tex_repeat>true</tex_repeat>
+        <position>
+            <x>0</x>
+            <y>0</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+        <size>
+            <w>50</w>
+            <h>50</h>
+        </size>
+    </node>
+    
     <skybox>
         <file>hexagon_right.tif</file>
         <file>hexagon_left.tif</file>

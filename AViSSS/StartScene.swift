@@ -10,6 +10,7 @@ import SceneKit
 import SpriteKit
 
 //This is the scene loaded before script is read...
+//Should show: available scenarios to run, settings, and previous scores 
 class StartScene : SCNScene {
     
     override init(){

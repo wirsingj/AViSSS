@@ -61,7 +61,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     //Recieve and "start" GUI for each state
     func setGUIBundle(bundle: GUIBundle){
         _GUIBundle = bundle
-        
+        _audioHasBeenPlayed = false
         //This uses SKLabelNodes
         //setupLabelParentNodes()
         
@@ -78,12 +78,15 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         setChoices()
     }
     func setupUILabels(){
-        
+        for labelNode in _labelNodeArray{
+            labelNode.removeFromSuperview()
+        }
+        _responseNode.removeFromSuperview()
         for i in 0...3 {
             _labelNodeArray[i] = UILabel() //SKShapeNode(rectOfSize: CGSizeMake(300, 50))
             _labelNodeArray[i].frame = CGRectMake(0, 0, 300, 50)
             _labelNodeArray[i].backgroundColor = style["labelBackgroundColor"] as? UIColor
-            _labelNodeArray[i].textColor = style["fontColor"] as UIColor
+            _labelNodeArray[i].textColor = style["fontColor"] as! UIColor
             _labelNodeArray[i].tag = i
             _labelNodeArray[i].numberOfLines = 4
             _labelNodeArray[i].hidden = true
@@ -97,26 +100,26 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
         //The node which will present the description of the situation
         _descriptionNode = UILabel()
-        _descriptionNode.frame = CGRectMake(20, 60, 400, 200)
+        _descriptionNode.frame = CGRectMake(100, 200, 400, 200)
         _descriptionNode.backgroundColor = style["labelBackgroundColor"] as? UIColor
-        _descriptionNode.textColor = style["fontColor"] as UIColor
+        _descriptionNode.textColor = style["fontColor"] as! UIColor
         _descriptionNode.tag = 4
-        _descriptionNode.numberOfLines = 8
+        _descriptionNode.numberOfLines = 20
         _descriptionNode.hidden = true
         _descriptionNode.userInteractionEnabled = true
-        _descriptionNode.center = self.style["descriptionLocation"]! as CGPoint
+        _descriptionNode.center = self.style["descriptionLocation"]! as! CGPoint
         self.scenarioManager?.view.addSubview(_descriptionNode)
         
         
         //This node holds
         _responseNode = UILabel()
-        _responseNode.frame = CGRectMake(20, 60, 400, 200)
+        _responseNode.frame = CGRectMake(100, 200, 400, 200)
         _responseNode.backgroundColor = style["labelBackgroundColor"] as? UIColor
-        _responseNode.textColor = style["fontColor"] as UIColor
+        _responseNode.textColor = style["fontColor"] as! UIColor
         _responseNode.tag = 4
-        _responseNode.numberOfLines = 8
+        _responseNode.numberOfLines = 20
         _responseNode.hidden = true
-        _responseNode.center = self.style["descriptionLocation"]! as CGPoint
+        _responseNode.center = self.style["descriptionLocation"]! as! CGPoint
         self.scenarioManager?.view.addSubview(_responseNode)
     }
     //After a possible delay, present situation text and begin audio playback via speech synth or audioplayer
@@ -132,13 +135,9 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             }
             
         }
-        func test (){
-            NSLog("asdf")
-        }
-        
         ///var descPosition = self.style["descriptionLocation"]! as CGPoint
         //_descriptionNode.frame.origin = descPosition
-        let delayInSeconds = _GUIBundle.descriptionDelay as Double?
+        let delayInSeconds = (!_audioHasBeenPlayed) ?  _GUIBundle.descriptionDelay as Double?:0;
         //Add a delay before the setting text and playing audio
         if delayInSeconds > 0 {
             let delay = delayInSeconds! * Double(NSEC_PER_SEC)
@@ -148,7 +147,6 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
                 self.setAttributedText(self._descriptionNode, text: self._GUIBundle.situationText);
                 self._descriptionNode.hidden = false;
                 if !self._audioHasBeenPlayed {startAudio() ; self._audioHasBeenPlayed = true}
-                test()
             })
         }else{
             setAttributedText(_descriptionNode, text: _GUIBundle.situationText)
@@ -165,7 +163,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     //!!Delay should only activate on FIRST setChoice call in per state
     func setChoices(){
         _responseNode.hidden = true
-        var delayInSeconds = _GUIBundle.optionsDelay as Double?
+        var delayInSeconds = (!_audioHasBeenPlayed) ? _GUIBundle.optionsDelay as Double?: 0;
         
         //Action that will run code..
         var optionsSetAction = { () -> () in
@@ -190,10 +188,10 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
                 }
                 
                 //Get x/y locations for labels
-                let leftColX = self.style["leftColumnX"]! as Int
-                let rightColX = self.style["rightColumnX"]! as Int
-                let topRowY = self.style["topRowY"]! as Int
-                let botRowY = self.style["bottomRowY"]! as Int
+                let leftColX = self.style["leftColumnX"]! as! Int
+                let rightColX = self.style["rightColumnX"]! as! Int
+                let topRowY = self.style["topRowY"]! as! Int
+                let botRowY = self.style["bottomRowY"]! as! Int
                 
                 //Place options based on how many choices
                 switch self._usedLabelNodeArray.count {
@@ -280,10 +278,10 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         var attributedString = NSMutableAttributedString(string: text)
         
         //Get settings
-        let _fontColor = style["fontColor"] as UIColor
-        let _fontSize = style["fontSize"] as CGFloat
-        let _fontName = style["fontName"] as String
-        let _largeFontSize = style["largeFontSize"] as CGFloat
+        let _fontColor = style["fontColor"] as! UIColor
+        let _fontSize = style["fontSize"] as! CGFloat
+        let _fontName = style["fontName"] as! String
+        let _largeFontSize = style["largeFontSize"] as! CGFloat
         var font = UIFont(name: _fontName, size: _fontSize)
         //Apply settings to whole string
         attributedString.setAttributes([NSForegroundColorAttributeName : _fontColor, NSFontAttributeName : font!], range: NSMakeRange(0, attributedString.length ))
@@ -303,7 +301,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             
             descriptionAudioPlayer?.stop()
             descriptionAudioPlayer = nil
-            let responseSoundLocation = NSURL(fileURLWithPath: soundPath)
+            let responseSoundLocation = NSURL(fileURLWithPath: soundPath as! String)
             //NSLog("response sound location\(responseSoundLocation)")
             descriptionAudioPlayer = AVAudioPlayer(contentsOfURL: responseSoundLocation, error: nil)
             descriptionAudioPlayer?.delegate = self
@@ -338,28 +336,33 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     //This method is responsible for triggering choices after description utterance
     //It also is used to decide when the response utterance is done
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer!, didFinishSpeechUtterance utterance: AVSpeechUtterance!) {
-        NSLog("SSD- DidFinishUtterance")
-        
+        NSLog("SSD- DidFinishUtterance \(_UILabelBeingSpoken)")
+        if (_usedLabelNodeArray.count > 0){
         for index in 0 ... _usedLabelNodeArray.count - 2  {
             if(_usedLabelNodeArray[index] == _UILabelBeingSpoken){
                 NSLog("SpeechSynthUttENd:  index- \(index)")
+                setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!)
                 _UILabelBeingSpoken = _usedLabelNodeArray[index+1]
                 startSpeechSynthesizer(_usedLabelNodeArray[index+1].text!)
                 break
             }
         }
-        
+        }
         
         
         switch _UILabelBeingSpoken {
         case _descriptionNode:
             NSLog("Description Utterance Ended")
+             setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!)
             _UILabelBeingSpoken = _usedLabelNodeArray[0]
+            
             startSpeechSynthesizer(_usedLabelNodeArray[0].text!)
         case _responseNode:
+            setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!)
             if _choice == self._GUIBundle.correctChoiceID{
                 NSLog("Correct choice was made!")
-                //scriptManager!.goToState(_GUIBundle.nextState)
+                _audioHasBeenPlayed = false
+                scriptManager!.goToState(_GUIBundle.nextState)
             }else{
                 NSLog("wrong choice!")
                 _GUIBundle.optionsText[_choice] = ""
@@ -370,7 +373,6 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             return
         }
     }
-    
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer!, didCancelSpeechUtterance utterance: AVSpeechUtterance!) {
         ///////////////Dont Need
         NSLog("SSD CanceledUtterance")
