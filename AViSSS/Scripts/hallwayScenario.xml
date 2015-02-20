@@ -65,6 +65,22 @@
                     </animation>
                 </actionSequence>
             </target>
+            <target name="boy1">
+                <actionSequence desc="talk">
+                    <animation>
+                        <file>boy1_Talk</file>
+                        <count>100</count>
+                    </animation>
+                </actionSequence>
+            </target>
+            <target name="boy2">
+                <actionSequence desc="talk">
+                    <animation>
+                        <file>boy2_Grab</file>
+                        <count>100</count>
+                    </animation>
+                </actionSequence>
+            </target>
         </actions>
         <gui>
             <ambient_sound></ambient_sound>
@@ -154,7 +170,7 @@
             <situation_sound>1-1a</situation_sound>
             <situation_text>Your locker won't open</situation_text>
             <next_state>0</next_state>
-            <correct_choice>3</correct_choice>
+            <correct_choice>2</correct_choice>
             <option_type>text</option_type>
             <description_delay>12</description_delay>
             <options_delay>12</options_delay>
