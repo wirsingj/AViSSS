@@ -19,7 +19,7 @@ class GUIStyles{
         styleDictionary_1["fontColor"] = UIColor.whiteColor()
         styleDictionary_1["labelForegroundColor"] = SKColor.grayColor()
         styleDictionary_1["labelBackgroundColor"] = UIColor.blackColor().colorWithAlphaComponent(0.5)
-        styleDictionary_1["descriptionLocation"] = CGPointMake(700, 100)
+        styleDictionary_1["descriptionLocation"] = CGPointMake(700, 150)
         styleDictionary_1["leftColumnX"] = 341
         styleDictionary_1["rightColumnX"] = 682
         styleDictionary_1["topRowY"] = 600

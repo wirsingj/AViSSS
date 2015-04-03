@@ -84,13 +84,14 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         _responseNode.removeFromSuperview()
         for i in 0...3 {
             _labelNodeArray[i] = UILabel() //SKShapeNode(rectOfSize: CGSizeMake(300, 50))
-            _labelNodeArray[i].frame = CGRectMake(100, 100, 300, 50)
+            _labelNodeArray[i].frame = CGRectMake(0, 0, 300, 60)
             _labelNodeArray[i].backgroundColor = style["labelBackgroundColor"] as? UIColor
             _labelNodeArray[i].textColor = style["fontColor"] as! UIColor
             _labelNodeArray[i].tag = i
             _labelNodeArray[i].numberOfLines = 4
             _labelNodeArray[i].hidden = true
             _labelNodeArray[i].userInteractionEnabled = true
+            _labelNodeArray[i].preferredMaxLayoutWidth = 300
             let choiceTouchRecognizer = UITapGestureRecognizer(target: self, action: Selector("choice\(i)Touched"))
             _labelNodeArray[i].addGestureRecognizer(choiceTouchRecognizer)
             choiceTouchRecognizer.delegate = self
@@ -100,11 +101,12 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
         //The node which will present the description of the situation
         _descriptionNode = UILabel()
-        _descriptionNode.frame = CGRectMake(100, 200, 400, 200)
+        _descriptionNode.frame = CGRectMake(0, 0, 300, 200)
         _descriptionNode.backgroundColor = style["labelBackgroundColor"] as? UIColor
         _descriptionNode.textColor = style["fontColor"] as! UIColor
         _descriptionNode.tag = 4
         _descriptionNode.numberOfLines = 20
+        _descriptionNode.preferredMaxLayoutWidth = 400
         _descriptionNode.hidden = true
         _descriptionNode.userInteractionEnabled = true
         _descriptionNode.center = self.style["descriptionLocation"]! as! CGPoint
@@ -113,11 +115,12 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
         //This node holds
         _responseNode = UILabel()
-        _responseNode.frame = CGRectMake(100, 200, 400, 200)
+        _responseNode.frame = CGRectMake(0, -0, 300, 200)
         _responseNode.backgroundColor = style["labelBackgroundColor"] as? UIColor
         _responseNode.textColor = style["fontColor"] as! UIColor
         _responseNode.tag = 5
         _responseNode.numberOfLines = 20
+        _responseNode.preferredMaxLayoutWidth = 400
         _responseNode.hidden = true
         _responseNode.center = self.style["descriptionLocation"]! as! CGPoint
         self.scenarioManager?.view.addSubview(_responseNode)
@@ -348,6 +351,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
                 return
             }else if(_usedLabelNodeArray[index] == _UILabelBeingSpoken && _usedLabelNodeArray[index] == _usedLabelNodeArray.last){
                 _audioHasBeenPlayed = true
+                setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!)
             }
         }
         

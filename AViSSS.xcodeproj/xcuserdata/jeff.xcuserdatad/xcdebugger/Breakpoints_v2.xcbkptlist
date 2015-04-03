@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/GUIManager.swift"
-            timestampString = "446094207.47642"
+            timestampString = "446096438.57738"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
+            startingLineNumber = "374"
+            endingLineNumber = "374"
             landmarkName = "speechSynthesizer(_:didFinishSpeechUtterance:)"
             landmarkType = "5">
          </BreakpointContent>

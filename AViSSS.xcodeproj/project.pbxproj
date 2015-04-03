@@ -48,7 +48,6 @@
 		1F8C839819F74B5600CEA215 /* action_test.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1F8C839519F74B5600CEA215 /* action_test.xml */; };
 		1F8C839919F74B5600CEA215 /* hallway.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1F8C839619F74B5600CEA215 /* hallway.xml */; };
 		1FAADEA51A795C0C00273DDA /* GUIManager_Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAADEA41A795C0C00273DDA /* GUIManager_Backup.swift */; };
-		1FAD31731A673C1A00D4569C /* ASAttributedLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAD31721A673C1A00D4569C /* ASAttributedLabelNode.swift */; };
 		1FC5A8541A7FFFDA0088F8D2 /* hallwayScenario.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5A8531A7FFFDA0088F8D2 /* hallwayScenario.xml */; };
 		1FC5A8561A7FFFF20088F8D2 /* hallwayEnvironment.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1FC5A8551A7FFFF20088F8D2 /* hallwayEnvironment.xml */; };
 		1FCF20E1197EB64800A2AB99 /* ScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */; };
@@ -124,7 +123,6 @@
 		1F8C839519F74B5600CEA215 /* action_test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = action_test.xml; sourceTree = "<group>"; };
 		1F8C839619F74B5600CEA215 /* hallway.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hallway.xml; sourceTree = "<group>"; };
 		1FAADEA41A795C0C00273DDA /* GUIManager_Backup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIManager_Backup.swift; sourceTree = "<group>"; };
-		1FAD31721A673C1A00D4569C /* ASAttributedLabelNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASAttributedLabelNode.swift; sourceTree = "<group>"; };
 		1FC5A8531A7FFFDA0088F8D2 /* hallwayScenario.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hallwayScenario.xml; sourceTree = "<group>"; };
 		1FC5A8551A7FFFF20088F8D2 /* hallwayEnvironment.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = hallwayEnvironment.xml; sourceTree = "<group>"; };
 		1FCF20E0197EB64800A2AB99 /* ScriptManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScriptManager.swift; sourceTree = "<group>"; };
@@ -326,7 +324,6 @@
 				1F86E7B21977270A005ED0DD /* Info.plist */,
 				1FCF20E4197EB8C900A2AB99 /* StartScene.swift */,
 				1F55935B1A099983004690A8 /* GUIBundle.swift */,
-				1FAD31721A673C1A00D4569C /* ASAttributedLabelNode.swift */,
 				1FAADEA41A795C0C00273DDA /* GUIManager_Backup.swift */,
 			);
 			name = "Supporting Files";
@@ -504,7 +501,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F86E7B61977270A005ED0DD /* ScenarioManager.swift in Sources */,
-				1FAD31731A673C1A00D4569C /* ASAttributedLabelNode.swift in Sources */,
 				1F55935C1A099983004690A8 /* GUIBundle.swift in Sources */,
 				1F82669F19DBA86C00995C95 /* GDataXMLNode.m in Sources */,
 				1F86E7B41977270A005ED0DD /* AppDelegate.swift in Sources */,

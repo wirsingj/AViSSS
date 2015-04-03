@@ -251,7 +251,7 @@ class ScriptManager {
             geometry.firstMaterial?.diffuse.contents = textureName
             
             geometry.firstMaterial?.diffuse.wrapS = SCNWrapMode.Repeat
-            geometry.firstMaterial?.diffuse.wrapT = SCNWrapMode.ClampToBorder
+            geometry.firstMaterial?.diffuse.wrapT = SCNWrapMode.Clamp
             geometry.firstMaterial?.doubleSided = true
             geometry.firstMaterial?.locksAmbientWithDiffuse = true
             
