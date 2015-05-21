@@ -60,7 +60,8 @@
                 </actionSequence>
                 <actionSequence desc="run">
                     <animation>
-                        <file>boy3_Run</file>
+                        <file>boy3_Animations</file>
+                        <name>runCycle<name>
                         <count>10</count>
                     </animation>
                 </actionSequence>
@@ -68,7 +69,8 @@
             <target name="boy1">
                 <actionSequence desc="talk">
                     <animation>
-                        <file>boy1_Talk</file>
+                        <file>boy1_Animations</file>
+                        <name>runCycle<name>
                         <count>100</count>
                     </animation>
                 </actionSequence>
@@ -76,7 +78,8 @@
             <target name="boy2">
                 <actionSequence desc="talk">
                     <animation>
-                        <file>boy2_Grab</file>
+                        <file>boy2_Animations</file>
+                        <name>runCycle<name>
                         <count>100</count>
                     </animation>
                 </actionSequence>

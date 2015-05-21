@@ -14,12 +14,15 @@ import SceneKit
 
 class ScriptManager {
     var states : [GDataXMLElement] = [GDataXMLElement]()
-    var scenarioManager : ScenarioManager
+    var scenarioManager : ScenarioManager?
     var _GUIManager : GUIManager?
     var scenarioScript: GDataXMLDocument = GDataXMLDocument()
-    //Initialize and get copy of manager
-    init(sm: ScenarioManager, gm: GUIManager){
+    
+    func setSM(sm: ScenarioManager){
         scenarioManager = sm
+    }
+    func setGM(gm: GUIManager){
+        
         _GUIManager = gm
     }
     //Input: xml scenario file name to load as XML document
@@ -28,7 +31,6 @@ class ScriptManager {
     //then it will pull out actions and send them to managers
     //It will then begin to run through the states
     func runScenario(scenarioName: String){
-        scenarioManager.refreshRunningScene()
         scenarioScript = getXMLDocument(scenarioName)
         //Check for environment
         if let environment = scenarioScript.rootElement().elementsForName("environment").first as? GDataXMLElement{
@@ -73,7 +75,7 @@ class ScriptManager {
         for file:GDataXMLElement in environment.rootElement().elementsForName("skybox").first?.elementsForName("file") as! [GDataXMLElement] {
             skyboxArray.append(file.stringValue())
         }
-        scenarioManager.buildSkybox(skyboxArray)
+        scenarioManager!.buildSkybox(skyboxArray)
     }
     
     ///////ACTIONS////////////////////////////////////////////////////////////
@@ -109,7 +111,7 @@ class ScriptManager {
             //Add batch of action sequences for target to collection of target-action batch pairs
             targetBatches.updateValue(targetSequenceBatch, forKey: name)
         }
-        scenarioManager.addActionsToTargets(targetBatches)
+        scenarioManager!.addActionsToTargets(targetBatches)
     }
     
     //Build a single action in a sequence- may be a 'batch' of simultanious action
@@ -148,7 +150,7 @@ class ScriptManager {
                 let duration =  (action.stringValue() as NSString).floatValue
                 buildAction = SCNAction.waitForDuration(NSTimeInterval(duration))
             case "animation":
-                //Create a custom closure action which has code to start an animation
+                //Create a custom closure action which has code to start an animationsdf
                 //Animation is made outside of closure (variable closure)
                 //Get character (armature) animation scene
                 var sceneAnimationSourceName = (action.elementsForName("file").first as! GDataXMLElement).stringValue() as NSString
@@ -164,7 +166,7 @@ class ScriptManager {
                 }
             case "morpher":
                 //scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets
-                NSLog("buildAction: Morpher case-\(scenarioManager.runningScene.rootNode.childNodeWithName(name as! String, recursively: true)?.morpher?.targets )")
+                NSLog("buildAction: Morpher case-\(scenarioManager!.runningScene.rootNode.childNodeWithName(name as! String, recursively: true)?.morpher?.targets )")
                 //This is how the facial morphers are used as an animation
                 var morpherNumber = ((action.elementsForName("id").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 var animation = CABasicAnimation(keyPath: "morpher.weights[\(morpherNumber)]")
@@ -288,7 +290,7 @@ class ScriptManager {
         //Set name
         scnNode.name = node.attributeForName("name").stringValue()
         //Add Node to scenario manager
-        scenarioManager.addNode(scnNode)
+        scenarioManager!.addNode(scnNode)
     }
     
     

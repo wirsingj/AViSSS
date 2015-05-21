@@ -15,52 +15,37 @@ import AVFoundation
 //It first builds the menu scene, and then builds and runs scenarios.
 //It is is responsible for adding nodes to the scenes, and removing/refreshing/switching between scenes when needed.
 class ScenarioManager: UIViewController {
+    
     var runningScene = SCNScene()
     var menuScene = SCNScene()
     let cameraNode = SCNNode()
     var targets = [String]()
     var currentSceneIsMenu: Bool = true
     var scnView : SCNView = SCNView()
+    var scriptManager = ScriptManager()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Get view
         scnView = self.view as! SCNView
-        scnView.layer.anchorPoint = CGPointMake(512, 384)
+        //scnView.layer.anchorPoint = CGPointMake(512, 384)
+        scnView.layer.anchorPoint = CGPointMake(0.5,0.5)
         scnView.center = CGPointMake(512, 384)
         // allows the user to manipulate the camera
         scnView.allowsCameraControl = true
         
-        /////////////////////
-        //Will have section here for 'intro' scene to be used before scripting scenes
-         ////////////////////
-        
-        
-        
-        ////////////////////////////////////////
-        //Begin script reading process
-        /////////////////////////////////////
         
         //GUI Manager
         let _GUIManager = GUIManager(sm: self)
-       // scnView.overlaySKScene = _GUIManager
-        let scriptManager = ScriptManager(sm: self, gm:_GUIManager)
+        
+        scriptManager = ScriptManager()
+        scriptManager.setSM(self)
+        scriptManager.setGM(_GUIManager)
         _GUIManager.setScriptManager(scriptManager)
-        //Set new working scene
-        //May have some loading screen/transition in future
-        scnView.scene = runningScene
         
-        //Add lights and camera
-        //addLights()
-        //addCamera()
-        
-        //Will get scenario name from first scene/GUIManager
-        //var scenarioName = "testScenario"
-        var scenarioName = "hallwayScenario"
-        
-        
-        //Ask sciptManager to begin running script
-        scriptManager.runScenario(scenarioName)
+        buildMenuScene()
         
         ////////////Other settings....///////////////////
         
@@ -80,14 +65,21 @@ class ScenarioManager: UIViewController {
     }
     func buildMenuScene(){
         currentSceneIsMenu = true
-        menuScene = SCNScene(named: "StartScene")!
+        menuScene = SCNScene()
+        scnView.scene = menuScene
+        NSLog("scnView size- \(scnView.frame.size)")
+        var overlay = StartMenuOverlay(size: scnView.frame.size)
+        overlay.setTheScenarioManager(self)
+        scnView.overlaySKScene = overlay
     }
-    func refreshRunningScene(){
+    func refreshRunningScene(sceneName: String){
         NSLog("refreshingScene")
+        scnView.overlaySKScene = nil
         runningScene = SCNScene()
         addCamera()
         addLights()
         scnView.scene = runningScene
+        scriptManager.runScenario(sceneName)
     }
     func addCamera(){
         // create and add a camera to the scene

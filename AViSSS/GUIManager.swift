@@ -115,7 +115,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
         //This node holds
         _responseNode = UILabel()
-        _responseNode.frame = CGRectMake(0, -0, 300, 200)
+        _responseNode.frame = CGRectMake(0, 0, 300, 200)
         _responseNode.backgroundColor = style["labelBackgroundColor"] as? UIColor
         _responseNode.textColor = style["fontColor"] as! UIColor
         _responseNode.tag = 5
@@ -408,7 +408,9 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         respondToSelection(3)
     }
     
-    
+    func hideUILabels(){
+        
+    }
     
     
     
