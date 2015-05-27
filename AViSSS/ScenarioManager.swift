@@ -23,7 +23,7 @@ class ScenarioManager: UIViewController {
     var currentSceneIsMenu: Bool = true
     var scnView : SCNView = SCNView()
     var scriptManager = ScriptManager()
-    
+    var _GUIManager = GUIManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,13 +38,13 @@ class ScenarioManager: UIViewController {
         
         
         //GUI Manager
-        let _GUIManager = GUIManager(sm: self)
+        _GUIManager = GUIManager()
         
         scriptManager = ScriptManager()
         scriptManager.setSM(self)
         scriptManager.setGM(_GUIManager)
         _GUIManager.setScriptManager(scriptManager)
-        
+        _GUIManager.setSceneManager(self)
         buildMenuScene()
         
         ////////////Other settings....///////////////////
@@ -67,10 +67,12 @@ class ScenarioManager: UIViewController {
         currentSceneIsMenu = true
         menuScene = SCNScene()
         scnView.scene = menuScene
-        NSLog("scnView size- \(scnView.frame.size)")
-        var overlay = StartMenuOverlay(size: scnView.frame.size)
-        overlay.setTheScenarioManager(self)
-        scnView.overlaySKScene = overlay
+//        NSLog("scnView size- \(scnView.frame.size)")
+//        var overlay = StartMenuOverlay(size: scnView.frame.size)
+//        overlay.setTheScenarioManager(self)
+//        scnView.overlaySKScene = overlay
+        _GUIManager.setupMenuLabels()
+        
     }
     func refreshRunningScene(sceneName: String){
         NSLog("refreshingScene")

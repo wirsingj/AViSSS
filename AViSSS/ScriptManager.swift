@@ -48,9 +48,8 @@ class ScriptManager {
         //If there is a state with that number, get it and continue..
         if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
             
-            
             //Add Nodes!
-            
+            parseNodes(state.elementsForName("nodes").first as! GDataXMLElement)
             
             //Handle actions.
             parseActions(state.elementsForName("actions").first as! GDataXMLElement)
@@ -114,7 +113,7 @@ class ScriptManager {
         scenarioManager!.addActionsToTargets(targetBatches)
     }
     
-    //Build a single action in a sequence- may be a 'batch' of simultanious action
+    //Build an action sequence  (Used to build overall batches, or nested sequence building
     func buildActionSequence(action: GDataXMLElement, name: NSString)-> SCNAction{
         
         //Get XML action objects to be build into sequence
@@ -126,16 +125,27 @@ class ScriptManager {
         for action in xmlActionsInSequence {
             let type = action.name()
             var buildAction = SCNAction()
+            
             switch type {
+            case "actionSequence":
+                buildAction = buildActionSequence(action, name: name)
             case "position":
+                //Move can be either move to or move by
                 NSLog("Creating Position action")
+                
+                let type: String? = action.attributeForName("type").stringValue()
                 let x = ((action.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 let y = ((action.elementsForName("y").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 let z = ((action.elementsForName("z").first as! GDataXMLElement).stringValue() as NSString).floatValue
-                let moveBy = SCNVector3Make(x, y, z)
+                let move = SCNVector3Make(x, y, z)
                 let duration =  ((action.elementsForName("duration").first as! GDataXMLElement).stringValue() as NSString).floatValue
-                let count = ((action.elementsForName("count").first as! GDataXMLElement).stringValue() as NSString).integerValue
-                buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
+                //  let count = ((action.elementsForName("count").first as! GDataXMLElement).stringValue() as NSString).integerValue
+                // buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
+                if type == "moveTo"{
+                    buildAction = SCNAction.moveTo(move, duration: NSTimeInterval(duration))
+                }else{
+                    buildAction = SCNAction.moveBy(move, duration: NSTimeInterval(duration))
+                }
             case "rotation":
                 NSLog("Creating Rotation action")
                 let x = ((action.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
@@ -143,8 +153,9 @@ class ScriptManager {
                 let z = ((action.elementsForName("z").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 let angle = ((action.elementsForName("angle").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 let duration =  ((action.elementsForName("duration").first as! GDataXMLElement).stringValue() as NSString).doubleValue
+                //  let count = ((action.elementsForName("count").first as! GDataXMLElement).stringValue() as NSString).integerValue
+                // buildAction = SCNAction.repeatAction(SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration)), count: count)
                 buildAction = SCNAction.rotateByAngle(CGFloat(degToRad(angle)), aroundAxis: SCNVector3Make(x, y,z), duration: NSTimeInterval(duration))
-                // scnAction = SCNAction.rotateByAngle(CGFloat(degToRad(90)), aroundAxis: SCNVector3Make(0, 1, 0), duration: NSTimeInterval(3))
             case "delay":
                 NSLog("Creating Delay action")
                 let duration =  (action.stringValue() as NSString).floatValue
@@ -206,14 +217,20 @@ class ScriptManager {
             }
         }
     }
-    
+    func parseNodes(node: GDataXMLElement){
+        var nodes: [GDataXMLElement] = node.elementsForName("node") as! [GDataXMLElement]
+        if nodes.count > 0 {
+            for node in nodes{
+                //NSLog("parsingNode")
+                buildSCNNode(node)
+            }
+        }
+    }
     //Method getting an xml document from string location
     func getXMLDocument(location: NSString)->GDataXMLDocument{
         let xmlLocation = NSBundle.mainBundle().pathForResource(location as? String, ofType: ".xml")
         let xmlData = NSData(contentsOfFile: xmlLocation!)
         var error: NSError?
-        
-        
         
         let xmlDocument = GDataXMLDocument(data: xmlData, options: 0, error: &error )
         return xmlDocument
@@ -325,6 +342,10 @@ class ScriptManager {
             guiBundle.optionsText[index!] = (menuOption.elementsForName("text")?.first as! GDataXMLElement).stringValue()
             
             //TODO-  Build actionsOnSelect
+            if let actions = xmlBundle.elementsForName("actions")?.first as? GDataXMLElement{
+                guiBundle.actionsOnSelect[index!] = actions
+            }
+            
         }
         _GUIManager?.setGUIBundle(guiBundle)
     }

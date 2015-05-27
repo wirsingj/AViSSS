@@ -23,7 +23,7 @@ class GUIBundle {
     var optionsText  = ["","","",""] //Maybe be object names
     var textOnSelect = ["","","",""]
     var soundOnSelect = ["","","",""]
-    var actionsOnSelect = [SCNAction]()
+    var actionsOnSelect = [GDataXMLElement?]()
     var correctChoiceID = 0
     var nextState = 0
     var descriptionDelay: Double = 0

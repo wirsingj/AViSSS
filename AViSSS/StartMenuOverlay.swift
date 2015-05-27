@@ -20,7 +20,7 @@ class StartMenuOverlay: SKScene{
         var background = SKSpriteNode(imageNamed: "locker_image.jpg")
         background.size = size
         background.zPosition = -5
-        //  self.addChild(background)
+        self.addChild(background)
         self.backgroundColor = SKColor.brownColor()
         NSLog("Size \(self.frame.size)")
         
@@ -37,7 +37,8 @@ class StartMenuOverlay: SKScene{
         hallwayButton.hidden = false
         hallwayButton.userInteractionEnabled = true
         NSLog("adding hallwaybutton")
-        //self.scenarioManager?.view.addSubview(hallwayButton)
+        hallwayButton.sizeToFit()
+        self.scenarioManager?.view.addSubview(hallwayButton)
         
     }
     func hideButtons(){

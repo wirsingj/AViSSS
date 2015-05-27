@@ -29,6 +29,9 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     var _audioHasBeenPlayed = false
     var x: Int?
     
+    //MenuLabels
+    var hallwayButton = UILabel()
+    var menuBackground = UILabel()
     
     
     var style = [String:Any]()
@@ -43,21 +46,23 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     var _usingSynth = true
     var _choice = 0
     
-    init(sm: ScenarioManager){
+    override init(){
         super.init()
         
         
-        scenarioManager = sm
         let _GUIStyles = GUIStyles()
         style = _GUIStyles.getStyleDictionary(0)
         _labelNodeArray = [_option1, _option2, _option3, _option4, _descriptionNode]
         speechSynth.delegate = self
         
     }
+
     func setScriptManager(scriptMan: ScriptManager){
         scriptManager = scriptMan
     }
-    
+    func setSceneManager(sm: ScenarioManager){
+        scenarioManager = sm
+    }
     //Recieve and "start" GUI for each state
     func setGUIBundle(bundle: GUIBundle){
         _GUIBundle = bundle
@@ -76,6 +81,31 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
         //May be a delay before setting/presenting options
         setChoices()
+    }
+    
+    func setupMenuLabels(){
+        
+        //The node which will present the description of the situation
+        hallwayButton = UILabel()
+        hallwayButton.text = "Hallway"
+        hallwayButton.frame = CGRectMake(0, 0, 300, 200)
+        hallwayButton.backgroundColor = UIColor.blackColor()
+        hallwayButton.textColor = UIColor.whiteColor()
+        hallwayButton.tag = 1
+        hallwayButton.numberOfLines = 1
+        hallwayButton.preferredMaxLayoutWidth = 200
+        hallwayButton.hidden = false
+        hallwayButton.userInteractionEnabled = true
+        NSLog("adding hallwaybutton")
+        hallwayButton.sizeToFit()
+        self.scenarioManager?.view.addSubview(hallwayButton)
+
+    }
+    func hideMenuLabels(){
+        
+    }
+    func hideUILabels(){
+        
     }
     func setupUILabels(){
         for labelNode in _labelNodeArray{
@@ -265,7 +295,11 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         _responseNode.sizeToFit()
         //_responseNode.center = style["descriptionLocation"]! as CGPoint
         
-        
+            
+        //Ask scriptManager to parse the actions we recieved earlier
+            if let actions = _GUIBundle.actionsOnSelect[choice]{
+                scriptManager?.parseActions(_GUIBundle.actionsOnSelect[choice]!)
+            }
         //Play audio-  Then, depending on if the answer was correct or not, either re-present choices without selected choice-  or tell state machine to send us to the next state
         if _usingSynth{
             startSpeechSynthesizer(_GUIBundle.textOnSelect[choice])
@@ -407,12 +441,6 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         NSLog("choice 3 Touched!")
         respondToSelection(3)
     }
-    
-    func hideUILabels(){
-        
-    }
-    
-    
     
     
     
