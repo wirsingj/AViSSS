@@ -3,8 +3,58 @@
 <!--Hallway Environment -->
 <environment name="hallway">
     
+    <node name="camera" type="camera">
+        <position>
+            <x>0</x>
+            <y>5</y>
+            <z>20</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    
+    <node name="light1" type="spotLight">
+        <position>
+            <x>0</x>
+            <y>20</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    <node name="light2" type="spotLight">
+        <position>
+            <x>0</x>
+            <y>20</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    <node name="light3" type="spotLight">
+        <position>
+            <x>50</x>
+            <y>20</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    
     <node name="boy2" type="dae">
-        <file>boy2_Character</file>
+        <file>boy2_Model</file>
         <objectName>CBoy0002</objectName>
         <position>
             <x>16</x>
@@ -23,7 +73,7 @@
         </scale>
     </node>
     <node name="boy1" type="dae">
-        <file>boy1_Character</file>
+        <file>boy1_Model</file>
         <objectName>CBoy0001</objectName>
         <position>
             <x>-15</x>
@@ -43,7 +93,7 @@
     </node>
     
     <node name="boy3" type="dae">
-        <file>boy3_Character</file>
+        <file>boy3_Model</file>
         <objectName>CBoy0003</objectName>
         <position>
             <x>0</x>

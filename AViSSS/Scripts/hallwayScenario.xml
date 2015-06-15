@@ -7,14 +7,14 @@
         <actions>
             <target name="camera">
                 <actionSequence desc="Set Height move forward">
-                    <position>
+                    <position  type="">
                         <x>0</x>
                         <y>8</y>
                         <z>60</z>
                         <duration>0</duration>
                         <count>1</count>
                     </position>
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>0</y>
                         <z>-60</z>
@@ -23,14 +23,14 @@
                     </position>
                 </actionSequence>
                 <actionSequence desc="bobble head">
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>1</y>
                         <z>0</z>
                         <duration>0.4</duration>
                         <count>1</count>
                     </position>
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>-1</y>
                         <z>0</z>
@@ -43,43 +43,48 @@
             <target name="boy3">
                 <actionSequence desc="Pos">
                     <delay>2</delay>
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>0</y>
                         <z>30</z>
                         <duration>6</duration>
                         <count>1</count>
                     </position>
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>0</y>
                         <z>-5</z>
                         <duration>1</duration>
                         <count>1</count>
                     </position>
+                    <animation>
+                        <file>boy3_Animations</file>
+                        <name>idle1</name>
+                        <count>100</count>
+                    </animation>
                 </actionSequence>
                 <actionSequence desc="run">
                     <animation>
                         <file>boy3_Animations</file>
-                        <name>runCycle<name>
+                        <name>runCycle</name>
                         <count>10</count>
                     </animation>
                 </actionSequence>
             </target>
             <target name="boy1">
-                <actionSequence desc="talk">
+                <actionSequence desc="lockerIdle">
                     <animation>
                         <file>boy1_Animations</file>
-                        <name>runCycle<name>
+                        <name>idle1</name>
                         <count>100</count>
                     </animation>
                 </actionSequence>
             </target>
             <target name="boy2">
-                <actionSequence desc="talk">
+                <actionSequence desc="lockerIdle">
                     <animation>
                         <file>boy2_Animations</file>
-                        <name>runCycle<name>
+                        <name>idle3</name>
                         <count>100</count>
                     </animation>
                 </actionSequence>
@@ -99,6 +104,7 @@
                 <text>Scowl at him</text>
                 <text_on_select>Look at the persons face, it shows that he person is upset because you became angry with him, you may feel upset inside at first when someone bumps you, however it is not right to stay angry because he or she probably did not mean to run into you. Hallways are busy places and people will often bump into each other accidentally. Think about a more appropriate action and try again.</text_on_select>
                 <sound_on_select>1-1a-1</sound_on_select>
+                <actions></actions>
             </menu_option>
             <menu_option id="1">
                 <text>Tell him not to run in hallways</text>
@@ -133,7 +139,7 @@
                         <duration>3</duration>
                         <count>1</count>
                     </rotation>
-                    <position>
+                    <position type="">
                         <x>30</x>
                         <y>0</y>
                         <z>-30</z>
@@ -150,14 +156,14 @@
                     </rotation>
                 </actionSequence>
                 <actionSequence desc="bobble head">
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>1</y>
                         <z>0</z>
                         <duration>0.4</duration>
                         <count>1</count>
                     </position>
-                    <position>
+                    <position type="">
                         <x>0</x>
                         <y>-1</y>
                         <z>0</z>

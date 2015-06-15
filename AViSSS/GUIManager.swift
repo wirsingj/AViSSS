@@ -84,7 +84,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     }
     
     func setupMenuLabels(){
-        
+        hideUILabels()
         //The node which will present the description of the situation
         hallwayButton = UILabel()
         hallwayButton.text = "Hallway"
@@ -108,6 +108,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
     }
     func setupUILabels(){
+        hideMenuLabels()
         for labelNode in _labelNodeArray{
             labelNode.removeFromSuperview()
         }
@@ -297,7 +298,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         
             
         //Ask scriptManager to parse the actions we recieved earlier
-            if let actions = _GUIBundle.actionsOnSelect[choice]{
+            if let actions = _GUIBundle.actionsOnSelect[safe: choice]{
                 scriptManager?.parseActions(_GUIBundle.actionsOnSelect[choice]!)
             }
         //Play audio-  Then, depending on if the answer was correct or not, either re-present choices without selected choice-  or tell state machine to send us to the next state
@@ -441,9 +442,6 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         NSLog("choice 3 Touched!")
         respondToSelection(3)
     }
-    
-    
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -24,6 +24,8 @@ class ScenarioManager: UIViewController {
     var scnView : SCNView = SCNView()
     var scriptManager = ScriptManager()
     var _GUIManager = GUIManager()
+    var castShadows = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,15 +39,22 @@ class ScenarioManager: UIViewController {
         scnView.allowsCameraControl = true
         
         
-        //GUI Manager
+        //Create GUI and Script managers and link them together
         _GUIManager = GUIManager()
-        
         scriptManager = ScriptManager()
         scriptManager.setSM(self)
         scriptManager.setGM(_GUIManager)
         _GUIManager.setScriptManager(scriptManager)
         _GUIManager.setSceneManager(self)
+        
+        
+        //Sprite kit menu is presented-  no scene is made yet
+        
         buildMenuScene()
+        
+        //refreshRunningScene("hallwayScenario")
+        
+        
         
         ////////////Other settings....///////////////////
         
@@ -68,18 +77,21 @@ class ScenarioManager: UIViewController {
         menuScene = SCNScene()
         scnView.scene = menuScene
 //        NSLog("scnView size- \(scnView.frame.size)")
-//        var overlay = StartMenuOverlay(size: scnView.frame.size)
-//        overlay.setTheScenarioManager(self)
-//        scnView.overlaySKScene = overlay
-        _GUIManager.setupMenuLabels()
+        var overlay = StartMenuOverlay(size: scnView.frame.size)
+        overlay.setTheScenarioManager(self)
+        scnView.overlaySKScene = overlay
+        //_GUIManager.setupMenuLabels()
         
     }
     func refreshRunningScene(sceneName: String){
         NSLog("refreshingScene")
         scnView.overlaySKScene = nil
         runningScene = SCNScene()
-        addCamera()
+        // addCamera()
+        
+        //Add Ambient Light
         addLights()
+        
         scnView.scene = runningScene
         scriptManager.runScenario(sceneName)
     }
@@ -97,32 +109,32 @@ class ScenarioManager: UIViewController {
     }
     func addLights(){
         // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light?.type = SCNLightTypeSpot
-        lightNode.light?.spotOuterAngle = CGFloat(160)
-        lightNode.position = SCNVector3(x: 0, y: 20, z: 0)
-        lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-        lightNode.light?.castsShadow = false
-        let lightNode2 = SCNNode()
-        lightNode2.light = SCNLight()
-        lightNode2.light?.type = SCNLightTypeSpot
-        lightNode2.light?.spotOuterAngle = CGFloat(160)
-        lightNode2.position = SCNVector3(x: 0, y: 20, z: -50)
-        lightNode2.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-        lightNode2.light?.castsShadow = false
-        let lightNode3 = SCNNode()
-        lightNode3.light = SCNLight()
-        lightNode3.light?.type = SCNLightTypeSpot
-        lightNode3.light?.spotOuterAngle = CGFloat(160)
-        lightNode3.position = SCNVector3(x: 50, y: 20, z: 0)
-        lightNode3.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-        lightNode3.light?.castsShadow = false
-
-        
-        runningScene.rootNode.addChildNode(lightNode)
-        runningScene.rootNode.addChildNode(lightNode2)
-        runningScene.rootNode.addChildNode(lightNode3)
+//        let lightNode = SCNNode()
+//        lightNode.light = SCNLight()
+//        lightNode.light?.type = SCNLightTypeSpot
+//        lightNode.light?.spotOuterAngle = CGFloat(160)
+//        lightNode.position = SCNVector3(x: 0, y: 20, z: 0)
+//        lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
+//        lightNode.light?.castsShadow = false
+//        let lightNode2 = SCNNode()
+//        lightNode2.light = SCNLight()
+//        lightNode2.light?.type = SCNLightTypeSpot
+//        lightNode2.light?.spotOuterAngle = CGFloat(160)
+//        lightNode2.position = SCNVector3(x: 0, y: 20, z: -50)
+//        lightNode2.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
+//        lightNode2.light?.castsShadow = false
+//        let lightNode3 = SCNNode()
+//        lightNode3.light = SCNLight()
+//        lightNode3.light?.type = SCNLightTypeSpot
+//        lightNode3.light?.spotOuterAngle = CGFloat(160)
+//        lightNode3.position = SCNVector3(x: 50, y: 20, z: 0)
+//        lightNode3.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
+//        lightNode3.light?.castsShadow = false
+//
+//        
+//        runningScene.rootNode.addChildNode(lightNode)
+//        runningScene.rootNode.addChildNode(lightNode2)
+//        runningScene.rootNode.addChildNode(lightNode3)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()

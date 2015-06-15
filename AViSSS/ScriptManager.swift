@@ -49,7 +49,9 @@ class ScriptManager {
         if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
             
             //Add Nodes!
-            parseNodes(state.elementsForName("nodes").first as! GDataXMLElement)
+            if var nodes = state.elementsForName("nodes"){
+                parseNodes((nodes.first as? GDataXMLElement)!)
+            }
             
             //Handle actions.
             parseActions(state.elementsForName("actions").first as! GDataXMLElement)
@@ -133,7 +135,6 @@ class ScriptManager {
                 //Move can be either move to or move by
                 NSLog("Creating Position action")
                 
-                let type: String? = action.attributeForName("type").stringValue()
                 let x = ((action.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 let y = ((action.elementsForName("y").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 let z = ((action.elementsForName("z").first as! GDataXMLElement).stringValue() as NSString).floatValue
@@ -141,10 +142,13 @@ class ScriptManager {
                 let duration =  ((action.elementsForName("duration").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 //  let count = ((action.elementsForName("count").first as! GDataXMLElement).stringValue() as NSString).integerValue
                 // buildAction = SCNAction.repeatAction(SCNAction.moveBy(moveBy, duration: NSTimeInterval(duration)), count: count)
-                if type == "moveTo"{
-                    buildAction = SCNAction.moveTo(move, duration: NSTimeInterval(duration))
-                }else{
-                    buildAction = SCNAction.moveBy(move, duration: NSTimeInterval(duration))
+                
+                if let type = action.attributeForName("type"){
+                    if type.stringValue() == "moveTo"{
+                        buildAction = SCNAction.moveTo(move, duration: NSTimeInterval(duration))
+                    }else{
+                        buildAction = SCNAction.moveBy(move, duration: NSTimeInterval(duration))
+                    }
                 }
             case "rotation":
                 NSLog("Creating Rotation action")
@@ -161,13 +165,14 @@ class ScriptManager {
                 let duration =  (action.stringValue() as NSString).floatValue
                 buildAction = SCNAction.waitForDuration(NSTimeInterval(duration))
             case "animation":
-                //Create a custom closure action which has code to start an animationsdf
+                //Create a custom action which has code to start an animationsdf
                 //Animation is made outside of closure (variable closure)
                 //Get character (armature) animation scene
                 var sceneAnimationSourceName = (action.elementsForName("file").first as! GDataXMLElement).stringValue() as NSString
                 var sceneAnimationURL = NSBundle.mainBundle().URLForResource(sceneAnimationSourceName as! String, withExtension: "dae")
                 var sceneAnimationSource = SCNSceneSource(URL: sceneAnimationURL!, options: nil)
-                let animationName = "\(sceneAnimationSourceName)-1"
+                //let animationName = "\(sceneAnimationSourceName)-1"
+                let animationName = (action.elementsForName("name").first as! GDataXMLElement).stringValue() as String
                 var animation = sceneAnimationSource?.entryWithIdentifier(animationName, withClass: CAAnimation.self) as! CAAnimation
                 let count = ((action.elementsForName("count").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 animation.repeatCount = count
@@ -238,6 +243,7 @@ class ScriptManager {
     
     //Build SCNNode that will be passed to ScenarioManager
     //A node may be either a .dae source node, or a primative SK shape (rectangle, sphere, etc)
+    //Node can also be a light or camera
     func buildSCNNode(node : GDataXMLElement){
         
         //Declare and name scnNode
@@ -255,6 +261,14 @@ class ScriptManager {
             
             //Get Node containing information about the character mesh
             scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as! SCNNode
+            
+            //Get scale data
+            if let scaleNode:GDataXMLElement = (node.elementsForName("scale")?.first) as? GDataXMLElement{
+                let scaleX = ((scaleNode.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
+                let scaleY = ((scaleNode.elementsForName("y").first as! GDataXMLElement).stringValue() as NSString).floatValue
+                let scaleZ = ((scaleNode.elementsForName("z").first as! GDataXMLElement).stringValue() as NSString).floatValue
+                scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
+            }
             
         }else if node.attributeForName("type").stringValue() == "shape"{
             //Get size information
@@ -275,7 +289,34 @@ class ScriptManager {
             geometry.firstMaterial?.locksAmbientWithDiffuse = true
             
             scnNode = SCNNode(geometry: geometry)
+            
+            //Get scale data
+            if let scaleNode:GDataXMLElement = (node.elementsForName("scale")?.first) as? GDataXMLElement{
+                let scaleX = ((scaleNode.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
+                let scaleY = ((scaleNode.elementsForName("y").first as! GDataXMLElement).stringValue() as NSString).floatValue
+                let scaleZ = ((scaleNode.elementsForName("z").first as! GDataXMLElement).stringValue() as NSString).floatValue
+                scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
+
+            }
+            
+        }else if node.attributeForName("type").stringValue() == "camera"{
+            scnNode.camera = SCNCamera()
+            scnNode.camera?.automaticallyAdjustsZRange = true
+            scnNode.name = "camera"
+            
+            
+        }else if node.attributeForName("type").stringValue() == "light"{
+            scnNode.light = SCNLight()
+            scnNode.light = SCNLight()
+            scnNode.light?.type = SCNLightTypeSpot
+            scnNode.light?.spotOuterAngle = CGFloat(160)
+            
+            //Casting shadows
+            if(scenarioManager!.castShadows){scnNode.light?.castsShadow = true}
+            else{scnNode.light?.castsShadow = false}
         }
+    
+    
         //Get position data
         let posNode = node.elementsForName("position").first as! GDataXMLElement
         let posX = ((posNode.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
@@ -296,14 +337,7 @@ class ScriptManager {
         //Apply rotation transformation to character
         scnNode.transform = SCNMatrix4Mult(result, scnNode.transform)
         
-        //Get scale data
-        if let scaleNode:GDataXMLElement = (node.elementsForName("scale")?.first) as? GDataXMLElement{
-            let scaleX = ((scaleNode.elementsForName("x").first as! GDataXMLElement).stringValue() as NSString).floatValue
-            let scaleY = ((scaleNode.elementsForName("y").first as! GDataXMLElement).stringValue() as NSString).floatValue
-            let scaleZ = ((scaleNode.elementsForName("z").first as! GDataXMLElement).stringValue() as NSString).floatValue
-            scnNode.scale = SCNVector3Make(scaleX, scaleY, scaleZ)
-        }
-        scnNode.castsShadow = true
+       
         //Set name
         scnNode.name = node.attributeForName("name").stringValue()
         //Add Node to scenario manager

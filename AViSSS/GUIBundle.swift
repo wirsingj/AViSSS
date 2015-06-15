@@ -30,3 +30,10 @@ class GUIBundle {
     var optionsDelay: Double = 0
     
 }
+    extension Array {
+        subscript (safe index: Int) -> T? {
+            return indices(self) ~= index
+                ? self[index]
+                : nil
+        }
+    }
