@@ -10,8 +10,10 @@ import SpriteKit
 
 
 class StartMenuOverlay: SKScene{
-    var scenarioManager : ScenarioManager?
-    var hallwayButton = SKShapeNode()
+    
+    var scenarioManager = ScenarioManager()
+    var buttons = [SKShapeNode]()
+    var scenarioList = [String]()
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -31,76 +33,65 @@ class StartMenuOverlay: SKScene{
         logo.name = "logo"
         self.addChild(logo)
         
-        hallwayButton = SKShapeNode(path: CGPathCreateWithRoundedRect(CGRectMake(-350,100,  193, 135), 8, 8, nil))
-        hallwayButton.fillColor = UIColor(white: 1, alpha: 1)
-        hallwayButton.fillTexture = SKTexture(imageNamed: "lockerButton.png")
-        hallwayButton.strokeColor = SKColor.blackColor()
-        hallwayButton.lineWidth = 2
-        //  var hallwayButton = SKSpriteNode(imageNamed: "lockerButton.png")
-        hallwayButton.zPosition = 1
-        // hallwayButton.position = CGPointMake(-350, 100)
-        hallwayButton.name = "hallway"
-        self.addChild(hallwayButton)
-        //The node which will present the description of the situation
-//        hallwayButton = UILabel()
-//        hallwayButton.text = "Hallway"
-//        hallwayButton.frame = CGRectMake(0, 0, 300, 200)
-//        hallwayButton.backgroundColor = UIColor.blackColor()
-//        hallwayButton.textColor = UIColor.whiteColor()
-//        hallwayButton.tag = 1
-//        hallwayButton.numberOfLines = 1
-//        hallwayButton.preferredMaxLayoutWidth = 200
-//        hallwayButton.hidden = false
-//        hallwayButton.userInteractionEnabled = true
-//        NSLog("adding hallwaybutton")
-//        hallwayButton.sizeToFit()
-//        self.view!.addSubview(hallwayButton)
         
-//        var hallwayLabel = SKLabelNode(fontNamed:"Chalkduster")
-//        hallwayLabel.text = "Hallway";
-//        hallwayLabel.fontSize = 200;
-//        hallwayLabel.position = CGPointMake(0, 0)
-//        hallwayLabel.name = "hallway"
-//        hallwayLabel.zPosition = 4
-//        hallwayLabel.
-//        self.addChild(hallwayLabel)
+        setupButtons()
+        NSLog("menu init finished")
+    }
+    func setupButtons(){
+        
+        //get list of scenarios
+        scenarioList = scenarioManager.scriptManager.getScenarioList()
+        NSLog("ScenarioList- \(scenarioList)")
+        var x:CGFloat = -500
+        var y:CGFloat = 200
+        
+        for scenario in scenarioList{
+            NSLog("buildingButton")
+            var button = SKShapeNode(path: CGPathCreateWithRoundedRect(CGRectMake(x, y,  193, 135), 8, 8, nil))
+            button.fillColor = UIColor(white: 1, alpha: 1)
+            //button.fillTexture = SKTexture(imageNamed: "\(scenario).png")
+            button.fillTexture = SKTexture(imageNamed: "hallwayScenario.png")
+            button.strokeColor = SKColor.blackColor()
+            button.lineWidth = 2
+            button.zPosition = 1
+            button.name = "scenario"
+            self.addChild(button)
+            
+            buttons.append(button)
+            
+            //Move coordinates down the column, and over a row if needed
+            y -= 145
+            if (y < -300) {
+                y = 200
+                x += 210
+            }
+            
+        }
+        
+        NSLog("buttonsListMade- \(buttons)")
         
     }
-    func hideButtons(){
-        hallwayButton.hidden = true
-    }
+    
     func setTheScenarioManager(sm: ScenarioManager){
         scenarioManager = sm
     }
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
+        NSLog("Start Menu Touched!")
         let touchLocation = (touches as! Set<UITouch>).first!.locationInNode(self)
+        var index = 0
         
-        if CGRectContainsPoint(hallwayButton.frame, touchLocation){
-            NSLog("Hallway Touched")
-            scenarioManager?.refreshRunningScene("hallwayScenario")
-            
+        for button in buttons{
+            NSLog("testing button touch \(button.frame, touchLocation)")
+            if CGRectContainsPoint(button.frame, touchLocation){
+                NSLog("\(scenarioList[index]) Touched")
+                scenarioManager.refreshRunningScene("\(scenarioList[index])")
+                scenarioManager.scenarioNames = scenarioList
+                scenarioManager.currentScenarioIndex = index
+            }
+            index++
         }
         
         
-//        var touchedNode = self.nodeAtPoint(touchLocation) as? SKSpriteNode
-//        
-//        //Get Node that was touched
-//        if let touchedNodeTemp = touchedNode {
-//            NSLog("TouchNodeTemp- \(touchedNodeTemp.position, touchedNodeTemp.name)")
-//            
-//            let name:String = touchedNodeTemp.name!
-//            
-//            switch name {
-//                
-//            case "hallway":
-//                NSLog("hallway touched")
-//                scenarioManager?.refreshRunningScene("hallwayScenario")
-//                break
-//            default:
-//                break
-//            }
-//        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

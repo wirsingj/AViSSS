@@ -48,7 +48,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     
     override init(){
         super.init()
-        
+        NSLog("GUIManager init")
         
         let _GUIStyles = GUIStyles()
         style = _GUIStyles.getStyleDictionary(0)
@@ -56,7 +56,12 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         speechSynth.delegate = self
         
     }
-
+    func removeUI(){
+        for label in _labelNodeArray{
+            label.removeFromSuperview()
+        }
+        _responseNode.removeFromSuperview()
+    }
     func setScriptManager(scriptMan: ScriptManager){
         scriptManager = scriptMan
     }
@@ -83,32 +88,8 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         setChoices()
     }
     
-    func setupMenuLabels(){
-        hideUILabels()
-        //The node which will present the description of the situation
-        hallwayButton = UILabel()
-        hallwayButton.text = "Hallway"
-        hallwayButton.frame = CGRectMake(0, 0, 300, 200)
-        hallwayButton.backgroundColor = UIColor.blackColor()
-        hallwayButton.textColor = UIColor.whiteColor()
-        hallwayButton.tag = 1
-        hallwayButton.numberOfLines = 1
-        hallwayButton.preferredMaxLayoutWidth = 200
-        hallwayButton.hidden = false
-        hallwayButton.userInteractionEnabled = true
-        NSLog("adding hallwaybutton")
-        hallwayButton.sizeToFit()
-        self.scenarioManager?.view.addSubview(hallwayButton)
-
-    }
-    func hideMenuLabels(){
-        
-    }
-    func hideUILabels(){
-        
-    }
+    
     func setupUILabels(){
-        hideMenuLabels()
         for labelNode in _labelNodeArray{
             labelNode.removeFromSuperview()
         }
@@ -127,7 +108,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             _labelNodeArray[i].addGestureRecognizer(choiceTouchRecognizer)
             choiceTouchRecognizer.delegate = self
             
-            self.scenarioManager?.view.addSubview(_labelNodeArray[i])
+            self.scenarioManager!.view.addSubview(_labelNodeArray[i])
         }
         
         //The node which will present the description of the situation
@@ -141,7 +122,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         _descriptionNode.hidden = true
         _descriptionNode.userInteractionEnabled = true
         _descriptionNode.center = self.style["descriptionLocation"]! as! CGPoint
-        self.scenarioManager?.view.addSubview(_descriptionNode)
+        self.scenarioManager!.view.addSubview(_descriptionNode)
         
         
         //This node holds
@@ -154,7 +135,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         _responseNode.preferredMaxLayoutWidth = 400
         _responseNode.hidden = true
         _responseNode.center = self.style["descriptionLocation"]! as! CGPoint
-        self.scenarioManager?.view.addSubview(_responseNode)
+        self.scenarioManager!.view.addSubview(_responseNode)
     }
     //After a possible delay, present situation text and begin audio playback via speech synth or audioplayer
     func presentDescription(){
@@ -232,26 +213,16 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
                 case 1:
                     NSLog("Case 1")
                     self._usedLabelNodeArray[0].center = CGPointMake(512, CGFloat(topRowY))
-                    //
-                    //  self.usedLabelNodeArray[1].position = CGPointMake(CGFloat(rightColX), CGFloat(topRowY))
-                    //  self.usedLabelNodeArray[2].position = CGPointMake(CGFloat(leftColX), CGFloat(botRowY))
-                    // self.usedLabelNodeArray[3].position = CGPointMake(CGFloat(rightColX), CGFloat(botRowY))
                     
                 case 2:
                     NSLog("Case2 ")
                     self._usedLabelNodeArray[0].frame.origin = CGPointMake(CGFloat(leftColX), CGFloat(topRowY))
                     self._usedLabelNodeArray[1].frame.origin = CGPointMake(CGFloat(rightColX), CGFloat(topRowY))
-                    //
-                    // self.usedLabelNodeArray[2].position = CGPointMake(CGFloat(leftColX), CGFloat(botRowY))
-                    //self.usedLabelNodeArray[3].position = CGPointMake(CGFloat(rightColX), CGFloat(botRowY))
                 case 3:
                     NSLog("Case3")
                     self._usedLabelNodeArray[0].frame.origin = CGPointMake(CGFloat(leftColX), CGFloat(topRowY))
                     self._usedLabelNodeArray[1].frame.origin = CGPointMake(CGFloat(rightColX), CGFloat(topRowY))
                     self._usedLabelNodeArray[2].frame.origin = CGPointMake(CGFloat(512), CGFloat(botRowY))
-                    
-                    //self._labelNodeArray[3].position = CGPointMake(CGFloat(rightColX), CGFloat(botRowY))
-                    
                 case 4:
                     NSLog("Case4")
                     self._usedLabelNodeArray[0].center = CGPointMake(CGFloat(leftColX), CGFloat(topRowY))
@@ -278,37 +249,38 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             optionsSetAction()
         }
     }
+    
     //Called (by GUIManager or ScenarioManager for choice/object) when an option has been selected
     //Responsible for hiding options, playing response audio, and presenting response text
     //Driver of logic
     func respondToSelection(choice : Int){
         if(_audioHasBeenPlayed){
-        //Hide other label nodes
-        NSLog("Responding")
-        for label:UILabel in _labelNodeArray{
-            label.hidden = true
-        }
-        _descriptionNode.hidden = true
-        _choice = choice
-        //Populate response text, and show it
-        setAttributedText(_responseNode, text: _GUIBundle.textOnSelect[choice])
-        _responseNode.hidden = false
-        _responseNode.sizeToFit()
-        //_responseNode.center = style["descriptionLocation"]! as CGPoint
-        
+            //Hide other label nodes
+            NSLog("Responding")
+            for label:UILabel in _labelNodeArray{
+                label.hidden = true
+            }
+            _descriptionNode.hidden = true
+            _choice = choice
+            //Populate response text, and show it
+            setAttributedText(_responseNode, text: _GUIBundle.textOnSelect[choice])
+            _responseNode.hidden = false
+            _responseNode.sizeToFit()
+            //_responseNode.center = style["descriptionLocation"]! as CGPoint
             
-        //Ask scriptManager to parse the actions we recieved earlier
+            
+            //Ask scriptManager to parse the actions we recieved earlier
             if let actions = _GUIBundle.actionsOnSelect[safe: choice]{
                 scriptManager?.parseActions(_GUIBundle.actionsOnSelect[choice]!)
             }
-        //Play audio-  Then, depending on if the answer was correct or not, either re-present choices without selected choice-  or tell state machine to send us to the next state
-        if _usingSynth{
-            startSpeechSynthesizer(_GUIBundle.textOnSelect[choice])
-            
-        }else{
-            updateAudioPlayerSound(_GUIBundle.soundOnSelect[choice])
-        }
-        _UILabelBeingSpoken = _responseNode
+            //Play audio-  Then, depending on if the answer was correct or not, either re-present choices without selected choice-  or tell state machine to send us to the next state
+            if _usingSynth{
+                startSpeechSynthesizer(_GUIBundle.textOnSelect[choice])
+                
+            }else{
+                updateAudioPlayerSound(_GUIBundle.soundOnSelect[choice])
+            }
+            _UILabelBeingSpoken = _responseNode
         }
     }
     
@@ -361,16 +333,11 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         speechSynth.speakUtterance(words)
     }
     
-    
-    
-    
-    
     ///////////Delegate Methods///////////////////////
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool) {
         //Used to know when the response audios are done
         NSLog("audioPlayerDidFinishPlaying")
     }
-    
     
     
     //This method is responsible for triggering choices after description utterance
@@ -395,7 +362,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
         switch _UILabelBeingSpoken {
         case _descriptionNode:
             NSLog("Description Utterance Ended")
-             setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!)
+            setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!)
             _UILabelBeingSpoken = _usedLabelNodeArray[0]
             
             startSpeechSynthesizer(_usedLabelNodeArray[0].text!)
@@ -405,21 +372,22 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             if _choice == self._GUIBundle.correctChoiceID{
                 NSLog("Correct choice was made!")
                 _audioHasBeenPlayed = false
-                scriptManager!.goToState(_GUIBundle.nextState)
+                if scenarioManager!.lastState == true{
+                    var nextIndex = ++scenarioManager!.currentScenarioIndex
+                    scenarioManager!.refreshRunningScene(scenarioManager!.scenarioNames[safe: nextIndex])
+                }else{
+                    scriptManager!.goToState(_GUIBundle.nextState)
+                }
             }else{
                 NSLog("wrong choice!")
                 _GUIBundle.optionsText[_choice] = ""
-                
+               scenarioManager!.incorrectChoices++
                 setChoices()
             }
             return
         default:
             return
         }
-    }
-    func speechSynthesizer(synthesizer: AVSpeechSynthesizer!, didCancelSpeechUtterance utterance: AVSpeechUtterance!) {
-        ///////////////Dont Need
-        NSLog("SSD CanceledUtterance")
     }
     func speechSynthesizer(synthesizer: AVSpeechSynthesizer!, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance!) {
         

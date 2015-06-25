@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScenarioManager.swift"
-            timestampString = "456026429.123872"
+            timestampString = "456941982.911727"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
-            landmarkName = "setSelectableTargets(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AViSSS/ScenarioManager.swift"
-            timestampString = "456026429.123872"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "handleTap(_:)"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
+            landmarkName = "shouldAutorotate()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScriptManager.swift"
-            timestampString = "455771652.438579"
+            timestampString = "456934759.576219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "buildActionSequence(_:name:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScriptManager.swift"
-            timestampString = "456026429.123872"
+            timestampString = "456941078.132822"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
-            landmarkName = "buildGUIBundle(_:)"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
+            landmarkName = "buildSCNNode(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,19 +58,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/GUIManager.swift"
-            timestampString = "446096438.57738"
+            timestampString = "456936989.771249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
-            landmarkName = "GUIManager"
-            landmarkType = "3">
+            startingLineNumber = "362"
+            endingLineNumber = "362"
+            landmarkName = "speechSynthesizer(_:didFinishSpeechUtterance:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScenarioManager.swift"
@@ -94,9 +78,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "ScenarioManager"
-            landmarkType = "3">
+            endingLineNumber = "17">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -106,12 +88,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScriptManager.swift"
-            timestampString = "453875905.986755"
+            timestampString = "456934759.576219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "goToState(_:)"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "runScenario(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,12 +104,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/ScriptManager.swift"
-            timestampString = "455766105.975902"
+            timestampString = "456934759.576219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "goToState(_:)"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "runScenario(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,12 +120,58 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AViSSS/GUIManager.swift"
-            timestampString = "456019328.753084"
+            timestampString = "456936989.771249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
-            landmarkName = "respondToSelection(_:)"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "setAttributedText(_:text:enlargedRange:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AViSSS/GUIManager.swift"
+            timestampString = "456936989.771249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "setSceneManager(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AViSSS/ScenarioManager.swift"
+            timestampString = "456934781.210787"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AViSSS/ScenarioManager.swift"
+            timestampString = "456941982.911727"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "refreshRunningScene(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

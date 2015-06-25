@@ -18,6 +18,7 @@ class ScriptManager {
     var _GUIManager : GUIManager?
     var scenarioScript: GDataXMLDocument = GDataXMLDocument()
     
+    
     func setSM(sm: ScenarioManager){
         scenarioManager = sm
     }
@@ -25,12 +26,26 @@ class ScriptManager {
         
         _GUIManager = gm
     }
+    
+    func getScenarioList()->[String]{
+        var scenarioNames = [String]()
+        
+        var scenarioListXML = getXMLDocument("scenarios")
+        
+        for scenarioName in scenarioListXML.rootElement().elementsForName("name"){
+            scenarioNames.append(scenarioName.stringValue)
+        }
+        
+        return scenarioNames
+    }
+    
     //Input: xml scenario file name to load as XML document
     //This function is the main parser of our scripts-
     //It first loads environment script if found
     //then it will pull out actions and send them to managers
     //It will then begin to run through the states
     func runScenario(scenarioName: String){
+        NSLog("runScenario")
         scenarioScript = getXMLDocument(scenarioName)
         //Check for environment
         if let environment = scenarioScript.rootElement().elementsForName("environment").first as? GDataXMLElement{
@@ -43,8 +58,14 @@ class ScriptManager {
     
     //Process (switch to) given stateID
     func goToState(stateID: Int){
+        scenarioManager?.statesEncountered++
+        
         states = scenarioScript.rootElement().elementsForName("state") as! [GDataXMLElement]
         NSLog("Set States-\(states.count) STATE-\(stateID)")
+        if stateID == states.count-1{
+            scenarioManager!.lastState = true
+        }
+        
         //If there is a state with that number, get it and continue..
         if let state: GDataXMLElement = (states.filter{($0 as GDataXMLElement).attributeForName("id").stringValue() == String(stateID)}).first {
             
@@ -231,6 +252,7 @@ class ScriptManager {
             }
         }
     }
+    
     //Method getting an xml document from string location
     func getXMLDocument(location: NSString)->GDataXMLDocument{
         let xmlLocation = NSBundle.mainBundle().pathForResource(location as? String, ofType: ".xml")
@@ -259,8 +281,23 @@ class ScriptManager {
             var sceneURL = NSBundle.mainBundle().URLForResource(sceneName!, withExtension: "dae")
             var sceneSource = SCNSceneSource(URL: sceneURL!, options: nil)
             
-            //Get Node containing information about the character mesh
-            scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as! SCNNode
+            //May be a single object, defined by a name-  or "all", where we load all objects in dae
+            if objectName == "all"{
+                var nodeList = sceneSource?.identifiersOfEntriesWithClass(SCNNode.self) as! [String]
+                NSLog("Nodes in .dae \(nodeList)")
+                
+                for nodeName in nodeList{
+                    scnNode.addChildNode(sceneSource?.entryWithIdentifier(nodeName, withClass: SCNNode.self) as! SCNNode)
+                }
+            }else{
+                
+                
+            //Get Node containing information about the character/object mesh
+                scnNode = sceneSource?.entryWithIdentifier(objectName, withClass: SCNNode.self) as! SCNNode
+            }
+            
+            
+            
             
             //Get scale data
             if let scaleNode:GDataXMLElement = (node.elementsForName("scale")?.first) as? GDataXMLElement{

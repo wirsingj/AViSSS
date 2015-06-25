@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Jeff Wirsing AViSSS XML -->
+
+<scenario>
+    <environment>hallwayEnvironment</environment>
+    <state id="0">
+        <actions>
+            <target name="camera">
+                <actionSequence desc="Set Height move forward">
+                    <position  type="">
+                        <x>0</x>
+                        <y>8</y>
+                        <z>60</z>
+                        <duration>0</duration>
+                        <count>1</count>
+                    </position>
+                    <position type="">
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-60</z>
+                        <duration>8</duration>
+                        <count>1</count>
+                    </position>
+                </actionSequence>
+                <actionSequence desc="bobble head">
+                    <position type="">
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <duration>0.4</duration>
+                        <count>1</count>
+                    </position>
+                    <position type="">
+                        <x>0</x>
+                        <y>-1</y>
+                        <z>0</z>
+                        <duration>0.4</duration>
+                        <count>1</count>
+                    </position>
+                    <count>8</count>
+                </actionSequence>
+            </target>
+        </actions>
+        <gui>
+            <ambient_sound></ambient_sound>
+            <situation_sound>1-1a</situation_sound>
+            <situation_text>Scenario 2-  State 1</situation_text>
+            <next_state>1</next_state>
+            <correct_choice>3</correct_choice>
+            <option_type>text</option_type>
+            <description_delay>8</description_delay>
+            <options_delay>8</options_delay>
+            
+            <menu_option id="0">
+                <text>Option1</text>
+                <text_on_select>Option1</text_on_select>
+                <sound_on_select>1-1a-1</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <menu_option id="1">
+                <text>Option2</text>
+                <text_on_select>Option2 </text_on_select>
+                <sound_on_select>1-1a-2</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <menu_option id="2">
+                <text>Option3</text>
+                <text_on_select>Option3</text_on_select>
+                <sound_on_select>1-1a-3</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <menu_option id="3">
+                <text>Option4</text>
+                <text_on_select>Option4</text_on_select>
+                <sound_on_select>1-1a-4</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            
+        </gui>
+    </state>
+    <state id="1">
+        <actions>
+            <target name="camera">
+                <actionSequence desc="Set Height move forward">
+                    <position  type="">
+                        <x>0</x>
+                        <y>8</y>
+                        <z>-60</z>
+                        <duration>0</duration>
+                        <count>1</count>
+                    </position>
+                    <position type="">
+                        <x>0</x>
+                        <y>0</y>
+                        <z>-60</z>
+                        <duration>8</duration>
+                        <count>1</count>
+                    </position>
+                </actionSequence>
+                <actionSequence desc="bobble head">
+                    <position type="">
+                        <x>0</x>
+                        <y>1</y>
+                        <z>0</z>
+                        <duration>0.4</duration>
+                        <count>1</count>
+                    </position>
+                    <position type="">
+                        <x>0</x>
+                        <y>-1</y>
+                        <z>0</z>
+                        <duration>0.4</duration>
+                        <count>1</count>
+                    </position>
+                    <count>8</count>
+                </actionSequence>
+            </target>
+        </actions>
+        <gui>
+            <ambient_sound></ambient_sound>
+            <situation_sound>1-1a</situation_sound>
+            <situation_text>Scenario 2- Test State 2</situation_text>
+            <next_state>0</next_state>
+            <correct_choice>3</correct_choice>
+            <option_type>text</option_type>
+            <description_delay>8</description_delay>
+            <options_delay>8</options_delay>
+            
+            <menu_option id="0">
+                <text>Option1</text>
+                <text_on_select>Option1</text_on_select>
+                <sound_on_select>1-1a-1</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <menu_option id="1">
+                <text>Option2</text>
+                <text_on_select>Option2 </text_on_select>
+                <sound_on_select>1-1a-2</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <menu_option id="2">
+                <text>Option3</text>
+                <text_on_select>Option3</text_on_select>
+                <sound_on_select>1-1a-3</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            <menu_option id="3">
+                <text>Option4</text>
+                <text_on_select>Option4</text_on_select>
+                <sound_on_select>1-1a-4</sound_on_select>
+                <actions></actions>
+            </menu_option>
+            
+        </gui>
+    </state>
+    
+</scenario>

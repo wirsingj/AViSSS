@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Jeff Wirsing AViSSS XML -->
+<!--Hallway Environment -->
+<environment name="schoolFront">
+    
+    <node name="camera" type="camera">
+        <position>
+            <x>0</x>
+            <y>5</y>
+            <z>20</z>
+        </position>
+        <rotation>
+            <x>0</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    
+    <node name="light1" type="spotLight">
+        <position>
+            <x>0</x>
+            <y>20</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    <node name="light2" type="spotLight">
+        <position>
+            <x>0</x>
+            <y>20</y>
+            <z>-50</z>
+        </position>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    <node name="light3" type="spotLight">
+        <position>
+            <x>50</x>
+            <y>20</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>90</x>
+            <y>0</y>
+            <z>0</z>
+        </rotation>
+    </node>
+    
+    <node name="schoolFront" type="dae">
+        <file>schoolFront</file>
+        <objectName>all</objectName>
+        <position>
+            <x>0</x>
+            <y>-20</y>
+            <z>0</z>
+        </position>
+        <rotation>
+            <x>-90</x>
+            <y>-90</y>
+            <z>0</z>
+        </rotation>
+        <scale>
+            <x>10</x>
+            <y>10</y>
+            <z>10</z>
+        </scale>
+    </node>
+    
+    <skybox>
+        <file>hexagon_right.tif</file>
+        <file>hexagon_left.tif</file>
+        <file>hexagon_top.tif</file>
+        <file>hexagon_bot.tif</file>
+        <file>hexagon_front.tif</file>
+        <file>hexagon_back.tif</file>
+    </skybox>
+    
+</environment>

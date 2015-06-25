@@ -11,6 +11,9 @@ import QuartzCore
 import SceneKit
 import Foundation
 import AVFoundation
+
+
+
 //This class manages the menu scene and the running scenarios.
 //It first builds the menu scene, and then builds and runs scenarios.
 //It is is responsible for adding nodes to the scenes, and removing/refreshing/switching between scenes when needed.
@@ -18,17 +21,26 @@ class ScenarioManager: UIViewController {
     
     var runningScene = SCNScene()
     var menuScene = SCNScene()
-    let cameraNode = SCNNode()
     var targets = [String]()
     var currentSceneIsMenu: Bool = true
-    var scnView : SCNView = SCNView()
     var scriptManager = ScriptManager()
     var _GUIManager = GUIManager()
     var castShadows = false
     
+    var scnView : SCNView = SCNView()
+    var statesEncountered = 0
+    var incorrectChoices = 0
+    var lastState = false
+    
+    var scenarioNames = [String]()
+    var currentScenarioIndex = 0
+    
+    var scoreOverlay : ScoreOverlay?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSLog("ViewDidLoad")
+        
         
         //Get view
         scnView = self.view as! SCNView
@@ -62,7 +74,7 @@ class ScenarioManager: UIViewController {
         scnView.showsStatistics = true
         // configure the view
         scnView.backgroundColor = UIColor.blueColor()
-     
+        
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
         let gestureRecognizers = NSMutableArray()
@@ -73,75 +85,54 @@ class ScenarioManager: UIViewController {
         scnView.gestureRecognizers = gestureRecognizers as [AnyObject]
     }
     func buildMenuScene(){
+        statesEncountered = 0
+        incorrectChoices = 0
+        
+        NSLog("building Menu")
         currentSceneIsMenu = true
         menuScene = SCNScene()
         scnView.scene = menuScene
-//        NSLog("scnView size- \(scnView.frame.size)")
+        //        NSLog("scnView size- \(scnView.frame.size)")
         var overlay = StartMenuOverlay(size: scnView.frame.size)
+        // scnView.overlaySKScene  = ScoreOverlay(size: scnView.frame.size, totalStates: statesEncountered, incorrectChoices: incorrectChoices, sm: self)
         overlay.setTheScenarioManager(self)
         scnView.overlaySKScene = overlay
-        //_GUIManager.setupMenuLabels()
         
+        NSLog("Test")
     }
-    func refreshRunningScene(sceneName: String){
+    func refreshRunningScene(sceneName: String?){
+        
         NSLog("refreshingScene")
-        scnView.overlaySKScene = nil
-        runningScene = SCNScene()
-        // addCamera()
+        if let _sceneName = sceneName{
+            scnView.overlaySKScene = nil
+            runningScene = SCNScene()
+            
+            //Add Ambient Light
+            addLights()
+            
+            lastState = false
+            scnView.scene = runningScene
+            scriptManager.runScenario(_sceneName)
+            
+        }else{
+            //If scene name was nil, it means we finished last scenario
+            //scnView.scene = nil
+            _GUIManager.removeUI()
+            
+            scoreOverlay = ScoreOverlay(size: scnView.frame.size, totalStates: statesEncountered, incorrectChoices: incorrectChoices, sm: self)
+            
+            scnView.overlaySKScene  = scoreOverlay
+        }
         
-        //Add Ambient Light
-        addLights()
-        
-        scnView.scene = runningScene
-        scriptManager.runScenario(sceneName)
-    }
-    func addCamera(){
-        // create and add a camera to the scene
-        cameraNode.camera = SCNCamera()
-        runningScene.rootNode.addChildNode(cameraNode)
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 5, z: 20)
-         //cameraNode.eulerAngles = SCNVector3Make(degToRad(5), degToRad(0), 0)
-        cameraNode.rotation.x = degToRad(-45)
-        cameraNode.camera?.automaticallyAdjustsZRange = true
-        //cameraNode.camera?.focalBlurRadius = 0.005   //looks terrrible..?
-        cameraNode.name = "camera"
     }
     func addLights(){
-        // create and add a light to the scene
-//        let lightNode = SCNNode()
-//        lightNode.light = SCNLight()
-//        lightNode.light?.type = SCNLightTypeSpot
-//        lightNode.light?.spotOuterAngle = CGFloat(160)
-//        lightNode.position = SCNVector3(x: 0, y: 20, z: 0)
-//        lightNode.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-//        lightNode.light?.castsShadow = false
-//        let lightNode2 = SCNNode()
-//        lightNode2.light = SCNLight()
-//        lightNode2.light?.type = SCNLightTypeSpot
-//        lightNode2.light?.spotOuterAngle = CGFloat(160)
-//        lightNode2.position = SCNVector3(x: 0, y: 20, z: -50)
-//        lightNode2.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-//        lightNode2.light?.castsShadow = false
-//        let lightNode3 = SCNNode()
-//        lightNode3.light = SCNLight()
-//        lightNode3.light?.type = SCNLightTypeSpot
-//        lightNode3.light?.spotOuterAngle = CGFloat(160)
-//        lightNode3.position = SCNVector3(x: 50, y: 20, z: 0)
-//        lightNode3.eulerAngles = SCNVector3Make(degToRad(90), degToRad(0), degToRad(0))
-//        lightNode3.light?.castsShadow = false
-//
-//        
-//        runningScene.rootNode.addChildNode(lightNode)
-//        runningScene.rootNode.addChildNode(lightNode2)
-//        runningScene.rootNode.addChildNode(lightNode3)
         // create and add an ambient light to the scene
         let ambientLightNode = SCNNode()
         ambientLightNode.light = SCNLight()
         ambientLightNode.light?.type = SCNLightTypeAmbient
         ambientLightNode.light?.color = UIColor.darkGrayColor()
         runningScene.rootNode.addChildNode(ambientLightNode)
-
+        
     }
     //Expects 6 images: Right, Left, Top, Bottom, front, back
     func buildSkybox(imageNames: [String]){
@@ -151,6 +142,7 @@ class ScenarioManager: UIViewController {
     func addNode(node: SCNNode){
         runningScene.rootNode.addChildNode(node)
     }
+    //Add scnAction or animation
     func addActionsToTargets(targetActions : [String:SCNAction]){
         for (target, action) in targetActions{
             runningScene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
