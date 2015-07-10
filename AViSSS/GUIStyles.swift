@@ -3,7 +3,7 @@
 //  AViSSS
 //
 //  Created by Jeff Wirsing on 11/11/14.
-//  Copyright (c) 2014 wirsing.app. All rights reserved.
+//  Copyright (c) 2014 wirsing.app All rights reserved.
 //
 import SpriteKit
 
@@ -11,7 +11,6 @@ class GUIStyles{
     var styleDictionaries = [[String:Any]]()
     
     init(){
-        
         var styleDictionary_1 = [String:Any]()
         styleDictionary_1["fontSize"] = 18 as CGFloat
         styleDictionary_1["largeFontSize"] = 22 as CGFloat

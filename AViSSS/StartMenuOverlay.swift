@@ -55,6 +55,7 @@ class StartMenuOverlay: SKScene{
             button.lineWidth = 2
             button.zPosition = 1
             button.name = "scenario"
+            NSLog("button created- frame \(button.frame)")
             self.addChild(button)
             
             buttons.append(button)

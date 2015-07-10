@@ -2,5 +2,6 @@
 <!--Jeff Wirsing AViSSS XML -->
 
 <scenarios>
+    <name>hallwayScenario</name>
     <name>testScenario1</name>
 </scenarios>
