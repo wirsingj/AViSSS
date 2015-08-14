@@ -203,7 +203,7 @@ class ScriptManager {
                 }
             case "morpher":
                 //scenarioManager.scene.rootNode.childNodeWithName(name, recursively: true)?.morpher?.targets
-                NSLog("buildAction: Morpher case-\(scenarioManager!.runningScene.rootNode.childNodeWithName(name as! String, recursively: true)?.morpher?.targets )")
+                NSLog("buildAction: Morpher case-\(scenarioManager!.scnView.scene!.rootNode.childNodeWithName(name as! String, recursively: true)?.morpher?.targets )")
                 //This is how the facial morphers are used as an animation
                 var morpherNumber = ((action.elementsForName("id").first as! GDataXMLElement).stringValue() as NSString).floatValue
                 var animation = CABasicAnimation(keyPath: "morpher.weights[\(morpherNumber)]")

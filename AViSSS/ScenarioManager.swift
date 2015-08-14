@@ -19,8 +19,7 @@ import AVFoundation
 //It is is responsible for adding nodes to the scenes, and removing/refreshing/switching between scenes when needed.
 class ScenarioManager: UIViewController {
     
-    var runningScene = SCNScene()
-    var menuScene = SCNScene()
+
     var targets = [String]()
     var currentSceneIsMenu: Bool = true
     var scriptManager = ScriptManager()
@@ -90,8 +89,8 @@ class ScenarioManager: UIViewController {
         
         NSLog("building Menu")
         currentSceneIsMenu = true
-        menuScene = SCNScene()
-        scnView.scene = menuScene
+        scnView.scene = nil
+        scnView.scene = SCNScene()
         //        NSLog("scnView size- \(scnView.frame.size)")
         var overlay = StartMenuOverlay(size: scnView.frame.size)
         // scnView.overlaySKScene  = ScoreOverlay(size: scnView.frame.size, totalStates: statesEncountered, incorrectChoices: incorrectChoices, sm: self)
@@ -104,14 +103,15 @@ class ScenarioManager: UIViewController {
         
         NSLog("refreshingScene")
         if let _sceneName = sceneName{
+  
             scnView.overlaySKScene = nil
-            runningScene = SCNScene()
+            scnView.scene = nil
+            scnView.scene = SCNScene()
             
             //Add Ambient Light
             addLights()
             
             lastState = false
-            scnView.scene = runningScene
             scriptManager.runScenario(_sceneName)
             
         }else{
@@ -131,21 +131,21 @@ class ScenarioManager: UIViewController {
         ambientLightNode.light = SCNLight()
         ambientLightNode.light?.type = SCNLightTypeAmbient
         ambientLightNode.light?.color = UIColor.darkGrayColor()
-        runningScene.rootNode.addChildNode(ambientLightNode)
+        scnView.scene!.rootNode.addChildNode(ambientLightNode)
         
     }
     //Expects 6 images: Right, Left, Top, Bottom, front, back
     func buildSkybox(imageNames: [String]){
-        runningScene.background.contents = imageNames
+        scnView.scene!.background.contents = imageNames
     }
     //Add prepared node to scene
     func addNode(node: SCNNode){
-        runningScene.rootNode.addChildNode(node)
+        scnView.scene!.rootNode.addChildNode(node)
     }
     //Add scnAction or animation
     func addActionsToTargets(targetActions : [String:SCNAction]){
         for (target, action) in targetActions{
-            runningScene.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
+            scnView.scene!.rootNode.childNodeWithName(target, recursively: true)?.runAction(action)
         }
     }
     func setSelectableTargets(targets:[String]){
