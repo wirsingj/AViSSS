@@ -47,7 +47,13 @@ class StartMenuOverlay: SKScene{
         
         for scenario in scenarioList{
             NSLog("buildingButton")
-            var button = SKShapeNode(path: CGPathCreateWithRoundedRect(CGRectMake(x, y,  193, 135), 8, 8, nil))
+           // var button = SKShapeNode(path: CGPathCreateWithRoundedRect(CGRectMake(x, y,  193, 135), 8, 8, nil))
+            var button = SKShapeNode()
+            button.position=CGPointMake(x, y)
+            var pathPos = CGPathCreateMutable()
+            CGPathAddRoundedRect(pathPos, nil, CGRectMake(0, 0, 193, 135),8,8)
+            button.path = pathPos
+
             button.fillColor = UIColor(white: 1, alpha: 1)
             //button.fillTexture = SKTexture(imageNamed: "\(scenario).png")
             button.fillTexture = SKTexture(imageNamed: "hallwayScenario.png")
