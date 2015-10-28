@@ -26,7 +26,6 @@
 		1F3B7CA51B03966600E44969 /* boy5_Model.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F3B7C9B1B03966600E44969 /* boy5_Model.dae */; };
 		1F3B7CA61B03966600E44969 /* girl2_Model.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F3B7C9C1B03966600E44969 /* girl2_Model.dae */; };
 		1F3B7CA71B03966600E44969 /* girl1_Model.dae in Resources */ = {isa = PBXBuildFile; fileRef = 1F3B7C9D1B03966600E44969 /* girl1_Model.dae */; };
-		1F3FA4BB1BE07C8A00F316FD /* images-Hi in Resources */ = {isa = PBXBuildFile; fileRef = 1F3FA4BA1BE07C8A00F316FD /* images-Hi */; };
 		1F545E6B1A12F01000FE6C45 /* GUIStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F545E6A1A12F01000FE6C45 /* GUIStyles.swift */; };
 		1F55935C1A099983004690A8 /* GUIBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F55935B1A099983004690A8 /* GUIBundle.swift */; };
 		1F82669F19DBA86C00995C95 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F82669E19DBA86C00995C95 /* GDataXMLNode.m */; };
@@ -285,7 +284,6 @@
 		1F3B7C9B1B03966600E44969 /* boy5_Model.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = boy5_Model.dae; sourceTree = "<group>"; };
 		1F3B7C9C1B03966600E44969 /* girl2_Model.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = girl2_Model.dae; sourceTree = "<group>"; };
 		1F3B7C9D1B03966600E44969 /* girl1_Model.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = girl1_Model.dae; sourceTree = "<group>"; };
-		1F3FA4BA1BE07C8A00F316FD /* images-Hi */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "images-Hi"; path = "../../../images-Hi"; sourceTree = "<group>"; };
 		1F545E6A1A12F01000FE6C45 /* GUIStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIStyles.swift; sourceTree = "<group>"; };
 		1F55935B1A099983004690A8 /* GUIBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIBundle.swift; sourceTree = "<group>"; };
 		1F82669D19DBA86B00995C95 /* AViSSS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AViSSS-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -601,7 +599,6 @@
 		1F78E4C919E0D50C007CE18A /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				1F3FA4BA1BE07C8A00F316FD /* images-Hi */,
 				1FCDF3C71B4F7DBE001C0FD9 /* AViSSS_Images */,
 				1F9B4FB31B2E7D59004C97A4 /* logo2.png */,
 				1FDA45721B2E782E00DE6861 /* hallwayScenario.png */,
@@ -1003,7 +1000,6 @@
 				1FCDF50A1B4F7DBF001C0FD9 /* Walker.jpg in Resources */,
 				1FF3088119EB2FA80057C6B0 /* lockerwall.png in Resources */,
 				1FCDF5051B4F7DBF001C0FD9 /* test_RT.jpg in Resources */,
-				1F3FA4BB1BE07C8A00F316FD /* images-Hi in Resources */,
 				1FCDF5001B4F7DBF001C0FD9 /* tentedWindow.png in Resources */,
 				1FBDB0D11B3BA06D003DFE77 /* busEnvironment.xml in Resources */,
 				1FAFABC11B2E2AB90067503D /* CH08_Animations.dae in Resources */,
