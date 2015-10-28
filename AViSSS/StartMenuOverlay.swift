@@ -19,7 +19,7 @@ class StartMenuOverlay: SKScene{
         super.init(size: size)
         self.size = size
         anchorPoint = CGPointMake(0.5, 0.5)
-        var background = SKSpriteNode(imageNamed: "locker_image.jpg")
+        let background = SKSpriteNode(imageNamed: "locker_image.jpg")
         background.size = size
         background.zPosition = -5
         background.name = "background"
@@ -27,7 +27,7 @@ class StartMenuOverlay: SKScene{
         self.backgroundColor = SKColor.brownColor()
         NSLog("Size \(self.frame.size)")
         
-        var logo = SKSpriteNode(imageNamed: "logo2.png")
+        let logo = SKSpriteNode(imageNamed: "logo2.png")
         logo.zPosition = 1
         logo.position = CGPointMake(250, 250)
         logo.name = "logo"
@@ -48,9 +48,9 @@ class StartMenuOverlay: SKScene{
         for scenario in scenarioList{
             NSLog("buildingButton")
            // var button = SKShapeNode(path: CGPathCreateWithRoundedRect(CGRectMake(x, y,  193, 135), 8, 8, nil))
-            var button = SKShapeNode()
+            let button = SKShapeNode()
             button.position=CGPointMake(x, y)
-            var pathPos = CGPathCreateMutable()
+            let pathPos = CGPathCreateMutable()
             CGPathAddRoundedRect(pathPos, nil, CGRectMake(0, 0, 193, 135),8,8)
             button.path = pathPos
 
@@ -82,9 +82,9 @@ class StartMenuOverlay: SKScene{
     func setTheScenarioManager(sm: ScenarioManager){
         scenarioManager = sm
     }
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         NSLog("Start Menu Touched!")
-        let touchLocation = (touches as! Set<UITouch>).first!.locationInNode(self)
+        let touchLocation = (touches ).first!.locationInNode(self)
         var index = 0
         
         for button in buttons{

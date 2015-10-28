@@ -192,7 +192,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
                 self._usedLabelNodeArray = [UILabel]()
                 
                 
-                for (index,option) in enumerate(self._GUIBundle.optionsText){
+                for (index,option) in self._GUIBundle.optionsText.enumerate(){
                     if option != "" {
                         //self.usedLabelNodeArray.append(self.labelNodeArray[index])
                         //self.createMultilineLabel(option, size: CGSizeMake(300, 50), baseNode: &self.labelNodeArray[index])
@@ -287,18 +287,18 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     ////////////////Helper Methods/////////////////////
     //Set new attributed string for a UI label-  can optionaly enlarge a character range
     func setAttributedText(label: UILabel, text: String, enlargedRange: NSRange = NSMakeRange(0, 0)){
-        var attributedString = NSMutableAttributedString(string: text)
+        let attributedString = NSMutableAttributedString(string: text)
         
         //Get settings
         let _fontColor = style["fontColor"] as! UIColor
         let _fontSize = style["fontSize"] as! CGFloat
         let _fontName = style["fontName"] as! String
         let _largeFontSize = style["largeFontSize"] as! CGFloat
-        var font = UIFont(name: _fontName, size: _fontSize)
+        let font = UIFont(name: _fontName, size: _fontSize)
         //Apply settings to whole string
         attributedString.setAttributes([NSForegroundColorAttributeName : _fontColor, NSFontAttributeName : font!], range: NSMakeRange(0, attributedString.length ))
         //Enlarge specified range
-        var largeFont = UIFont(name: _fontName, size: _largeFontSize)
+        let largeFont = UIFont(name: _fontName, size: _largeFontSize)
         attributedString.setAttributes([NSFontAttributeName : largeFont!], range: enlargedRange)
         
         
@@ -313,9 +313,9 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             
             descriptionAudioPlayer?.stop()
             descriptionAudioPlayer = nil
-            let responseSoundLocation = NSURL(fileURLWithPath: soundPath as! String)
+            let responseSoundLocation = NSURL(fileURLWithPath: soundPath as String)
             //NSLog("response sound location\(responseSoundLocation)")
-            descriptionAudioPlayer = AVAudioPlayer(contentsOfURL: responseSoundLocation, error: nil)
+            descriptionAudioPlayer = try? AVAudioPlayer(contentsOfURL: responseSoundLocation)
             descriptionAudioPlayer?.delegate = self
             // NSLog("audioPlayer \(descriptionAudioPlayer)")
             descriptionAudioPlayer!.play()
@@ -327,14 +327,14 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     func startSpeechSynthesizer(text :String, speechRate: Float = 0.08){
         NSLog("Start Speech Synth")
         speechSynth.stopSpeakingAtBoundary(AVSpeechBoundary.Immediate)
-        var words = AVSpeechUtterance(string: text)
+        let words = AVSpeechUtterance(string: text)
         words.rate = speechRate
         
         speechSynth.speakUtterance(words)
     }
     
     ///////////Delegate Methods///////////////////////
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool) {
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         //Used to know when the response audios are done
         NSLog("audioPlayerDidFinishPlaying")
     }
@@ -342,7 +342,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
     
     //This method is responsible for triggering choices after description utterance
     //It also is used to decide when the response utterance is done
-    func speechSynthesizer(synthesizer: AVSpeechSynthesizer!, didFinishSpeechUtterance utterance: AVSpeechUtterance!) {
+    func speechSynthesizer(synthesizer: AVSpeechSynthesizer, didFinishSpeechUtterance utterance: AVSpeechUtterance) {
         NSLog("SSD- DidFinishUtterance \(_UILabelBeingSpoken)")
         for index in 0 ... _usedLabelNodeArray.count - 1  {
             if(_usedLabelNodeArray[index] == _UILabelBeingSpoken && _usedLabelNodeArray[index] != _usedLabelNodeArray.last){
@@ -389,7 +389,7 @@ class GUIManager : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate,
             return
         }
     }
-    func speechSynthesizer(synthesizer: AVSpeechSynthesizer!, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance!) {
+    func speechSynthesizer(synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         
         //Set the spoken word to a larger font
         setAttributedText(_UILabelBeingSpoken, text: _UILabelBeingSpoken.text!, enlargedRange: characterRange)

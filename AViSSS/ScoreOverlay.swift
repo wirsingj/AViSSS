@@ -21,7 +21,7 @@ class ScoreOverlay: SKScene{
         super.init(size: size)
         self.size = size
         anchorPoint = CGPointMake(0.5, 0.5)
-        var background = SKSpriteNode(imageNamed: "chalkboard.tif")
+        let background = SKSpriteNode(imageNamed: "chalkboard.tif")
         background.size = size
         background.zPosition = -5
         background.name = "background"
@@ -29,13 +29,13 @@ class ScoreOverlay: SKScene{
         self.backgroundColor = SKColor.brownColor()
         NSLog("Size \(self.frame.size)")
         
-        var textLabel = SKLabelNode(fontNamed:"Chalkduster")
+        let textLabel = SKLabelNode(fontNamed:"Chalkduster")
         textLabel.text = "Congratulations!  Your score was: ";
         textLabel.fontSize = 40;
         textLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame) + 50);
         self.addChild(textLabel)
         
-        var scoreLabel = SKLabelNode(fontNamed:"Chalkduster")
+        let scoreLabel = SKLabelNode(fontNamed:"Chalkduster")
         scoreLabel.text = "States encountered: \(totalStates), incorrect choices: \(incorrectChoices) ";
         scoreLabel.fontSize = 40;
         scoreLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame) - 50);
@@ -56,9 +56,9 @@ class ScoreOverlay: SKScene{
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        let touchLocation = (touches as! Set<UITouch>).first!.locationInNode(self)
+        let touchLocation = (touches ).first!.locationInNode(self)
         
         
         if CGRectContainsPoint(menuLabel.frame, touchLocation){

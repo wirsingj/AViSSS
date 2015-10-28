@@ -76,12 +76,12 @@ class ScenarioManager: UIViewController {
         
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
-        let gestureRecognizers = NSMutableArray()
-        gestureRecognizers.addObject(tapGesture)
+        var gestureRecognizers = [UIGestureRecognizer]()
+        gestureRecognizers.append(tapGesture)//addObject(tapGesture)
         if let existingGestureRecognizers = scnView.gestureRecognizers {
-            gestureRecognizers.addObjectsFromArray(existingGestureRecognizers)
+            gestureRecognizers.appendContentsOf(existingGestureRecognizers)
         }
-        scnView.gestureRecognizers = gestureRecognizers as [AnyObject]
+        scnView.gestureRecognizers = gestureRecognizers as [UIGestureRecognizer]
     }
     func buildMenuScene(){
         statesEncountered = 0
@@ -92,7 +92,7 @@ class ScenarioManager: UIViewController {
         scnView.scene = nil
         scnView.scene = SCNScene()
         //        NSLog("scnView size- \(scnView.frame.size)")
-        var overlay = StartMenuOverlay(size: scnView.frame.size)
+        let overlay = StartMenuOverlay(size: scnView.frame.size)
         // scnView.overlaySKScene  = ScoreOverlay(size: scnView.frame.size, totalStates: statesEncountered, incorrectChoices: incorrectChoices, sm: self)
         overlay.setTheScenarioManager(self)
         scnView.overlaySKScene = overlay
@@ -153,31 +153,31 @@ class ScenarioManager: UIViewController {
     }
     //Used to detect touches to clickable objects in scene
     func handleTap(gestureRecognize: UIGestureRecognizer) {
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
-        // check what nodes are tapped
-        let p = gestureRecognize.locationInView(scnView)
-        if let hitResults = scnView.hitTest(p, options: nil) {
-            // check that we clicked on at least one object
-            if hitResults.count > 0 {
-                // retrieved the first clicked object
-                let result: AnyObject! = hitResults[0]
-                
-            }
-            
-        }
+//        // retrieve the SCNView
+//        let scnView = self.view as! SCNView
+//        
+//        // check what nodes are tapped
+//        let p = gestureRecognize.locationInView(scnView)
+//        if let hitResults = scnView.hitTest(p, options: nil) {
+//            // check that we clicked on at least one object
+//            if hitResults.count > 0 {
+//                // retrieved the first clicked object
+//                let result: AnyObject! = hitResults[0]
+//                
+//            }
+//            
+//        }
     }
     
     override func shouldAutorotate() -> Bool {
         return true
     }
     
-    override func supportedInterfaceOrientations() -> Int {
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+            return UIInterfaceOrientationMask.AllButUpsideDown
         } else {
-            return Int(UIInterfaceOrientationMask.All.rawValue)
+            return UIInterfaceOrientationMask.All
         }
     }
     

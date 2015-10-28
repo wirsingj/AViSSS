@@ -31,8 +31,8 @@ class GUIBundle {
     
 }
     extension Array {
-        subscript (safe index: Int) -> T? {
-            return indices(self) ~= index
+        subscript (safe index: Int) -> Element? {
+            return self.indices ~= index
                 ? self[index]
                 : nil
         }
